@@ -27,6 +27,6 @@
     "url": "git://github.com/alexdavid/exprestive.git"
   },
   "scripts": {
-    "test": "mycha run && cucumber-js test/feature"
+    "test": "mycha run --reporter spec && cucumber-js test/feature"
   }
 }
