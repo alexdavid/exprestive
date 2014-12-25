@@ -1,4 +1,4 @@
-Exprestive = require '../../../exprestive'
+exprestive = require '../../..'
 request = require 'request'
 url = require 'url'
 
@@ -6,8 +6,7 @@ module.exports = ->
   @Before (done) ->
     @helpers =
       makeRequest: (method, urlPath, callback) =>
-        exprestive = new Exprestive { @routes, @controllers }
-        @app.use exprestive.getMiddleware()
+        @app.use exprestive { @routes, @controllers }
         uri = url.format
           protocol: 'http:'
           hostname: 'localhost'
