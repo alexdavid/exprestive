@@ -8,8 +8,8 @@ describe 'Exprestive configuration', ->
     it 'sets the appDir to the dirname of the calling file', ->
       expect(@exprestive.appDir).to.equal __dirname
 
-    it 'sets the routesFilePath to appDir + routes.coffee', ->
-      expect(@exprestive.routesFilePath).to.equal __dirname + '/routes.coffee'
+    it 'sets the routesFilePath to appDir + routes', ->
+      expect(@exprestive.routesFilePath).to.equal __dirname + '/routes'
 
     it 'sets the controllersDirPath to appDir + controllers', ->
       expect(@exprestive.controllersDirPath).to.equal __dirname + '/controllers'
@@ -22,8 +22,8 @@ describe 'Exprestive configuration', ->
     it 'sets the appDir relative to the dirname of the calling file', ->
       expect(@exprestive.appDir).to.equal __dirname + '/foo/bar'
 
-    it 'sets the routesFilePath to appDir + routes.coffee', ->
-      expect(@exprestive.routesFilePath).to.equal __dirname + '/foo/bar/routes.coffee'
+    it 'sets the routesFilePath to appDir + routes', ->
+      expect(@exprestive.routesFilePath).to.equal __dirname + '/foo/bar/routes'
 
     it 'sets the controllersDirPath to appDir + controllers', ->
       expect(@exprestive.controllersDirPath).to.equal __dirname + '/foo/bar/controllers'
@@ -36,8 +36,8 @@ describe 'Exprestive configuration', ->
     it 'sets the appDir', ->
       expect(@exprestive.appDir).to.equal '/foo/bar'
 
-    it 'sets the routesFilePath to appDir + routes.coffee', ->
-      expect(@exprestive.routesFilePath).to.equal '/foo/bar/routes.coffee'
+    it 'sets the routesFilePath to appDir + routes', ->
+      expect(@exprestive.routesFilePath).to.equal '/foo/bar/routes'
 
     it 'sets the controllersDirPath to appDir + controllers', ->
       expect(@exprestive.controllersDirPath).to.equal '/foo/bar/controllers'

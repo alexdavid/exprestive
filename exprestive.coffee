@@ -5,7 +5,7 @@ path = require 'path'
 class Exprestive
   constructor: (@options = {}) ->
     @appDir             = path.resolve @getCallerDirname(), @options.appDir ? ''
-    @routesFilePath     = path.resolve @appDir, @options.routesFilePath ? 'routes.coffee'
+    @routesFilePath     = path.resolve @appDir, @options.routesFilePath ? 'routes'
     @controllersDirPath = path.resolve @appDir, @options.controllersDirPath ? 'controllers'
     @controllers = @options.controllers
     @middlewareRouter = express.Router()
