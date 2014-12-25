@@ -7,7 +7,7 @@ describe 'Exprestive routes', ->
       exprestive = new Exprestive { @routes }
       exprestive.initializeRoutes()
 
-    it 'calles the routes method', ->
+    it 'calls the routes method', ->
       expect(@routes).to.have.been.calledOnce
 
     it 'passes a GET method', ->
@@ -21,3 +21,12 @@ describe 'Exprestive routes', ->
 
     it 'passes a DELETE method', ->
       expect(@methods.DELETE).to.be.a 'function'
+
+
+  context 'routes not specified', ->
+    beforeEach ->
+      @exprestive = new Exprestive appDir: '../mock_applications/defaults'
+      @exprestive.initializeRoutes()
+
+    it 'requries routes from routesFilePath', ->
+      expect(@exprestive.routesMethod).to.equal require '../mock_applications/defaults/routes'
