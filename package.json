@@ -1,0 +1,32 @@
+{
+  "name": "exprestive",
+  "version": "0.0.1",
+  "description": "Expressive RESTful express router",
+  "author": "Alex David",
+  "bugs": {
+    "url": "https://github.com/alexdavid/exprestive/issues"
+  },
+  "dependencies": {
+    "callsite": "^1.0.0",
+    "express": "^4.10.6"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "cucumber": "^0.4.7",
+    "mycha": "^0.6.2",
+    "portfinder": "^0.3.0",
+    "request": "^2.51.0",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.6.0"
+  },
+  "homepage": "https://github.com/alexdavid/exprestive",
+  "license": "MIT",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alexdavid/exprestive.git"
+  },
+  "scripts": {
+    "test": "mycha run && cucumber-js test/feature"
+  }
+}
