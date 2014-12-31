@@ -4,7 +4,12 @@ expRESTive [![Build Status](https://travis-ci.org/alexdavid/exprestive.svg)](htt
 Expressive RESTful express router
 
 ## Basic usage
-* Create an express application with exprestive middleware
+* Install [Express](http://expressjs.com/) and expRESTive
+```shell
+$ npm install --save express exprestive
+```
+
+* Create an Express application with expRESTive middleware
 ```coffeescript
 # server.coffee
 express = require 'express'
