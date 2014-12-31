@@ -4,12 +4,12 @@ expRESTive [![Build Status](https://travis-ci.org/alexdavid/exprestive.svg)](htt
 Expressive RESTful express router
 
 ## Basic usage
-* Install [Express](http://expressjs.com/) and expRESTive
+* Install [Express](http://expressjs.com/) and Exprestive
 ```shell
 $ npm install --save express exprestive
 ```
 
-* Create an Express application with expRESTive middleware
+* Create an Express application with Exprestive middleware
 ```coffeescript
 # server.coffee
 express = require 'express'
@@ -36,7 +36,7 @@ class HelloWorldController
   index: (req, res) ->
     res.end 'hello world'
     
-module.exports = WelcomeController
+module.exports = HelloWorldController
 ```
 * Visit `/hello` in your browser
 
