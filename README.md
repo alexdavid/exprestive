@@ -5,11 +5,13 @@ Expressive RESTful express router
 
 ## Basic usage
 * Install [Express](http://expressjs.com/) and Exprestive
+
 ```shell
 $ npm install --save express exprestive
 ```
 
 * Create an Express application with Exprestive middleware
+
 ```coffeescript
 # server.coffee
 express = require 'express'
@@ -22,6 +24,7 @@ app.listen 3000
 ```
 
 * Create a `routes.coffee` file in the same directory as your server
+
 ```coffeescript
 # routes.coffee
 module.exports = ({ GET, POST, PUT, DELETE }) ->
@@ -29,7 +32,9 @@ module.exports = ({ GET, POST, PUT, DELETE }) ->
 ```
 
 * Create a `controllers/` directory in the same directory as your server
+
 * Populate with controllers. File names don't matter controller names are taken from the class name
+
 ```coffeescript
 # controllers/hello_world.coffee
 class HelloWorldController
