@@ -48,14 +48,13 @@ app = express()
 app.use exprestive
   appDir: __dirname
 ```
-
-| Option                 | Description                                                                                                       | Default Value                         |
-|------------------------|-------------------------------------------------------------------------------------------------------------------|---------------------------------------|
-| **appDir**             | Directory used as a base directory for routes file and controllers directory                                      | `__dirname`                           |
-| **routesFilePath**     | File to be required to define routes. This is passed to `require`, so extension is optional                       | **appDir**&nbsp;+&nbsp;`/routes`      |
-| **controllersDirPath** | Directory in which to look for controllers. All files in this directory will be automatically required            | **appDir**&nbsp;+&nbsp;`/controllers` |
-| **controllers**        | Pass in an object of instantiated controllers instead of requiring controller classes from **controllersDirPath** | `undefined`                           |
-| **routes**             | Pass in a routes function instead of requiring **routesFilePath**                                                 | `undefined`                           |
+| Option                 | Description                                                                                                                                                                     | Default Value                         |
+|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| **appDir**             | Directory used as a base directory for routes file and controllers directory                                                                                                    | `__dirname`                           |
+| **routesFilePath**     | File to be required to define routes. This is passed to `require`, so extension is optional                                                                                     | **appDir**&nbsp;+&nbsp;`/routes`      |
+| **controllersDirPath** | Directory in which to look for controllers. All files in this directory will be automatically required                                                                          | **appDir**&nbsp;+&nbsp;`/controllers` |
+| **routes**             | Pass in a routes function instead of requiring **routesFilePath**. Setting this will cause **routesFilePath** to be ignored                                                     | *None*                                |
+| **controllers**        | Pass in an object of instantiated controllers instead of requiring controller classes from **controllersDirPath**. Setting this will cause **controllersDirPath** to be ignored | *None*                                |
 
 ## Tests
 * Run unit tests with `npm run unit-tests`
