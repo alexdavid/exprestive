@@ -37,3 +37,23 @@ Feature: Finding controllers and routes
     When making a GET request to /users
     Then the response should be a 200
     And the response body should be "user list"
+
+
+  Scenario: an application with routes passed into options instead of a routes file
+    Given a "Users" controller in "controllers/users_controller.coffee" with the actions
+          | ACTION | RESPONSE  |
+          | index  | user list |
+    And an exprestive app with the option "routes" set to `({ GET }) -> GET '/users', to: 'users#index'`
+    When making a GET request to /users
+    Then the response should be a 200
+    And the response body should be "user list"
+
+
+  Scenario: an application with controllers passed into options instead of a controllers directory
+    Given a routes file "routes.coffee" with the routes
+          | METHOD | ROUTE  | TO          |
+          | GET    | /users | users#index |
+    And an exprestive app with the option "controllers" set to `{ users: index: (req, res) -> res.end 'user list' }`
+    When making a GET request to /users
+    Then the response should be a 200
+    And the response body should be "user list"

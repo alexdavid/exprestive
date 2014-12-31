@@ -8,7 +8,6 @@ class Exprestive
     @appDir             = path.resolve baseDir, @options.appDir ? ''
     @routesFilePath     = path.resolve @appDir, @options.routesFilePath ? 'routes'
     @controllersDirPath = path.resolve @appDir, @options.controllersDirPath ? 'controllers'
-    @controllers = @options.controllers ? {}
     @middlewareRouter = express.Router()
 
 
@@ -36,9 +35,11 @@ class Exprestive
 
 
   initializeControllers: ->
-    controllers = fs.readdirSync @controllersDirPath
-    for controller in controllers
-      Controller = require path.join @controllersDirPath, controller
+    @controllers = @options.controllers ? {}
+    return if @options.controllers?
+
+    for file in fs.readdirSync @controllersDirPath
+      Controller = require path.join @controllersDirPath, file
       controllerName = camelCase Controller.name.replace /Controller$/, ''
       @controllers[controllerName] = new Controller
 
