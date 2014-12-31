@@ -1,4 +1,4 @@
-Exprestive = require '../../lib/exprestive'
+Exprestive = require '../../src/exprestive'
 
 describe 'Exprestive configuration', ->
   context 'initialized with no options', ->

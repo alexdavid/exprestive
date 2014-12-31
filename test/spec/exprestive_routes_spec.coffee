@@ -1,4 +1,4 @@
-Exprestive = require '../../lib/exprestive'
+Exprestive = require '../../src/exprestive'
 
 describe 'Exprestive routes', ->
   describe '#initializeRoutes', ->

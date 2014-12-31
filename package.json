@@ -9,12 +9,14 @@
   "dependencies": {
     "callsite": "^1.0.0",
     "camel-case": "^1.0.2",
-    "coffee-script": "^1.8.0",
     "express": "^4.10.6"
   },
   "devDependencies": {
     "chai": "^1.10.0",
+    "coffee-script": "^1.8.0",
     "cucumber": "^0.4.7",
+    "gulp": "^3.8.10",
+    "gulp-coffee": "^2.2.0",
     "mkdirp": "^0.5.0",
     "mycha": "^0.6.2",
     "portfinder": "^0.3.0",
@@ -25,7 +27,7 @@
   },
   "homepage": "https://github.com/alexdavid/exprestive",
   "license": "MIT",
-  "main": "exprestive.js",
+  "main": "lib/middleware.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/alexdavid/exprestive.git"
@@ -33,6 +35,6 @@
   "scripts": {
     "test": "npm run unit-tests && npm run feature-tests",
     "unit-tests": "./node_modules/.bin/mycha run --reporter spec test/spec",
-    "feature-tests": "./node_modules/.bin/cucumber-js test/feature"
+    "feature-tests": "gulp && ./node_modules/.bin/cucumber-js test/feature"
   }
 }
