@@ -42,3 +42,35 @@ Feature: Finding routes
     Then the response should be a 200
     When making a GET request to /param
     Then the response should be a 200
+
+
+  Scenario: resource routing
+    Given a file "routes.coffee" with the contents
+          """
+            module.exports = ({ resource }) ->
+              resource 'users'
+          """
+    And a "Users" controller in "controllers/users.coffee" with the actions
+          | ACTION  | RESPONSE      |
+          | index   | users index   |
+          | new     | users new     |
+          | create  | users create  |
+          | show    | users show    |
+          | edit    | users edit    |
+          | update  | users update  |
+          | destroy | users destroy |
+    And an exprestive app using defaults
+    When making a GET request to /users
+    Then the response body should be "users index"
+    When making a GET request to /users/new
+    Then the response body should be "users new"
+    When making a POST request to /users
+    Then the response body should be "users create"
+    When making a GET request to /users/1
+    Then the response body should be "users show"
+    When making a GET request to /users/1/edit
+    Then the response body should be "users edit"
+    When making a PUT request to /users/1
+    Then the response body should be "users update"
+    When making a DELETE request to /users/1
+    Then the response body should be "users destroy"

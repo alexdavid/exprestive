@@ -21,3 +21,6 @@ describe 'Exprestive routes', ->
 
     it 'passes a DELETE method', ->
       expect(@methods.DELETE).to.be.a 'function'
+
+    it 'passes a resource method', ->
+      expect(@methods.resource).to.be.a 'function'

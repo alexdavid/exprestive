@@ -30,3 +30,9 @@ module.exports = ->
     @createController controllerName, fileName, actions.hashes(), (err) =>
       return done.fail err if err
       done()
+
+
+  @Given /^a file "([^"]+)" with the contents$/, (fileName, fileContents, done) ->
+    @createFile fileName, fileContents, (err) =>
+      return done.fail err if err
+      done()

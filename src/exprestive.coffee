@@ -29,12 +29,17 @@ class Exprestive
 
   # Returns the hash of methods passed to the routes file function
   getRoutesHelperMethods: ->
-    helperMethods = {}
+    helperMethods = resource: @resourceHelperMethod
     for httpMethod in ['GET', 'POST', 'PUT', 'DELETE']
-      helperMethods[httpMethod] = do (httpMethod) => (url, { to }) =>
-        [ controllerName, controllerAction ] = to.split '#'
-        @addRoute { httpMethod, url, controllerName, controllerAction }
+      helperMethods[httpMethod] = @getRoutesHttpHelperMethod httpMethod
     helperMethods
+
+
+  # Returns a helper method for a specific http method to be called in a routes file
+  getRoutesHttpHelperMethod: (httpMethod) ->
+    (url, { to }) =>
+      [ controllerName, controllerAction ] = to.split '#'
+      @addRoute { httpMethod, url, controllerName, controllerAction }
 
 
   # Returns the connect middleware to be passed to express app.use
@@ -61,6 +66,22 @@ class Exprestive
     @routesInitialized = yes
     @routesMethod = @options.routes ? require @routesFilePath
     @routesMethod @getRoutesHelperMethods()
+
+
+  # A helper method for automatically binding restful controllers in a routes file
+  # This is passed as "resource" to the routes file function parameter hash
+  resourceHelperMethod: (controllerName) =>
+    resourceRoutes = [
+      [ 'GET',    "/#{controllerName}",          'index'   ]
+      [ 'GET',    "/#{controllerName}/new",      'new'     ]
+      [ 'POST',   "/#{controllerName}",          'create'  ]
+      [ 'GET',    "/#{controllerName}/:id",      'show'    ]
+      [ 'GET',    "/#{controllerName}/:id/edit", 'edit'    ]
+      [ 'PUT',    "/#{controllerName}/:id",      'update'  ]
+      [ 'DELETE', "/#{controllerName}/:id",      'destroy' ]
+    ]
+    for [httpMethod, url, controllerAction] in resourceRoutes
+      @addRoute { httpMethod, url,  controllerAction, controllerName }
 
 
 module.exports = Exprestive
