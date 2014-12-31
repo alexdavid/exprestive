@@ -11,10 +11,9 @@ module.exports = ->
         done()
 
 
-  @Given /^an exprestive app with the option "([^"]+)" set to "([^"]+)"$/, (optionName, optionValue, done) ->
-    options = {}
-    options[optionName] = optionValue
-    @createExprestiveApp options, (err) =>
+  @Given /^an exprestive app with the option "([^"]+)" set to `([^`]+)`$/, (optionName, optionValue, done) ->
+    optionsStr = "#{optionName}: #{optionValue}"
+    @createExprestiveApp optionsStr, (err) =>
       return done.fail err if err
       @startApp (err) =>
         return done.fail err if err

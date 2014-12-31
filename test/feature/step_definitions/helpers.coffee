@@ -18,14 +18,14 @@ class Helpers
 
 
   # Creates a new exprestive app in @appPath
-  createExprestiveApp: (options, done) ->
+  createExprestiveApp: (optionsStr, done) ->
     exprestivePath = require.resolve "#{__dirname}/../../.."
     fileContents = """
       # Initialize exprestive application
       express = require '#{require.resolve 'express'}'
       exprestive = require '#{exprestivePath}'
       app = express()
-      app.use exprestive(#{JSON.stringify options})
+      app.use exprestive(#{optionsStr})
       app.listen #{@port}
 
       # Send a message to parent to let it know the server started successfully
