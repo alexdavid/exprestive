@@ -14,7 +14,7 @@ class Exprestive
   # Registers a route on the middlewareRouter
   addRoute: ({ httpMethod, url, controllerName, controllerAction }) ->
     httpMethod = httpMethod.toLowerCase()
-    @middlewareRouter[httpMethod] url, => @controllers[controllerName][controllerAction] arguments...
+    @middlewareRouter[httpMethod] url, => @controllers[camelCase controllerName][controllerAction] arguments...
 
 
   # Returns a hash of methods (GET, POST, PUT, DELETE) to be called in the routes file
