@@ -7,7 +7,7 @@ Feature: Finding controllers and routes
     And a "Users" controller in "controllers/users_controller.coffee" with the actions
           | ACTION | RESPONSE  |
           | index  | user list |
-    And an express app using exprestive
+    And an exprestive app using defaults
     When making a GET request to /users
     Then the response should be a 200
     And the response body should be "user list"

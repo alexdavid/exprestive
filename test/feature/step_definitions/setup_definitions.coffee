@@ -3,8 +3,8 @@
 
 module.exports = ->
 
-  @Given /^an express app using exprestive$/, (done) ->
-    @createExprestiveApp {}, (err) =>
+  @Given /^an exprestive app using defaults$/, (done) ->
+    @createExprestiveApp '', (err) =>
       return done.fail err if err
       @startApp (err) =>
         return done.fail err if err
