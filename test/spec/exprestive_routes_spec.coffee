@@ -4,7 +4,7 @@ describe 'Exprestive routes', ->
   describe '#initializeRoutes', ->
     beforeEach (done) ->
       @routes = sinon.spy (@methods) => done()
-      exprestive = new Exprestive { @routes }
+      exprestive = new Exprestive '/base/dir', { @routes }
       exprestive.initializeRoutes()
 
     it 'calls the routes method', ->
@@ -21,12 +21,3 @@ describe 'Exprestive routes', ->
 
     it 'passes a DELETE method', ->
       expect(@methods.DELETE).to.be.a 'function'
-
-
-  context 'routes not specified', ->
-    beforeEach ->
-      @exprestive = new Exprestive appDir: '../mock_applications/defaults'
-      @exprestive.initializeRoutes()
-
-    it 'requries routes from routesFilePath', ->
-      expect(@exprestive.routesMethod).to.equal require '../mock_applications/defaults/routes'

@@ -1,25 +1,39 @@
-Feature: Controllers
+Feature: Finding controllers and routes
 
-  Scenario: calling controller methods via GET requests
-    Given a users controller with an index action
-    And the route GET "/users" to "users#index"
-    When a GET request to "/users" is made
-    Then the index action of the users controller is called
+  Scenario: an application with defaults
+    Given a routes file "routes.coffee" with the routes
+          | METHOD | ROUTE  | TO          |
+          | GET    | /users | users#index |
+    And a "Users" controller in "controllers/users_controller.coffee" with the actions
+          | ACTION | RESPONSE  |
+          | index  | user list |
+    And an express app using exprestive
+    When making a GET request to /users
+    Then the response should be a 200
+    And the response body should be "user list"
 
-  Scenario: calling controller methods via POST requests
-    Given a users controller with an index action
-    And the route POST "/users" to "users#index"
-    When a POST request to "/users" is made
-    Then the index action of the users controller is called
 
-  Scenario: calling controller methods via PUT requests
-    Given a users controller with an index action
-    And the route PUT "/users" to "users#index"
-    When a PUT request to "/users" is made
-    Then the index action of the users controller is called
+  Scenario: an application with a custom routes file
+    Given a routes file "my_routes.coffee" with the routes
+          | METHOD | ROUTE  | TO          |
+          | GET    | /users | users#index |
+    And a "Users" controller in "controllers/users_controller.coffee" with the actions
+          | ACTION | RESPONSE  |
+          | index  | user list |
+    And an exprestive app with the option "routesFilePath" set to "./my_routes.coffee"
+    When making a GET request to /users
+    Then the response should be a 200
+    And the response body should be "user list"
 
-  Scenario: calling controller methods via DELETE requests
-    Given a users controller with an index action
-    And the route DELETE "/users" to "users#index"
-    When a DELETE request to "/users" is made
-    Then the index action of the users controller is called
+
+  Scenario: an application with a custom controllers directory
+    Given a routes file "routes.coffee" with the routes
+          | METHOD | ROUTE  | TO          |
+          | GET    | /users | users#index |
+    And a "Users" controller in "my_controllers/controller_name.coffee" with the actions
+          | ACTION | RESPONSE  |
+          | index  | user list |
+    And an exprestive app with the option "controllersDirPath" set to "./my_controllers"
+    When making a GET request to /users
+    Then the response should be a 200
+    And the response body should be "user list"

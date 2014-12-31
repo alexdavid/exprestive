@@ -1,12 +1,19 @@
 { expect } = require 'chai'
 
 module.exports = ->
-  @When /^a (.+) request to "(.+)" is made$/, (method, urlPath, done) ->
-    @helpers.makeRequest method, urlPath, (err, response, body) =>
+
+  @When /^making a (GET|POST|PUT|DELETE) request to (.+)$/, (httpMethod, urlPath, done) ->
+    @makeRequest httpMethod, urlPath, (err, response, @responseBody) =>
+      return done.fail err if err
+      @statusCode = response.statusCode
       done()
 
 
-  @Then /^a (.+) request to "(.+)" returns a (\d+)$/, (method, urlPath, statusCode, done) ->
-    @helpers.makeRequest method, urlPath, (err, response, body) =>
-      expect(response.statusCode).to.equal parseInt(statusCode)
-      done()
+  @Then /^the response should be a (\d+)$/, (statusCode, done) ->
+    expect(@statusCode).to.equal parseInt statusCode
+    done()
+
+
+  @Then /^the response body should be "([^"]+)"$/, (responseBody, done) ->
+    expect(@responseBody).to.equal responseBody
+    done()

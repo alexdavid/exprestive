@@ -3,49 +3,49 @@ Exprestive = require '../../lib/exprestive'
 describe 'Exprestive configuration', ->
   context 'initialized with no options', ->
     beforeEach ->
-      @exprestive = new Exprestive
+      @exprestive = new Exprestive '/base/dir'
 
-    it 'sets the appDir to the dirname of the calling file', ->
-      expect(@exprestive.appDir).to.equal __dirname
+    it 'sets the appDir to the baseDir', ->
+      expect(@exprestive.appDir).to.equal '/base/dir'
 
-    it 'sets the routesFilePath to appDir + routes', ->
-      expect(@exprestive.routesFilePath).to.equal __dirname + '/routes'
+    it 'sets the routesFilePath to baseDir + routes', ->
+      expect(@exprestive.routesFilePath).to.equal '/base/dir/routes'
 
-    it 'sets the controllersDirPath to appDir + controllers', ->
-      expect(@exprestive.controllersDirPath).to.equal __dirname + '/controllers'
+    it 'sets the controllersDirPath to baseDir + controllers', ->
+      expect(@exprestive.controllersDirPath).to.equal '/base/dir/controllers'
 
 
   context 'initialized with a relative appDir', ->
     beforeEach ->
-      @exprestive = new Exprestive appDir: './foo/bar'
+      @exprestive = new Exprestive '/base/dir', appDir: './app/dir'
 
-    it 'sets the appDir relative to the dirname of the calling file', ->
-      expect(@exprestive.appDir).to.equal __dirname + '/foo/bar'
+    it 'sets the appDir relative to the baseDir', ->
+      expect(@exprestive.appDir).to.equal '/base/dir/app/dir'
 
-    it 'sets the routesFilePath to appDir + routes', ->
-      expect(@exprestive.routesFilePath).to.equal __dirname + '/foo/bar/routes'
+    it 'sets the routesFilePath to baseDir + appDir routes', ->
+      expect(@exprestive.routesFilePath).to.equal '/base/dir/app/dir/routes'
 
-    it 'sets the controllersDirPath to appDir + controllers', ->
-      expect(@exprestive.controllersDirPath).to.equal __dirname + '/foo/bar/controllers'
+    it 'sets the controllersDirPath to baseDir + appDir + controllers', ->
+      expect(@exprestive.controllersDirPath).to.equal '/base/dir/app/dir/controllers'
 
 
   context 'initialized with an absolute appDir', ->
     beforeEach ->
-      @exprestive = new Exprestive appDir: '/foo/bar'
+      @exprestive = new Exprestive '/base/dir', appDir: '/app/dir'
 
     it 'sets the appDir', ->
-      expect(@exprestive.appDir).to.equal '/foo/bar'
+      expect(@exprestive.appDir).to.equal '/app/dir'
 
     it 'sets the routesFilePath to appDir + routes', ->
-      expect(@exprestive.routesFilePath).to.equal '/foo/bar/routes'
+      expect(@exprestive.routesFilePath).to.equal '/app/dir/routes'
 
     it 'sets the controllersDirPath to appDir + controllers', ->
-      expect(@exprestive.controllersDirPath).to.equal '/foo/bar/controllers'
+      expect(@exprestive.controllersDirPath).to.equal '/app/dir/controllers'
 
 
   context 'initialized with a relative routesFilePath', ->
     beforeEach ->
-      @exprestive = new Exprestive
+      @exprestive = new Exprestive '/base/dir',
         appDir: '/app/dir'
         routesFilePath: './routes/file/path'
 
@@ -55,7 +55,7 @@ describe 'Exprestive configuration', ->
 
   context 'initialized with an absolute routesFilePath', ->
     beforeEach ->
-      @exprestive = new Exprestive
+      @exprestive = new Exprestive '/base/dir',
         appDir: '/app/dir'
         routesFilePath: '/routes/file/path'
 
@@ -65,7 +65,7 @@ describe 'Exprestive configuration', ->
 
   context 'initialized with a relative controllersDirPath', ->
     beforeEach ->
-      @exprestive = new Exprestive
+      @exprestive = new Exprestive '/base/dir',
         appDir: '/app/dir'
         controllersDirPath: './controllers/dir/path'
 
@@ -75,7 +75,7 @@ describe 'Exprestive configuration', ->
 
   context 'initialized with an absolute controllersDirPath', ->
     beforeEach ->
-      @exprestive = new Exprestive
+      @exprestive = new Exprestive '/base/dir',
         appDir: '/app/dir'
         controllersDirPath: '/controllers/dir/path'
 

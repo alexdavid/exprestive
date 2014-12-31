@@ -1,13 +1,14 @@
-callsite = require 'callsite'
+camelCase = require 'camel-case'
 express = require 'express'
+fs = require 'fs'
 path = require 'path'
 
 class Exprestive
-  constructor: (@options = {}) ->
-    @appDir             = path.resolve @getCallerDirname(), @options.appDir ? ''
+  constructor: (baseDir, @options = {}) ->
+    @appDir             = path.resolve baseDir, @options.appDir ? ''
     @routesFilePath     = path.resolve @appDir, @options.routesFilePath ? 'routes'
     @controllersDirPath = path.resolve @appDir, @options.controllersDirPath ? 'controllers'
-    @controllers = @options.controllers
+    @controllers = @options.controllers ? {}
     @middlewareRouter = express.Router()
 
 
@@ -15,15 +16,6 @@ class Exprestive
   addRoute: ({ httpMethod, url, controllerName, controllerAction }) ->
     httpMethod = httpMethod.toLowerCase()
     @middlewareRouter[httpMethod] url, => @controllers[controllerName][controllerAction] arguments...
-
-
-  # Returns the __dirname of the file that called this method
-  getCallerDirname: ->
-    stack = callsite()
-    for item in stack
-      fileName = item.getFileName()
-      continue if fileName is __filename
-      return path.dirname fileName
 
 
   # Returns a hash of methods (GET, POST, PUT, DELETE) to be called in the routes file
@@ -38,8 +30,17 @@ class Exprestive
 
   # Returns the connect middleware to be passed to express app.use
   getMiddleware: ->
+    @initializeControllers()
     @initializeRoutes()
     @middlewareRouter
+
+
+  initializeControllers: ->
+    controllers = fs.readdirSync @controllersDirPath
+    for controller in controllers
+      Controller = require path.join @controllersDirPath, controller
+      controllerName = camelCase Controller.name.replace /Controller$/, ''
+      @controllers[controllerName] = new Controller
 
 
   initializeRoutes: ->

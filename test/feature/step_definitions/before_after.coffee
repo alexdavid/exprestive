@@ -1,17 +1,21 @@
-express = require 'express'
 portfinder = require 'portfinder'
+tmp = require 'tmp'
 
 module.exports = ->
+
   @Before (done) ->
-    @routes = ->
-    @controllers = {}
-    portfinder.getPort (err, @port) =>
+
+    # An array of functions added by steps to be executed in the after block
+    @cleanUpActions = []
+
+    # Create a temp directory to run the feature tests in
+    # unsafeCleanup tells tmp to delete the directory on process.exit even when its non-empty
+    tmp.dir {unsafeCleanup: yes}, (err, @appPath) =>
       return done err if err
-      @app = express()
-      @server = @app.listen @port
-      done()
+      portfinder.getPort (err, @port) =>
+        done err
 
 
   @After (done) ->
-    @server.close ->
-      done()
+    action() for action in @cleanUpActions
+    done()
