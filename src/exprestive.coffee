@@ -29,7 +29,7 @@ class Exprestive
 
   # Returns the hash of methods passed to the routes file function
   getRoutesHelperMethods: ->
-    helperMethods = resource: @resourceHelperMethod
+    helperMethods = resources: @resourcesHelperMethod
     for httpMethod in ['GET', 'POST', 'PUT', 'DELETE']
       helperMethods[httpMethod] = @getRoutesHttpHelperMethod httpMethod
     helperMethods
@@ -69,8 +69,8 @@ class Exprestive
 
 
   # A helper method for automatically binding restful controllers in a routes file
-  # This is passed as "resource" to the routes file function parameter hash
-  resourceHelperMethod: (controllerName) =>
+  # This is passed as "resources" to the routes file function parameter hash
+  resourcesHelperMethod: (controllerName) =>
     resourceRoutes = [
       [ 'GET',    "/#{controllerName}",          'index'   ]
       [ 'GET',    "/#{controllerName}/new",      'new'     ]

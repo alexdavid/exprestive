@@ -23,4 +23,4 @@ describe 'Exprestive routes', ->
       expect(@methods.DELETE).to.be.a 'function'
 
     it 'passes a resource method', ->
-      expect(@methods.resource).to.be.a 'function'
+      expect(@methods.resources).to.be.a 'function'
