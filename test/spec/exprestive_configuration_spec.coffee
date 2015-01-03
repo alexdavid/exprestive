@@ -1,7 +1,9 @@
 Exprestive = require '../../src/exprestive'
 
+
 describe 'Exprestive configuration', ->
   context 'initialized with no options', ->
+
     beforeEach ->
       @exprestive = new Exprestive '/base/dir'
 
