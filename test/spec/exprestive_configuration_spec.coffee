@@ -48,8 +48,8 @@ describe 'Exprestive configuration', ->
   context 'initialized with a relative routesFilePath', ->
     beforeEach ->
       @exprestive = new Exprestive '/base/dir',
-        appDir: '/app/dir'
-        routesFilePath: './routes/file/path'
+                                   appDir: '/app/dir'
+                                   routesFilePath: './routes/file/path'
 
     it 'sets the routesFilePath relative to appDir', ->
       expect(@exprestive.routesFilePath).to.equal '/app/dir/routes/file/path'
@@ -58,8 +58,8 @@ describe 'Exprestive configuration', ->
   context 'initialized with an absolute routesFilePath', ->
     beforeEach ->
       @exprestive = new Exprestive '/base/dir',
-        appDir: '/app/dir'
-        routesFilePath: '/routes/file/path'
+                                   appDir: '/app/dir'
+                                   routesFilePath: '/routes/file/path'
 
     it 'sets the routesFilePath', ->
       expect(@exprestive.routesFilePath).to.equal '/routes/file/path'
@@ -68,8 +68,8 @@ describe 'Exprestive configuration', ->
   context 'initialized with a relative controllersDirPath', ->
     beforeEach ->
       @exprestive = new Exprestive '/base/dir',
-        appDir: '/app/dir'
-        controllersDirPath: './controllers/dir/path'
+                                   appDir: '/app/dir'
+                                   controllersDirPath: './controllers/dir/path'
 
     it 'sets the controllersDirPath relative to appDir', ->
       expect(@exprestive.controllersDirPath).to.equal '/app/dir/controllers/dir/path'
@@ -78,8 +78,8 @@ describe 'Exprestive configuration', ->
   context 'initialized with an absolute controllersDirPath', ->
     beforeEach ->
       @exprestive = new Exprestive '/base/dir',
-        appDir: '/app/dir'
-        controllersDirPath: '/controllers/dir/path'
+                                   appDir: '/app/dir'
+                                   controllersDirPath: '/controllers/dir/path'
 
     it 'sets the controllersDirPath', ->
       expect(@exprestive.controllersDirPath).to.equal '/controllers/dir/path'
