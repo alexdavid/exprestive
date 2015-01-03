@@ -1,5 +1,6 @@
 { expect } = require 'chai'
 
+
 module.exports = ->
 
   @When /^making a (GET|POST|PUT|DELETE) request to (.+)$/, (httpMethod, urlPath, done) ->

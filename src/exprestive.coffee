@@ -4,6 +4,7 @@ express = require 'express'
 fs = require 'fs'
 path = require 'path'
 
+
 class Exprestive
 
   # Default options
@@ -33,7 +34,7 @@ class Exprestive
 
 
   # Registers a route on @middlewareRouter
-  addRoute: ({ httpMethod, url, controllerName, controllerAction }) ->
+  addRoute: ({httpMethod, url, controllerName, controllerAction}) ->
     @middlewareRouter[httpMethod.toLowerCase()] url, =>
       @controllers[camelCase controllerName][controllerAction] arguments...
 
@@ -55,9 +56,9 @@ class Exprestive
 
   # Returns a helper method for a specific http method to be called in a routes file
   getRoutesHttpHelperMethod: (httpMethod) ->
-    (url, { to }) =>
-      [ controllerName, controllerAction ] = to.split '#'
-      @addRoute { httpMethod, url, controllerName, controllerAction }
+    (url, {to}) =>
+      [controllerName, controllerAction] = to.split '#'
+      @addRoute {httpMethod, url, controllerName, controllerAction}
 
 
   # Populates @controllers by instantiating controllers found in @controllerDirPath

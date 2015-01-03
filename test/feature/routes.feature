@@ -46,10 +46,10 @@ Feature: Finding routes
 
   Scenario: resource routing
     Given a file "routes.coffee" with the contents
-          """
-            module.exports = ({ resources }) ->
-              resources 'users'
-          """
+      """
+        module.exports = ({ resources }) ->
+          resources 'users'
+      """
     And a "Users" controller in "controllers/users.coffee" with the actions
           | ACTION  | RESPONSE      |
           | index   | users index   |
