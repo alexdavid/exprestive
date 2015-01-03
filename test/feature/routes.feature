@@ -8,8 +8,8 @@ Feature: Finding routes
           | ACTION | RESPONSE  |
           | index  | user list |
     And an exprestive app with the option "routesFilePath" set to `"./my_routes.coffee"`
-    When making a GET request to /users
-    Then the response should be a 200
+    When making a GET request to "/users"
+    Then the response code should be 200
     And the response body should be "user list"
 
 
@@ -18,12 +18,12 @@ Feature: Finding routes
           | ACTION | RESPONSE  |
           | index  | user list |
     And an exprestive app with the option "routes" set to `({ GET }) -> GET '/users', to: 'users#index'`
-    When making a GET request to /users
-    Then the response should be a 200
+    When making a GET request to "/users"
+    Then the response code should be 200
     And the response body should be "user list"
 
 
-  Scenario: routes can be referred to with any case
+  Scenario Outline: routes can be referred to with any case
     Given a routes file "routes.coffee" with the routes
           | METHOD | ROUTE   | TO                |
           | GET    | /camel  | changeCase#index  |
@@ -34,17 +34,18 @@ Feature: Finding routes
           | ACTION | RESPONSE  |
           | index  | works     |
     And an exprestive app using defaults
-    When making a GET request to /camel
-    Then the response should be a 200
-    When making a GET request to /snake
-    Then the response should be a 200
-    When making a GET request to /pascal
-    Then the response should be a 200
-    When making a GET request to /param
-    Then the response should be a 200
+    When making a <REQUEST> request to "<URL>"
+    Then the response code should be <RESPONSE CODE>
+
+    Examples:
+      | REQUEST | URL     | RESPONSE CODE |
+      | GET     | /camel  | 200           |
+      | GET     | /snake  | 200           |
+      | GET     | /pascal | 200           |
+      | GET     | /param  | 200           |
 
 
-  Scenario: resource routing
+  Scenario Outline: resource routing
     Given a file "routes.coffee" with the contents
           """
             module.exports = ({ resources }) ->
@@ -60,17 +61,15 @@ Feature: Finding routes
           | update  | users update  |
           | destroy | users destroy |
     And an exprestive app using defaults
-    When making a GET request to /users
-    Then the response body should be "users index"
-    When making a GET request to /users/new
-    Then the response body should be "users new"
-    When making a POST request to /users
-    Then the response body should be "users create"
-    When making a GET request to /users/1
-    Then the response body should be "users show"
-    When making a GET request to /users/1/edit
-    Then the response body should be "users edit"
-    When making a PUT request to /users/1
-    Then the response body should be "users update"
-    When making a DELETE request to /users/1
-    Then the response body should be "users destroy"
+    When making a <REQUEST> request to "<URL>"
+    Then the response body should be "<RESPONSE BODY>"
+
+    Examples:
+      | REQUEST | URL           | RESPONSE BODY |
+      | GET     | /users        | users index   |
+      | GET     | /users/new    | users new     |
+      | POST    | /users        | users create  |
+      | GET     | /users/1      | users show    |
+      | GET     | /users/1/edit | users edit    |
+      | PUT     | /users/1      | users update  |
+      | DELETE  | /users/1      | users destroy |

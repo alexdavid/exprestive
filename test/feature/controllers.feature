@@ -8,8 +8,8 @@ Feature: Finding controllers
           | ACTION | RESPONSE  |
           | index  | user list |
     And an exprestive app using defaults
-    When making a GET request to /users
-    Then the response should be a 200
+    When making a GET request to "/users"
+    Then the response code should be 200
     And the response body should be "user list"
 
 
@@ -21,8 +21,8 @@ Feature: Finding controllers
           | ACTION | RESPONSE  |
           | index  | user list |
     And an exprestive app with the option "controllersDirPath" set to `"./my_controllers"`
-    When making a GET request to /users
-    Then the response should be a 200
+    When making a GET request to "/users"
+    Then the response code should be 200
     And the response body should be "user list"
 
 
@@ -31,6 +31,6 @@ Feature: Finding controllers
           | METHOD | ROUTE  | TO          |
           | GET    | /users | users#index |
     And an exprestive app with the option "controllers" set to `{ users: index: (req, res) -> res.end 'user list' }`
-    When making a GET request to /users
-    Then the response should be a 200
+    When making a GET request to "/users"
+    Then the response code should be 200
     And the response body should be "user list"
