@@ -1,3 +1,4 @@
+_ = require 'lodash'
 camelCase = require 'camel-case'
 express = require 'express'
 fs = require 'fs'
@@ -5,17 +6,27 @@ path = require 'path'
 
 class Exprestive
 
+  # Default options
+  @defaultOptions =
+    appDir: ''
+    routesFilePath: 'routes'
+    controllersDirPath: 'controllers'
+
+
   constructor: (baseDir, @options = {}) ->
+
+    # Merge given and default options
+    _.defaults @options, Exprestive.defaultOptions
 
     # The directory where routes and controllers can be found
     # Used only as a relative directory for @routesFilePath and @controllersDirPath
-    @appDir = path.resolve baseDir, @options.appDir ? ''
+    @appDir = path.resolve baseDir, @options.appDir
 
     # Path to the routes file
-    @routesFilePath = path.resolve @appDir, @options.routesFilePath ? 'routes'
+    @routesFilePath = path.resolve @appDir, @options.routesFilePath
 
     # Path to the directory to look for controllers
-    @controllersDirPath = path.resolve @appDir, @options.controllersDirPath ? 'controllers'
+    @controllersDirPath = path.resolve @appDir, @options.controllersDirPath
 
     # Router to register routes and pass to express as middleware
     @middlewareRouter = express.Router()
