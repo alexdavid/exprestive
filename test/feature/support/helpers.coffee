@@ -7,6 +7,7 @@ url = require 'url'
 
 
 class Helpers
+
   # Creates a controller in @appDir with the passed actions
   createController: (controllerName, fileName, actions, done) ->
     fileContents = [
