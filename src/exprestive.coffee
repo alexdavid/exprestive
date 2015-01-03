@@ -38,6 +38,13 @@ class Exprestive
       @controllers[camelCase controllerName][controllerAction] arguments...
 
 
+  # Returns the connect middleware to be passed to express app.use
+  getMiddleware: ->
+    @initializeControllers()
+    @initializeRoutes()
+    @middlewareRouter
+
+
   # Returns the hash of methods passed to the routes file function
   getRoutesHelperMethods: ->
     helperMethods = resources: @resourcesHelperMethod
@@ -51,13 +58,6 @@ class Exprestive
     (url, { to }) =>
       [ controllerName, controllerAction ] = to.split '#'
       @addRoute { httpMethod, url, controllerName, controllerAction }
-
-
-  # Returns the connect middleware to be passed to express app.use
-  getMiddleware: ->
-    @initializeControllers()
-    @initializeRoutes()
-    @middlewareRouter
 
 
   # Populates @controllers by instantiating controllers found in @controllerDirPath
