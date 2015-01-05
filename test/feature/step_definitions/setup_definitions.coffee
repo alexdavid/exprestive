@@ -20,18 +20,6 @@ module.exports = ->
         done()
 
 
-  @Given /^a routes file "([^"]+)" with the routes$/, (fileName, routes, done) ->
-    @createRoutesFile fileName, routes.hashes(), (err) =>
-      return done.fail err if err
-      done()
-
-
-  @Given /^a "([^"]+)" controller in "([^"]+)" with the actions$/, (controllerName, fileName, actions, done) ->
-    @createController controllerName, fileName, actions.hashes(), (err) =>
-      return done.fail err if err
-      done()
-
-
   @Given /^a file "([^"]+)" with the contents$/, (fileName, fileContents, done) ->
     @createFile fileName, fileContents, (err) =>
       return done.fail err if err

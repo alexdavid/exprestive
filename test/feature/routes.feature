@@ -1,12 +1,18 @@
 Feature: Finding routes
 
   Scenario: an application with a custom routes file
-    Given a routes file "my_routes.coffee" with the routes
-          | METHOD | ROUTE  | TO          |
-          | GET    | /users | users#index |
-    And a "Users" controller in "controllers/users_controller.coffee" with the actions
-          | ACTION | RESPONSE  |
-          | index  | user list |
+    Given a file "my_routes.coffee" with the contents
+      """
+      module.exports = ({GET}) ->
+        GET '/users', to: 'users#index'
+      """
+    And a file "controllers/users_controller.coffee" with the contents
+      """
+      class UsersController
+        index: (req, res) ->
+          res.end "user list"
+      module.exports = UsersController
+      """
     And an exprestive app with the option "routesFilePath" set to `"./my_routes.coffee"`
     When making a GET request to "/users"
     Then the response code should be 200
@@ -14,9 +20,13 @@ Feature: Finding routes
 
 
   Scenario: an application with routes passed into options instead of a routes file
-    Given a "Users" controller in "controllers/users_controller.coffee" with the actions
-          | ACTION | RESPONSE  |
-          | index  | user list |
+    Given a file "controllers/users_controller.coffee" with the contents
+      """
+      class UsersController
+        index: (req, res) ->
+          res.end "user list"
+      module.exports = UsersController
+      """
     And an exprestive app with the option "routes" set to `({ GET }) -> GET '/users', to: 'users#index'`
     When making a GET request to "/users"
     Then the response code should be 200
@@ -24,15 +34,21 @@ Feature: Finding routes
 
 
   Scenario Outline: routes can be referred to with any case
-    Given a routes file "routes.coffee" with the routes
-          | METHOD | ROUTE   | TO                |
-          | GET    | /camel  | changeCase#index  |
-          | GET    | /snake  | change_case#index |
-          | GET    | /pascal | ChangeCase#index  |
-          | GET    | /param  | change-case#index |
-    And a "ChangeCase" controller in "controllers/change_case.coffee" with the actions
-          | ACTION | RESPONSE  |
-          | index  | works     |
+    Given a file "routes.coffee" with the contents
+      """
+      module.exports = ({GET}) ->
+        GET '/camel',  to: 'changeCase#index'
+        GET '/snake',  to: 'change_case#index'
+        GET '/pascal', to: 'ChangeCase#index'
+        GET '/param',  to: 'change-case#index'
+      """
+    And a file "controllers/change_case.coffee" with the contents
+      """
+      class ChangeCaseController
+        index: (req, res) ->
+          res.end()
+      module.exports = ChangeCaseController
+      """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
     Then the response code should be <RESPONSE CODE>
@@ -48,18 +64,21 @@ Feature: Finding routes
   Scenario Outline: resource routing
     Given a file "routes.coffee" with the contents
       """
-        module.exports = ({ resources }) ->
-          resources 'users'
+      module.exports = ({ resources }) ->
+        resources 'users'
       """
-    And a "Users" controller in "controllers/users.coffee" with the actions
-          | ACTION  | RESPONSE      |
-          | index   | users index   |
-          | new     | users new     |
-          | create  | users create  |
-          | show    | users show    |
-          | edit    | users edit    |
-          | update  | users update  |
-          | destroy | users destroy |
+    And a file "controllers/users.coffee" with the contents
+      """
+      class UsersController
+        index:   (req, res) -> res.end 'users index'
+        new:     (req, res) -> res.end 'users new'
+        create:  (req, res) -> res.end 'users create'
+        show:    (req, res) -> res.end 'users show'
+        edit:    (req, res) -> res.end 'users edit'
+        update:  (req, res) -> res.end 'users update'
+        destroy: (req, res) -> res.end 'users destroy'
+      module.exports = UsersController
+      """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
     Then the response body should be "<RESPONSE BODY>"
