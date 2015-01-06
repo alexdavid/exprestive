@@ -1,7 +1,7 @@
 Feature: Finding routes
 
   Scenario: an application with a custom routes file
-    Given a file "my_routes.coffee" with the contents
+    Given a file "custom_routes.coffee" with the contents
       """
       module.exports = ({GET}) ->
         GET '/users', to: 'users#index'
@@ -13,7 +13,7 @@ Feature: Finding routes
           res.end "user list"
       module.exports = UsersController
       """
-    And an exprestive app with the option "routesFilePath" set to `"./my_routes.coffee"`
+    And an exprestive app with the option "routesFilePath" set to `"./custom_routes.coffee"`
     When making a GET request to "/users"
     Then the response code should be 200
     And the response body should be "user list"
@@ -51,17 +51,17 @@ Feature: Finding routes
       """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
-    Then the response code should be <RESPONSE CODE>
+    Then the response code should be 200
 
     Examples:
-      | REQUEST | URL     | RESPONSE CODE |
-      | GET     | /camel  | 200           |
-      | GET     | /snake  | 200           |
-      | GET     | /pascal | 200           |
-      | GET     | /param  | 200           |
+      | REQUEST | URL     |
+      | GET     | /camel  |
+      | GET     | /snake  |
+      | GET     | /pascal |
+      | GET     | /param  |
 
 
-  Scenario Outline: resource routing
+  Scenario Outline: restful routing
     Given a file "routes.coffee" with the contents
       """
       module.exports = ({ resources }) ->
