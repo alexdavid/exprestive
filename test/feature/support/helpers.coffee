@@ -8,16 +8,6 @@ url = require 'url'
 
 class Helpers
 
-  # Creates a controller in @appDir with the passed actions
-  createController: (controllerName, fileName, actions, done) ->
-    fileContents = [
-      "class #{controllerName}Controller"
-      ("  #{ACTION}: (_, res) -> res.end('#{RESPONSE}')" for {ACTION, RESPONSE} in actions)...
-      "module.exports = #{controllerName}Controller"
-    ].join '\n'
-    @createFile fileName, fileContents, done
-
-
   # Creates a new exprestive app in @appPath
   createExprestiveApp: (optionsStr, done) ->
     exprestivePath = require.resolve "#{__dirname}/../../.."
@@ -42,15 +32,6 @@ class Helpers
     mkdirp dirName, (err) ->
       done err if err
       fs.writeFile filePath, fileContents, done
-
-
-  # Creates a routes file in @appDir with the passed routes
-  createRoutesFile: (fileName, routes, done) ->
-    fileContents = [
-      "module.exports = ({ GET, POST, PUT, DELETE }) ->"
-      ("  #{METHOD} '#{ROUTE}', to: '#{TO}'" for {METHOD, ROUTE, TO} in routes)...
-    ].join '\n'
-    @createFile fileName, fileContents, done
 
 
   # Make an HTTP request to the running server
