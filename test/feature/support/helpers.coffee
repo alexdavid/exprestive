@@ -19,10 +19,19 @@ class Helpers
       app.use exprestive(#{optionsStr})
       app.listen #{@port}
 
+      # Route to evaluate functions from tests
+      app.get '/eval/:strToEval', (req, res) ->
+        res.end Function('req', 'res', req.params.strToEval)(req, res)
+
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
     """
     @createFile 'server.coffee', fileContents, done
+
+
+  createDirectory: (directoryName, done) ->
+    directoryPath = path.join @appPath, directoryName
+    mkdirp directoryPath, done
 
 
   # Writes a file in @appDir creating any missing directories along the way
