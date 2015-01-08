@@ -30,8 +30,7 @@ class Helpers
 
 
   createDirectory: (directoryName, done) ->
-    directoryPath = path.join @appPath, directoryName
-    mkdirp directoryPath, done
+    mkdirp path.join(@appPath, directoryName), done
 
 
   # Writes a file in @appDir creating any missing directories along the way
