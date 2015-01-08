@@ -44,7 +44,7 @@ Now:
 
 
 ## Reverse routing
-Exprestive exports reverse routing functions to a `paths` object. By default it is saved to `res.locals.paths` for easy access from views.
+Exprestive exports url building functions to a `paths` object. By default it is saved to `res.locals.paths` for easy access from views.
 
 ### Saving / accessing reverse routes
 In your routes file you can pass an `as` parameter to non-restful routes to define a reverse route.
@@ -64,7 +64,7 @@ class FooController
 
 In a view you can access this path with `paths.foobar()`
 ```jade
-//- index.jade 
+//- index.jade
 a(href=paths.foobar()) Visit foobar
 ```
 

@@ -13,7 +13,8 @@ module.exports = ->
     tmp.dir {unsafeCleanup: yes}, (err, @appPath) =>
       return done err if err
       portfinder.getPort (err, @port) =>
-        done err
+        return done err if err
+        @createDirectory 'controllers', done
 
 
   @After (done) ->

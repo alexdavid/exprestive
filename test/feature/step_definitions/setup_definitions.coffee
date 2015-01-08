@@ -3,12 +3,6 @@
 
 module.exports = ->
 
-  @Given /^an empty "([^"]+)" directory$/, (directoryName, done) ->
-    @createDirectory directoryName, (err) ->
-      return done.fail err if err
-      done()
-
-
   @Given /^an exprestive app using defaults$/, (done) ->
     @createExprestiveApp '', (err) =>
       return done.fail err if err

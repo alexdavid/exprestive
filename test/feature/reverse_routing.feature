@@ -1,9 +1,5 @@
 Feature: reverse routing
 
-  Background:
-    Given an empty "controllers" directory
-
-
   Scenario: routes can define reverse routes with 'as'
     Given the routing definition
       """
