@@ -13,6 +13,7 @@ class Exprestive
     appDir: ''
     routesFilePath: 'routes'
     controllersDirPath: 'controllers'
+    paths: {}
 
 
   constructor: (baseDir, @options = {}) ->
@@ -34,7 +35,7 @@ class Exprestive
     @middlewareRouter = express.Router()
 
     # Save reverse paths
-    @reversePaths = {}
+    @reversePaths = @options.paths
     @middlewareRouter.use @setReverseRoutesOnReqLocals
 
 
@@ -110,7 +111,8 @@ class Exprestive
 
   # Middleware to set reverse routes on req.locals
   setReverseRoutesOnReqLocals: (req, res, next) =>
-    res.locals.paths = @reversePaths
+    # Only set res.locals.paths if the paths option was not set
+    res.locals.paths = @reversePaths if @options.paths is Exprestive.defaultOptions.paths
     next()
 
 
