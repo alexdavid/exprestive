@@ -24,3 +24,13 @@ module.exports = ->
     @createFile fileName, fileContents, (err) =>
       return done.fail err if err
       done()
+
+
+  @Given /^the routing definitions?$/, (routingDefinitons, done) ->
+    routesFileContents = """
+    module.exports = ({GET, POST, PUT, DELETE, resources}) ->
+      #{routingDefinitons}
+    """
+    @createFile "routes.coffee", routesFileContents, (err) =>
+      return done.fail err if err
+      done()

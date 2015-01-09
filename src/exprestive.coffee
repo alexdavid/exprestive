@@ -3,6 +3,7 @@ camelCase = require 'camel-case'
 express = require 'express'
 fs = require 'fs'
 path = require 'path'
+{pluralize, singularize} = require 'inflection'
 
 
 class Exprestive
@@ -12,6 +13,7 @@ class Exprestive
     appDir: ''
     routesFilePath: 'routes'
     controllersDirPath: 'controllers'
+    paths: {}
 
 
   constructor: (baseDir, @options = {}) ->
@@ -32,11 +34,23 @@ class Exprestive
     # Router to register routes and pass to express as middleware
     @middlewareRouter = express.Router()
 
+    # Save reverse paths
+    @reversePaths = @options.paths
+    @middlewareRouter.use @setReverseRoutesOnReqLocals
+
 
   # Registers a route on @middlewareRouter
   addRoute: ({httpMethod, url, controllerName, controllerAction}) ->
     @middlewareRouter[httpMethod.toLowerCase()] url, =>
       @controllers[camelCase controllerName][controllerAction] arguments...
+
+
+  # Returns a route directive for a specific http method to be called in a routes file
+  getHttpDirective: (httpMethod) ->
+    (url, {to, as}) =>
+      [controllerName, controllerAction] = to.split '#'
+      @addRoute {httpMethod, url, controllerName, controllerAction}
+      @registerReverseRoute {routeName: as, url} if as?
 
 
   # Returns the connect middleware to be passed to express app.use
@@ -46,19 +60,12 @@ class Exprestive
     @middlewareRouter
 
 
-  # Returns the hash of methods passed to the routes file function
-  getRoutesHelperMethods: ->
-    helperMethods = resources: @resourcesHelperMethod
+  # Returns the object of directives passed to the routes file function
+  getRouteDirectives: ->
+    directives = resources: @resourcesDirective
     for httpMethod in ['GET', 'POST', 'PUT', 'DELETE']
-      helperMethods[httpMethod] = @getRoutesHttpHelperMethod httpMethod
-    helperMethods
-
-
-  # Returns a helper method for a specific http method to be called in a routes file
-  getRoutesHttpHelperMethod: (httpMethod) ->
-    (url, {to}) =>
-      [controllerName, controllerAction] = to.split '#'
-      @addRoute {httpMethod, url, controllerName, controllerAction}
+      directives[httpMethod] = @getHttpDirective httpMethod
+    directives
 
 
   # Populates @controllers by instantiating controllers found in @controllerDirPath
@@ -77,23 +84,36 @@ class Exprestive
     return if @routesInitialized
     @routesInitialized = yes
     @routesMethod = @options.routes ? require @routesFilePath
-    @routesMethod @getRoutesHelperMethods()
+    @routesMethod @getRouteDirectives()
+
+
+  # Save a function to @reversePaths to get a url back from a route name
+  registerReverseRoute: ({routeName, url}) ->
+    @reversePaths[camelCase routeName] = (id) ->
+      url.replace ':id', id
 
 
   # A helper method for automatically binding restful controllers in a routes file
   # This is passed as "resources" to the routes file function parameter hash
-  resourcesHelperMethod: (controllerName) =>
-    resourceRoutes = [
-      [ 'GET',    "/#{controllerName}",          'index'   ]
-      [ 'GET',    "/#{controllerName}/new",      'new'     ]
-      [ 'POST',   "/#{controllerName}",          'create'  ]
-      [ 'GET',    "/#{controllerName}/:id",      'show'    ]
-      [ 'GET',    "/#{controllerName}/:id/edit", 'edit'    ]
-      [ 'PUT',    "/#{controllerName}/:id",      'update'  ]
-      [ 'DELETE', "/#{controllerName}/:id",      'destroy' ]
-    ]
-    for [httpMethod, url, controllerAction] in resourceRoutes
-      @addRoute { httpMethod, url,  controllerAction, controllerName }
+  resourcesDirective: (controllerName) =>
+    {GET, POST, PUT, DELETE} = @getRouteDirectives()
+    singularName = singularize controllerName
+    pluralName = pluralize controllerName
+
+    GET "/#{controllerName}",          to: "#{controllerName}#index", as: pluralName
+    GET "/#{controllerName}/new",      to: "#{controllerName}#new",   as: "new_#{singularName}"
+    GET "/#{controllerName}/:id",      to: "#{controllerName}#show",  as: singularName
+    GET "/#{controllerName}/:id/edit", to: "#{controllerName}#edit",  as: "edit_#{singularName}"
+    PUT "/#{controllerName}/:id",      to: "#{controllerName}#update"
+    POST   "/#{controllerName}",       to: "#{controllerName}#create"
+    DELETE "/#{controllerName}/:id",   to: "#{controllerName}#destroy"
+
+
+  # Middleware to set reverse routes on req.locals
+  setReverseRoutesOnReqLocals: (req, res, next) =>
+    # Only set res.locals.paths if the paths option was not set
+    res.locals.paths = @reversePaths if @options.paths is Exprestive.defaultOptions.paths
+    next()
 
 
 module.exports = Exprestive
