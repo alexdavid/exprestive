@@ -9,6 +9,24 @@ Feature: reverse routing
     Then I have a routing helper "res.locals.paths.foobar()" that returns "/some/route"
 
 
+  Scenario: reverse route parameters can be filled in with multilple arguments
+    Given the routing definition
+      """
+      GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
+      """
+    And an exprestive app using defaults
+    Then I have a routing helper "res.locals.paths.userPost(1, 2)" that returns "/users/1/posts/2"
+
+
+  Scenario: reverse route parameters can be filled in with an object
+    Given the routing definition
+      """
+      GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
+      """
+    And an exprestive app using defaults
+    Then I have a routing helper "res.locals.paths.userPost({userId: 1, id: 2})" that returns "/users/1/posts/2"
+
+
   Scenario Outline: restful routes define reverse routes automatically
     Given the routing definition
       """
