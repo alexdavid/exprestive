@@ -16,5 +16,5 @@ module.exports = ->
 
 
   @Then /^the response body should be "([^"]+)"$/, (responseBody, done) ->
-    expect(@responseBody).to.equal responseBody
+    expect(@responseBody.trim()).to.equal responseBody
     done()
