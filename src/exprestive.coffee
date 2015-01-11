@@ -89,8 +89,13 @@ class Exprestive
 
   # Save a function to @reversePaths to get a url back from a route name
   registerReverseRoute: ({routeName, url}) ->
-    @reversePaths[camelCase routeName] = (id) ->
-      url.replace ':id', id
+    @reversePaths[routeName] = (args...) ->
+      if typeof args[0] is 'object'
+        url = url.replace ":#{k}", v for k, v of args[0]
+      else
+        url = url.replace /\:[^/]+/, arg for arg in args
+
+      url
 
 
   # Full list of resource action names. It is important that 'new' precede 'show'
@@ -105,20 +110,20 @@ class Exprestive
     pluralName = pluralize controllerName
 
     index:   -> GET "/#{controllerName}",          to: "#{controllerName}#index",   as: pluralName
-    new:     -> GET "/#{controllerName}/new",      to: "#{controllerName}#new",     as: "new_#{singularName}"
+    new:     -> GET "/#{controllerName}/new",      to: "#{controllerName}#new",     as: camelCase "new_#{singularName}"
     show:    -> GET "/#{controllerName}/:id",      to: "#{controllerName}#show",    as: singularName
-    edit:    -> GET "/#{controllerName}/:id/edit", to: "#{controllerName}#edit",    as: "edit_#{singularName}"
-    update:  -> PUT "/#{controllerName}/:id",      to: "#{controllerName}#update",  as: singularName
-    create:  -> POST "/#{controllerName}",         to: "#{controllerName}#create",  as: pluralName
-    destroy: -> DELETE "/#{controllerName}/:id",   to: "#{controllerName}#destroy", as: singularName
+    edit:    -> GET "/#{controllerName}/:id/edit", to: "#{controllerName}#edit",    as: camelCase "edit_#{singularName}"
+    update:  -> PUT "/#{controllerName}/:id",      to: "#{controllerName}#update",  as: camelCase "update_#{singularName}"
+    create:  -> POST   "/#{controllerName}",       to: "#{controllerName}#create",  as: camelCase "create_#{singularName}"
+    destroy: -> DELETE "/#{controllerName}/:id",   to: "#{controllerName}#destroy", as: camelCase "destroy_#{singularName}"
 
 
   # A helper method for automatically binding restful controllers in a routes file
   # This is passed as "resources" to the routes file function parameter hash
   # Routes can be filtered with the 'only:' option.
   # E.g. resources 'users', only: ['index', 'show']
-  resourcesDirective: (controllerName, opts) =>
-    includedActions = if opts?.only?
+  resourcesDirective: (controllerName, opts = {}) =>
+    includedActions = if opts.only?
       _.intersection @resourceActions, opts.only
     else
       @resourceActions

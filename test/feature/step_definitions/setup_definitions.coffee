@@ -29,7 +29,7 @@ module.exports = ->
   @Given /^the routing definitions?$/, (routingDefinitons, done) ->
     routesFileContents = """
     module.exports = ({GET, POST, PUT, DELETE, resources}) ->
-      #{routingDefinitons}
+      #{routingDefinitons.replace("\n", "\n  ")}
     """
     @createFile "routes.coffee", routesFileContents, (err) =>
       return done.fail err if err
