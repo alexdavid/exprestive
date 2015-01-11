@@ -71,13 +71,14 @@ a(href=paths.foobar()) Visit foobar
 
 ### Parameters
 
-If a route has parameters, the reverse route can take the parameters in order as arguments or as a named hash
+If a route has parameters, the reverse route can take the parameters in order as arguments or as an object
 
+````coffeescript
+# routes.coffee
 module.exports = ({GET}) ->
   GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
-```
-
-```
+  
+# controllers/posts.coffee
 class PostsController
   show: (req, res) ->
     res.locals.paths.userPost(1, 2)             # returns "/users/1/posts/2"
