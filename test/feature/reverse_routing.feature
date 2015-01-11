@@ -3,10 +3,12 @@ Feature: reverse routing
   Scenario: routes can define reverse routes with 'as'
     Given the routing definition
       """
-      GET '/some/route', to: 'test#index', as: 'foobar'
+      GET '/some/route', to: 'test#index', as: 'fooBar'
+      GET '/other/route', to: 'test#other', as: 'foo_bar'
       """
     And an exprestive app using defaults
-    Then I have a routing helper "res.locals.paths.foobar()" that returns "/some/route"
+    Then I have a routing helper "res.locals.paths.fooBar()" that returns "/some/route"
+    Then I have a routing helper "res.locals.paths.foo_bar()" that returns "/other/route"
 
 
   Scenario Outline: restful routes define reverse routes automatically
