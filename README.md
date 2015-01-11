@@ -80,8 +80,8 @@ module.exports = ({GET}) ->
 ```
 class PostsController
   show: (req, res) ->
-    res.locals.paths.userPost(1, 2) # returns "/users/1/posts/2"
-    res.locals.paths.userPost(userId: 1, id: 2)
+    res.locals.paths.userPost(1, 2)             # returns "/users/1/posts/2"
+    res.locals.paths.userPost(userId: 1, id: 2) # returns "/users/1/posts/2"
 ```
 
 
