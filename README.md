@@ -85,23 +85,7 @@ class PostsController
 ```
 
 
-### Restful routing
-The `resources` directive automatically sets reverse routes
-```coffeescript
-# routes.coffee
-module.exports = ({resources}) ->
-  resources 'users'
-```
-This sets the following path helpers automatically:
-
-| Path helper           | Return Value      |
-|-----------------------|-------------------|
-| `paths.users()`       | `/users`          |
-| `paths.user(123)`     | `/users/123`      |
-| `paths.newUser()`     | `/users/new`      |
-| `paths.editUser(123)` | `/users/123/edit` |
-
-## Custom paths
+### Custom paths
 Setting `options.paths` will cause reverse routes to be exported to the passed object instead of `res.locals.paths`
 For example you can set `options.paths` to a global variable to access paths the same from everywhere.
 
@@ -110,6 +94,28 @@ global.paths = {}
 app.use exprestive paths: global.paths
 
 # Now paths.foobar() returns "/foo/bar" from anywhere in your application
+```
+
+
+## Restful routing
+The `resources` helper can be used to build all the standard RESTFUL routes
+```coffeescript
+# routes.coffee
+module.exports = ({resources}) ->
+  resources 'users'
+```
+
+is equivalent to
+```coffeescript
+# routes.coffee
+module.exports = ({DELETE, GET, POST, PUT}) ->
+  GET    '/users',          to: 'user#index', as: 'users'
+  GET    '/users/new',      to: 'user#new',   as: 'newUser'
+  GET    '/users/:id',      to: 'user#show',  as: 'user'
+  GET    '/users/:id/edit', to: 'user#edit',  as: 'editUser'
+  PUT    '/users/:id',      to: 'user#update'
+  POST   '/users',          to: 'user#create'
+  DELETE '/users/:id',      to: 'user#destroy'
 ```
 
 
