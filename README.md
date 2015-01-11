@@ -68,21 +68,26 @@ In a view you can access this path with `paths.foobar()`
 a(href=paths.foobar()) Visit foobar
 ```
 
-### Restful routing
-The `resources` directive automatically sets reverse routes
+## Restful routing
+The `resources` helper can be used to build all the standard RESTFUL routes
 ```coffeescript
 # routes.coffee
 module.exports = ({resources}) ->
   resources 'users'
 ```
-This sets the following path helpers automatically:
 
-| Path helper           | Return Value      |
-|-----------------------|-------------------|
-| `paths.users()`       | `/users`          |
-| `paths.user(123)`     | `/users/123`      |
-| `paths.newUser()`     | `/users/new`      |
-| `paths.editUser(123)` | `/users/123/edit` |
+is equivalent to
+```coffeescript
+# routes.coffee
+module.exports = ({DELETE, GET, POST, PUT}) ->
+  GET    '/users',          to: 'user#index', as: 'users'
+  GET    '/users/new',      to: 'user#new',   as: 'newUser'
+  GET    '/users/:id',      to: 'user#show',  as: 'user'
+  GET    '/users/:id/edit', to: 'user#edit',  as: 'editUser'
+  PUT    '/users/:id',      to: 'user#update'
+  POST   '/users',          to: 'user#create'
+  DELETE '/users/:id',      to: 'user#destroy'
+```
 
 ## Custom paths
 Setting `options.paths` will cause reverse routes to be exported to the passed object instead of `res.locals.paths`
