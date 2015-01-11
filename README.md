@@ -68,6 +68,18 @@ In a view you can access this path with `paths.foobar()`
 a(href=paths.foobar()) Visit foobar
 ```
 
+### Custom paths
+Setting `options.paths` will cause reverse routes to be exported to the passed object instead of `res.locals.paths`
+For example you can set `options.paths` to a global variable to access paths the same from everywhere.
+
+```coffeescript
+global.paths = {}
+app.use exprestive paths: global.paths
+
+# Now paths.foobar() returns "/foo/bar" from anywhere in your application
+```
+
+
 ## Restful routing
 The `resources` helper can be used to build all the standard RESTFUL routes
 ```coffeescript
@@ -87,17 +99,6 @@ module.exports = ({DELETE, GET, POST, PUT}) ->
   PUT    '/users/:id',      to: 'user#update'
   POST   '/users',          to: 'user#create'
   DELETE '/users/:id',      to: 'user#destroy'
-```
-
-## Custom paths
-Setting `options.paths` will cause reverse routes to be exported to the passed object instead of `res.locals.paths`
-For example you can set `options.paths` to a global variable to access paths the same from everywhere.
-
-```coffeescript
-global.paths = {}
-app.use exprestive paths: global.paths
-
-# Now paths.foobar() returns "/foo/bar" from anywhere in your application
 ```
 
 
