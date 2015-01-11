@@ -68,6 +68,23 @@ In a view you can access this path with `paths.foobar()`
 a(href=paths.foobar()) Visit foobar
 ```
 
+
+### Parameters
+
+If a route has parameters, the reverse route can take the parameters in order as arguments or as a named hash
+
+module.exports = ({GET}) ->
+  GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
+```
+
+```
+class PostsController
+  show: (req, res) ->
+    res.locals.paths.userPost(1, 2)             # returns "/users/1/posts/2"
+    res.locals.paths.userPost(userId: 1, id: 2) # returns "/users/1/posts/2"
+```
+
+
 ### Custom paths
 Setting `options.paths` will cause reverse routes to be exported to the passed object instead of `res.locals.paths`
 For example you can set `options.paths` to a global variable to access paths the same from everywhere.

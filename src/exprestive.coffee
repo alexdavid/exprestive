@@ -89,8 +89,13 @@ class Exprestive
 
   # Save a function to @reversePaths to get a url back from a route name
   registerReverseRoute: ({routeName, url}) ->
-    @reversePaths[camelCase routeName] = (id) ->
-      url.replace ':id', id
+    @reversePaths[camelCase routeName] = (args...) ->
+      if typeof args[0] is 'object'
+        url = url.replace ":#{k}", v for k, v of args[0]
+      else
+        url = url.replace /\:[^/]+/, arg for arg in args
+
+      url
 
 
   # A helper method for automatically binding restful controllers in a routes file
