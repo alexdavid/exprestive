@@ -89,7 +89,7 @@ class Exprestive
 
   # Save a function to @reversePaths to get a url back from a route name
   registerReverseRoute: ({routeName, url}) ->
-    @reversePaths[camelCase routeName] = (args...) ->
+    @reversePaths[routeName] = (args...) ->
       if typeof args[0] is 'object'
         url = url.replace ":#{k}", v for k, v of args[0]
       else
@@ -106,9 +106,9 @@ class Exprestive
     pluralName = pluralize controllerName
 
     GET "/#{controllerName}",          to: "#{controllerName}#index", as: pluralName
-    GET "/#{controllerName}/new",      to: "#{controllerName}#new",   as: "new_#{singularName}"
+    GET "/#{controllerName}/new",      to: "#{controllerName}#new",   as: camelCase "new_#{singularName}"
     GET "/#{controllerName}/:id",      to: "#{controllerName}#show",  as: singularName
-    GET "/#{controllerName}/:id/edit", to: "#{controllerName}#edit",  as: "edit_#{singularName}"
+    GET "/#{controllerName}/:id/edit", to: "#{controllerName}#edit",  as: camelCase "edit_#{singularName}"
     PUT "/#{controllerName}/:id",      to: "#{controllerName}#update"
     POST   "/#{controllerName}",       to: "#{controllerName}#create"
     DELETE "/#{controllerName}/:id",   to: "#{controllerName}#destroy"
