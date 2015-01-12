@@ -6,7 +6,7 @@ module.exports = ->
   @When /^making a (GET|POST|PUT|DELETE) request to "(.+)"$/, (httpMethod, urlPath, done) ->
     @makeRequest httpMethod, urlPath, (err, response, @responseBody) =>
       return done.fail err if err
-      @statusCode = response.statusCode
+      {@statusCode, @headers} = response
       done()
 
 
