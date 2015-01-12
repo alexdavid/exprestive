@@ -89,7 +89,7 @@ class Exprestive
 
   # Save a function to @reversePaths to get a url back from a route name
   registerReverseRoute: ({routeName, url}) ->
-    @reversePaths[routeName] = (args...) ->
+    @reversePaths[routeName] = (args...) -> do (url) ->
       if typeof args[0] is 'object'
         url = url.replace ":#{k}", v for k, v of args[0]
       else
