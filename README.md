@@ -120,6 +120,19 @@ module.exports = ({DELETE, GET, POST, PUT}) ->
 ```
 
 
+## Redirection
+You can redirect any path to another path using the `redirect` helper
+```coffeescript
+module.exports = ({GET, redirect}) ->
+  GET '/users',  to: redirect('/members')
+```
+You can also reuse request params in your redirected url
+```coffeescript
+module.exports = ({GET, redirect}) ->
+  GET '/users/:userId', to: redirect('/members/%{userId}')
+```
+
+
 ## Options
 
 Options are provided to the _exprestive_ function.
