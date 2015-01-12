@@ -13,6 +13,7 @@ class Exprestive
     appDir: ''
     routesFilePath: 'routes'
     controllersDirPath: 'controllers'
+    initializeWith: {}
     paths: {}
 
 
@@ -76,7 +77,7 @@ class Exprestive
     for file in fs.readdirSync @controllersDirPath
       Controller = require path.join @controllersDirPath, file
       controllerName = camelCase Controller.name.replace /Controller$/, ''
-      @controllers[controllerName] = new Controller
+      @controllers[controllerName] = new Controller @options.initializeWith
 
 
   # Sets the @routesMethod from the function exported from @routesFilePath
