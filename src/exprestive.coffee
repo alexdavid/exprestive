@@ -40,16 +40,21 @@ class Exprestive
 
 
   # Registers a route on @middlewareRouter
-  addRoute: ({httpMethod, url, controllerName, controllerAction}) ->
-    @middlewareRouter[httpMethod.toLowerCase()] url, =>
-      @controllers[camelCase controllerName][controllerAction] arguments...
+  addRoute: ({httpMethod, url, to}) ->
+    handler = switch typeof to
+      when 'function' then to
+      when 'string'
+        [controllerName, controllerAction] = to.split '#'
+        => @controllers[camelCase controllerName][controllerAction] arguments...
+      else throw 'Invalid value for to'
+
+    @middlewareRouter[httpMethod.toLowerCase()] url, handler
 
 
   # Returns a route directive for a specific http method to be called in a routes file
   getHttpDirective: (httpMethod) ->
     (url, {to, as}) =>
-      [controllerName, controllerAction] = to.split '#'
-      @addRoute {httpMethod, url, controllerName, controllerAction}
+      @addRoute {httpMethod, url, to}
       @registerReverseRoute {routeName: as, url} if as?
 
 
@@ -62,7 +67,9 @@ class Exprestive
 
   # Returns the object of directives passed to the routes file function
   getRouteDirectives: ->
-    directives = resources: @resourcesDirective
+    directives =
+      resources: @resourcesDirective
+      redirect: @redirectDirective
     for httpMethod in ['GET', 'POST', 'PUT', 'DELETE']
       directives[httpMethod] = @getHttpDirective httpMethod
     directives
@@ -85,6 +92,13 @@ class Exprestive
     @routesInitialized = yes
     @routesMethod = @options.routes ? require @routesFilePath
     @routesMethod @getRouteDirectives()
+
+
+  # A helper method to generate an express function to redirect to a url
+  redirectDirective: (url) ->
+    (req, res) -> do (url) ->
+      url = url.replace "%{#{k}}", v for k, v of req.params
+      res.redirect url
 
 
   # Save a function to @reversePaths to get a url back from a route name

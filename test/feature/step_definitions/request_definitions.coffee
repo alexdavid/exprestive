@@ -10,6 +10,12 @@ module.exports = ->
       done()
 
 
+  @Then /^exprestive redirects my request to "([^"]+)"$/, (url, done) ->
+    expect(@statusCode).to.equal 302
+    expect(@headers.location).to.equal url
+    done()
+
+
   @Then /^the response code should be (\d+)$/, (statusCode, done) ->
     expect(@statusCode).to.equal parseInt statusCode
     done()
