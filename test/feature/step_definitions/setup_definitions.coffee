@@ -20,7 +20,7 @@ module.exports = ->
         done()
 
 
-  @Given /^a file "([^"]+)" with the contents$/, (fileName, fileContents, done) ->
+  @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents, done) ->
     @createFile fileName, fileContents, (err) =>
       return done.fail err if err
       done()

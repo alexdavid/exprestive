@@ -1,7 +1,7 @@
 Feature: Finding controllers
 
   Background:
-    Given a file "routes.coffee" with the contents
+    Given a file "routes.coffee" with the content
       """
       module.exports = ({GET}) ->
         GET '/users', to: 'users#index'
@@ -9,7 +9,7 @@ Feature: Finding controllers
 
 
   Scenario: default configuration
-    Given a file "controllers/users_controller.coffee" with the contents
+    Given a file "controllers/users_controller.coffee" with the content
       """
       class UsersController
         index: (req, res) ->
@@ -23,7 +23,7 @@ Feature: Finding controllers
 
 
   Scenario: custom controllers directory
-    Given a file "my_controllers/controller_file_name.coffee" with the contents
+    Given a file "my_controllers/controller_file_name.coffee" with the content
       """
       class UsersController
         index: (req, res) ->
