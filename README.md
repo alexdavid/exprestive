@@ -137,7 +137,7 @@ app.use exprestive
 | **routes**             | Pass in a routes function instead of requiring **routesFilePath**. Setting this will cause **routesFilePath** to be ignored                                                     | *None*                                |
 | **controllers**        | Pass in an object of instantiated controllers instead of requiring controller classes from **controllersDirPath**. Setting this will cause **controllersDirPath** to be ignored | *None*                                |
 | **paths**              | Pass in an object to export paths to (see [reverse routing](#reverse-routing))                                                                                                  | `res.locals.paths`                    |
-| **initializeWith**     | Pass in an object to be passed to controller constructors                                                                                                                       | `{}`                                  |
+| **dependencies**       | Pass in an object of dependencies to be passed to controller constructors                                                                                                       | `{}`                                  |
 
 
 
