@@ -4,6 +4,7 @@ express = require 'express'
 fs = require 'fs'
 path = require 'path'
 {pluralize, singularize} = require 'inflection'
+URLFormatter = require './url_formatter'
 
 
 class Exprestive
@@ -89,13 +90,8 @@ class Exprestive
 
   # Save a function to @reversePaths to get a url back from a route name
   registerReverseRoute: ({routeName, url}) ->
-    @reversePaths[routeName] = (args...) -> do (url) ->
-      if typeof args[0] is 'object'
-        url = url.replace ":#{k}", v for k, v of args[0]
-      else
-        url = url.replace /\:[^/]+/, arg for arg in args
-
-      url
+    formatter = new URLFormatter url
+    @reversePaths[routeName] = (args...) -> formatter.replaceParams args...
 
 
   # A helper method for automatically binding restful controllers in a routes file
