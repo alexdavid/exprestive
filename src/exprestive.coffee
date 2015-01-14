@@ -91,7 +91,7 @@ class Exprestive
   # Save a function to @reversePaths to get a url back from a route name
   registerReverseRoute: ({routeName, url}) ->
     formatter = new URLFormatter url
-    @reversePaths[routeName] = (args...) -> formatter.replaceParams args...
+    @reversePaths[routeName] = new URLFormatter(url).replaceParams
 
 
   # A helper method for automatically binding restful controllers in a routes file
