@@ -95,21 +95,38 @@ class Exprestive
     @reversePaths[routeName] = new URLFormatter(url).replaceParams
 
 
-  # A helper method for automatically binding restful controllers in a routes file
-  # This is passed as "resources" to the routes file function parameter hash
-  resourcesDirective: (controllerName) =>
+  # Full list of resource action names. It is important that 'new' precede 'show'
+  resourceActions:
+    ['index', 'new', 'show', 'edit', 'update', 'create', 'destroy']
+
+
+  # Returns an object mapping each resource route name to a function which binds the route
+  resourceMappings: (controllerName) ->
     {GET, POST, PUT, DELETE} = @getRouteDirectives()
     singularName = singularize controllerName
     pluralName = pluralize controllerName
 
-    GET "/#{controllerName}",          to: "#{controllerName}#index", as: pluralName
-    GET "/#{controllerName}/new",      to: "#{controllerName}#new",   as: camelCase "new_#{singularName}"
-    GET "/#{controllerName}/:id",      to: "#{controllerName}#show",  as: singularName
-    GET "/#{controllerName}/:id/edit", to: "#{controllerName}#edit",  as: camelCase "edit_#{singularName}"
-    PUT "/#{controllerName}/:id",      to: "#{controllerName}#update"
-    POST   "/#{controllerName}",       to: "#{controllerName}#create"
-    DELETE "/#{controllerName}/:id",   to: "#{controllerName}#destroy"
+    index:   -> GET "/#{controllerName}",          to: "#{controllerName}#index",   as: pluralName
+    new:     -> GET "/#{controllerName}/new",      to: "#{controllerName}#new",     as: camelCase "new_#{singularName}"
+    show:    -> GET "/#{controllerName}/:id",      to: "#{controllerName}#show",    as: singularName
+    edit:    -> GET "/#{controllerName}/:id/edit", to: "#{controllerName}#edit",    as: camelCase "edit_#{singularName}"
+    update:  -> PUT "/#{controllerName}/:id",      to: "#{controllerName}#update",  as: camelCase "update_#{singularName}"
+    create:  -> POST   "/#{controllerName}",       to: "#{controllerName}#create",  as: camelCase "create_#{singularName}"
+    destroy: -> DELETE "/#{controllerName}/:id",   to: "#{controllerName}#destroy", as: camelCase "destroy_#{singularName}"
 
+
+  # A helper method for automatically binding restful controllers in a routes file
+  # This is passed as "resources" to the routes file function parameter hash
+  # Routes can be filtered with the 'only:' option.
+  # E.g. resources 'users', only: ['index', 'show']
+  resourcesDirective: (controllerName, opts = {}) =>
+    includedActions = if opts.only?
+      _.intersection @resourceActions, opts.only
+    else
+      @resourceActions
+    mappings = @resourceMappings controllerName
+
+    mappings[action]() for action in includedActions
 
   # Middleware to set reverse routes on req.locals
   setReverseRoutesOnReqLocals: (req, res, next) =>
