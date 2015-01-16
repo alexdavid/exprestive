@@ -4,6 +4,7 @@ express = require 'express'
 fs = require 'fs'
 path = require 'path'
 {pluralize, singularize} = require 'inflection'
+URLFormatter = require './url_formatter'
 
 
 class Exprestive
@@ -13,6 +14,7 @@ class Exprestive
     appDir: ''
     routesFilePath: 'routes'
     controllersDirPath: 'controllers'
+    dependencies: {}
     paths: {}
 
 
@@ -76,7 +78,7 @@ class Exprestive
     for file in fs.readdirSync @controllersDirPath
       Controller = require path.join @controllersDirPath, file
       controllerName = camelCase Controller.name.replace /Controller$/, ''
-      @controllers[controllerName] = new Controller
+      @controllers[controllerName] = new Controller @options.dependencies
 
 
   # Sets the @routesMethod from the function exported from @routesFilePath
@@ -89,13 +91,8 @@ class Exprestive
 
   # Save a function to @reversePaths to get a url back from a route name
   registerReverseRoute: ({routeName, url}) ->
-    @reversePaths[routeName] = (args...) ->
-      if typeof args[0] is 'object'
-        url = url.replace ":#{k}", v for k, v of args[0]
-      else
-        url = url.replace /\:[^/]+/, arg for arg in args
-
-      url
+    formatter = new URLFormatter url
+    @reversePaths[routeName] = new URLFormatter(url).replaceParams
 
 
   # Full list of resource action names. It is important that 'new' precede 'show'

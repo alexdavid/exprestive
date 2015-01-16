@@ -1,12 +1,12 @@
 Feature: Finding routes
 
   Scenario: an application with a custom routes file
-    Given a file "custom_routes.coffee" with the contents
+    Given a file "custom_routes.coffee" with the content
       """
       module.exports = ({GET}) ->
         GET '/users', to: 'users#index'
       """
-    And a file "controllers/users_controller.coffee" with the contents
+    And a file "controllers/users_controller.coffee" with the content
       """
       class UsersController
         index: (req, res) ->
@@ -20,7 +20,7 @@ Feature: Finding routes
 
 
   Scenario: an application with routes passed into options instead of a routes file
-    Given a file "controllers/users_controller.coffee" with the contents
+    Given a file "controllers/users_controller.coffee" with the content
       """
       class UsersController
         index: (req, res) ->
@@ -34,7 +34,7 @@ Feature: Finding routes
 
 
   Scenario Outline: routes can be referred to with any case
-    Given a file "routes.coffee" with the contents
+    Given a file "routes.coffee" with the content
       """
       module.exports = ({GET}) ->
         GET '/camel',  to: 'changeCase#index'
@@ -42,7 +42,7 @@ Feature: Finding routes
         GET '/pascal', to: 'ChangeCase#index'
         GET '/param',  to: 'change-case#index'
       """
-    And a file "controllers/change_case.coffee" with the contents
+    And a file "controllers/change_case.coffee" with the content
       """
       class ChangeCaseController
         index: (req, res) ->
@@ -62,12 +62,12 @@ Feature: Finding routes
 
 
   Scenario Outline: restful routing
-    Given a file "routes.coffee" with the contents
+    Given a file "routes.coffee" with the content
       """
       module.exports = ({ resources }) ->
         resources 'users'
       """
-    And a file "controllers/users.coffee" with the contents
+    And a file "controllers/users.coffee" with the content
       """
       class UsersController
         index:   (req, res) -> res.end 'users index'
