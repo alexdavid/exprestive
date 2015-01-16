@@ -95,12 +95,12 @@ Feature: Finding routes
 
 
   Scenario Outline: restricting generated restful routes
-    Given a file "routes.coffee" with the contents
+    Given a file "routes.coffee" with the content
       """
       module.exports = ({ resources }) ->
         resources 'users', only: ['index', 'show', 'new', 'create']
       """
-    And a file "controllers/users.coffee" with the contents
+    And a file "controllers/users.coffee" with the content
       """
       class UsersController
         index:   (req, res) -> res.end 'users index'
