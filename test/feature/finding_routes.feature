@@ -19,20 +19,6 @@ Feature: Finding routes
     And the response body should be "user list"
 
 
-  Scenario: an application with routes passed into options instead of a routes file
-    Given a file "controllers/users_controller.coffee" with the content
-      """
-      class UsersController
-        index: (req, res) ->
-          res.end "user list"
-      module.exports = UsersController
-      """
-    And an exprestive app with the option "routes" set to `({ GET }) -> GET '/users', to: 'users#index'`
-    When making a GET request to "/users"
-    Then the response code should be 200
-    And the response body should be "user list"
-
-
   Scenario Outline: routes can be referred to with any case
     Given a file "routes.coffee" with the content
       """

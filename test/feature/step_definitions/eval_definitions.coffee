@@ -4,7 +4,7 @@
 module.exports = ->
 
   @Then /^I have a routing helper "([^"]+)" that returns "([^"]+)"$/, (helper, value, done) ->
-    @makeRequest 'get', "/eval/return #{helper}", (err, _, responseBody) ->
+    @makeRequest 'get', "/eval/return String(#{helper})", (err, _, responseBody) ->
       return done.fail err if err
       expect(responseBody).to.equal value
       done()

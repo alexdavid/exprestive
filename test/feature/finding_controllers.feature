@@ -34,10 +34,3 @@ Feature: Finding controllers
     When making a GET request to "/users"
     Then the response code should be 200
     And the response body should be "user list"
-
-
-  Scenario: an application with controllers passed into options instead of a controllers directory
-    Given an exprestive app with the option "controllers" set to `{ users: index: (req, res) -> res.end 'user list' }`
-    When making a GET request to "/users"
-    Then the response code should be 200
-    And the response body should be "user list"
