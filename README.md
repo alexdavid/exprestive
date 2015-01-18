@@ -9,7 +9,7 @@ Assuming you have already created an [Express](http://expressjs.com/) applicatio
 by following the [Express installation instructions](http://expressjs.com/starter/installing.html).
 Now:
 
-* add expRESTive to your _package.json_ file: `$ npm install --save express exprestive`
+* add expRESTive to your _package.json_ file: `$ npm install --save exprestive`
 * add the expRESTive middleware to your application
 
     ```coffeescript
