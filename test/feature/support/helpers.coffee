@@ -50,7 +50,7 @@ class Helpers
       port: @port
       pathname: urlPath
 
-    request {method, uri}, done
+    request {method, uri, followRedirect: no}, done
 
 
   # Starts up server.coffee in @appPath
