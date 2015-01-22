@@ -15,7 +15,7 @@ class Exprestive
     routesFilePath: 'routes'
     controllersDirPath: 'controllers'
     dependencies: {}
-    paths: {}
+    routes: {}
 
 
   constructor: (baseDir, @options = {}) ->
@@ -36,8 +36,8 @@ class Exprestive
     # Router to register routes and pass to express as middleware
     @middlewareRouter = express.Router()
 
-    # Save reverse paths
-    @reversePaths = @options.paths
+    # Save reverse routes
+    @reverseRoutes = @options.routes
     @middlewareRouter.use @setReverseRoutesOnReqLocals
 
 
@@ -69,7 +69,7 @@ class Exprestive
     (url, {to, as}) =>
       [controllerName, controllerAction] = to.split '#'
       @addRoute {httpMethod, url, controllerName, controllerAction}
-      @registerReverseRoute {routeName: as, url} if as?
+      @registerReverseRoute {routeName: as, httpMethod, url} if as?
 
 
   # Returns the connect middleware to be passed to express app.use
@@ -89,7 +89,7 @@ class Exprestive
 
   # Populates @controllers by instantiating controllers found in @controllerDirPath
   initializeControllers: ->
-    @controllers = @options.controllers ? {}
+    @controllers = {}
     return if @options.controllers?
 
     for fileName in fs.readdirSync @controllersDirPath
@@ -104,14 +104,19 @@ class Exprestive
   initializeRoutes: ->
     return if @routesInitialized
     @routesInitialized = yes
-    @routesMethod = @options.routes ? require @routesFilePath
-    @routesMethod @getRouteDirectives()
+    require(@routesFilePath) @getRouteDirectives()
 
 
-  # Save a function to @reversePaths to get a url back from a route name
-  registerReverseRoute: ({routeName, url}) ->
+  # Reterns true if the passed option is its default value
+  optionIsDefault: (optionName) ->
+    @options[optionName] is Exprestive.defaultOptions[optionName]
+
+
+  # Save a function to @reverseRoutes to get a url back from a route name
+  registerReverseRoute: ({routeName, httpMethod, url}) ->
     formatter = new URLFormatter url
-    @reversePaths[routeName] = new URLFormatter(url).replaceParams
+    @reverseRoutes[routeName] = ->
+      formatter.getRoute httpMethod, arguments
 
 
   # Full list of resource action names. It is important that 'new' precede 'show'
@@ -150,8 +155,8 @@ class Exprestive
 
   # Middleware to set reverse routes on req.locals
   setReverseRoutesOnReqLocals: (req, res, next) =>
-    # Only set res.locals.paths if the paths option was not set
-    res.locals.paths = @reversePaths if @options.paths is Exprestive.defaultOptions.paths
+    # Only set res.locals.routes if the routes option was not set
+    res.locals.routes = @reverseRoutes if @optionIsDefault 'routes'
     next()
 
 
