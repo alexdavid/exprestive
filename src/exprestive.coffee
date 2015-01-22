@@ -1,7 +1,7 @@
 _ = require 'lodash'
 camelCase = require 'camel-case'
+ControllerStore = require './controller_store'
 express = require 'express'
-fs = require 'fs'
 path = require 'path'
 {pluralize, singularize} = require 'inflection'
 URLFormatter = require './url_formatter'
@@ -36,6 +36,9 @@ class Exprestive
     # Router to register routes and pass to express as middleware
     @middlewareRouter = express.Router()
 
+    # Object to store controllers
+    @controllers = new ControllerStore @controllersDirPath, @options.dependencies
+
     # Save reverse routes
     @reverseRoutes = @options.routes
     @middlewareRouter.use @setReverseRoutesOnReqLocals
@@ -44,24 +47,10 @@ class Exprestive
   # Registers a route on @middlewareRouter
   addRoute: ({httpMethod, url, controllerName, controllerAction}) ->
     @middlewareRouter[httpMethod.toLowerCase()] url, =>
-      @controllers[camelCase controllerName][controllerAction] arguments...
-
-
-  # Returns whether the passed filePath resembles a controller
-  # Controllers are .js or .coffee files that export a constructor and name
-  fileIsController: (filePath) ->
-    # Non-JS files aren't controllers
-    extension = path.extname filePath
-    return no unless extension is '.coffee' or extension is '.js'
-
-    # Controllers must export a name
-    maybeController = require filePath
-    return no unless maybeController.name?
-
-    # Controllers must export a constructor function
-    return no unless typeof maybeController is 'function'
-
-    yes
+      @controllers.applyAction
+        controller: controllerName
+        action: controllerAction
+        args: arguments
 
 
   # Returns a route directive for a specific http method to be called in a routes file
@@ -74,7 +63,7 @@ class Exprestive
 
   # Returns the connect middleware to be passed to express app.use
   getMiddleware: ->
-    @initializeControllers()
+    @controllers.initialize()
     @initializeRoutes()
     @middlewareRouter
 
@@ -85,19 +74,6 @@ class Exprestive
     for httpMethod in ['GET', 'POST', 'PUT', 'DELETE']
       directives[httpMethod] = @getHttpDirective httpMethod
     directives
-
-
-  # Populates @controllers by instantiating controllers found in @controllerDirPath
-  initializeControllers: ->
-    @controllers = {}
-    return if @options.controllers?
-
-    for fileName in fs.readdirSync @controllersDirPath
-      filePath = path.join @controllersDirPath, fileName
-      continue unless @fileIsController filePath
-      Controller = require filePath
-      controllerName = camelCase Controller.name.replace /Controller$/, ''
-      @controllers[controllerName] = new Controller @options.dependencies
 
 
   # Sets the @routesMethod from the function exported from @routesFilePath
