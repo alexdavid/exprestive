@@ -1,7 +1,7 @@
 _ = require 'lodash'
 camelCase = require 'camel-case'
+ControllerStore = require './controller_store'
 express = require 'express'
-fs = require 'fs'
 path = require 'path'
 {pluralize, singularize} = require 'inflection'
 URLFormatter = require './url_formatter'
@@ -36,28 +36,31 @@ class Exprestive
     # Router to register routes and pass to express as middleware
     @middlewareRouter = express.Router()
 
+    # Object to store controllers
+    @controllers = new ControllerStore @controllersDirPath, @options.dependencies
+
     # Save reverse routes
     @reverseRoutes = @options.routes
     @middlewareRouter.use @setReverseRoutesOnReqLocals
 
 
   # Registers a route on @middlewareRouter
-  addRoute: ({httpMethod, url, controllerName, controllerAction}) ->
-    @middlewareRouter[httpMethod.toLowerCase()] url, =>
-      @controllers[camelCase controllerName][controllerAction] arguments...
+  addRoute: ({httpMethod, url, controllerName, actionName}) ->
+    @middlewareRouter[httpMethod.toLowerCase()] url, (args...) =>
+      @controllers.applyAction {controllerName, actionName, args}
 
 
   # Returns a route directive for a specific http method to be called in a routes file
   getHttpDirective: (httpMethod) ->
     (url, {to, as}) =>
-      [controllerName, controllerAction] = to.split '#'
-      @addRoute {httpMethod, url, controllerName, controllerAction}
+      [controllerName, actionName] = to.split '#'
+      @addRoute {httpMethod, url, controllerName, actionName}
       @registerReverseRoute {routeName: as, httpMethod, url} if as?
 
 
   # Returns the connect middleware to be passed to express app.use
   getMiddleware: ->
-    @initializeControllers()
+    @controllers.initialize()
     @initializeRoutes()
     @middlewareRouter
 
@@ -68,17 +71,6 @@ class Exprestive
     for httpMethod in ['GET', 'POST', 'PUT', 'DELETE']
       directives[httpMethod] = @getHttpDirective httpMethod
     directives
-
-
-  # Populates @controllers by instantiating controllers found in @controllerDirPath
-  initializeControllers: ->
-    @controllers = {}
-    return if @options.controllers?
-
-    for file in fs.readdirSync @controllersDirPath
-      Controller = require path.join @controllersDirPath, file
-      controllerName = camelCase Controller.name.replace /Controller$/, ''
-      @controllers[controllerName] = new Controller @options.dependencies
 
 
   # Sets the @routesMethod from the function exported from @routesFilePath
@@ -132,6 +124,7 @@ class Exprestive
     mappings = @resourceMappings controllerName
 
     mappings[action]() for action in includedActions
+
 
   # Middleware to set reverse routes on req.locals
   setReverseRoutesOnReqLocals: (req, res, next) =>

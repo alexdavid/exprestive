@@ -34,3 +34,7 @@ module.exports = ->
     @createFile "routes.coffee", routesFileContents, (err) =>
       return done.fail err if err
       done()
+
+
+  @Then /^the app doesn't error$/, (done) ->
+    done()
