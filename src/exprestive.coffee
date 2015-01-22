@@ -47,21 +47,21 @@ class Exprestive
       @controllers[camelCase controllerName][controllerAction] arguments...
 
 
-  # Returns if the passed filePath resembles a controller
+  # Returns whether the passed filePath resembles a controller
   # Controllers are .js or .coffee files that export a constructor and name
   fileIsController: (filePath) ->
     # Non-JS files aren't controllers
     extension = path.extname filePath
-    return false unless extension is '.coffee' or extension is '.js'
+    return no unless extension is '.coffee' or extension is '.js'
 
     # Controllers must export a name
     maybeController = require filePath
-    return false unless maybeController.name?
+    return no unless maybeController.name?
 
     # Controllers must export a constructor function
-    return false unless typeof maybeController is 'function'
+    return no unless typeof maybeController is 'function'
 
-    true
+    yes
 
 
   # Returns a route directive for a specific http method to be called in a routes file
@@ -146,6 +146,7 @@ class Exprestive
     mappings = @resourceMappings controllerName
 
     mappings[action]() for action in includedActions
+
 
   # Middleware to set reverse routes on req.locals
   setReverseRoutesOnReqLocals: (req, res, next) =>

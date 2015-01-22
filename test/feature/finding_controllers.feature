@@ -49,7 +49,6 @@ Feature: Finding controllers
     Given a file "controllers/readme.md" with the content
       """
       Readme about controllers
-      =======================
       """
     And an exprestive app using defaults
     Then the app doesn't error
