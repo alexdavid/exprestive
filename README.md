@@ -110,13 +110,13 @@ is equivalent to
 ```coffeescript
 # routes.coffee
 module.exports = ({DELETE, GET, POST, PUT}) ->
-  GET    '/users',          to: 'user#index', as: 'users'
-  GET    '/users/new',      to: 'user#new',   as: 'newUser'
-  GET    '/users/:id',      to: 'user#show',  as: 'user'
-  GET    '/users/:id/edit', to: 'user#edit',  as: 'editUser'
-  PUT    '/users/:id',      to: 'user#update'
-  POST   '/users',          to: 'user#create'
-  DELETE '/users/:id',      to: 'user#destroy'
+  GET    '/users',          to: 'user#index',   as: 'users'
+  GET    '/users/new',      to: 'user#new',     as: 'newUser'
+  GET    '/users/:id',      to: 'user#show',    as: 'user'
+  GET    '/users/:id/edit', to: 'user#edit',    as: 'editUser'
+  PUT    '/users/:id',      to: 'user#update',  as: 'updateUser'
+  POST   '/users',          to: 'user#create',  as: 'createUser'
+  DELETE '/users/:id',      to: 'user#destroy', as: 'destroyUser'
 ```
 
 
