@@ -61,8 +61,15 @@ class Helpers
     child.on 'message', (message) ->
       done() if message is 'server started'
 
+    exitSuccessful = no
     # After test are done kill the child
-    @cleanUpActions.push -> child.kill()
+    @cleanUpActions.push ->
+      exitSuccessful = yes
+      child.kill()
+
+    # Throw an error if we didn't exit from the cleanUpAction
+    child.on 'close', (err, signal) ->
+      throw "Child exited unsuccessfully" unless exitSuccessful
 
 
 module.exports = ->

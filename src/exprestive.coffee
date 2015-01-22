@@ -8,7 +8,6 @@ URLFormatter = require './url_formatter'
 
 
 class Exprestive
-
   # Default options
   @defaultOptions =
     appDir: ''
@@ -47,6 +46,23 @@ class Exprestive
       @controllers[camelCase controllerName][controllerAction] arguments...
 
 
+  # Returns if the passed filePath resembles a controller
+  # Controllers are .js or .coffee files that export a constructor and name
+  fileIsController: (filePath) ->
+    # Non-JS files aren't controllers
+    extension = path.extname filePath
+    return false unless extension is '.coffee' or extension is '.js'
+
+    # Controllers must export a name
+    maybeController = require filePath
+    return false unless maybeController.name?
+
+    # Controllers must export a constructor function
+    return false unless typeof maybeController is 'function'
+
+    true
+
+
   # Returns a route directive for a specific http method to be called in a routes file
   getHttpDirective: (httpMethod) ->
     (url, {to, as}) =>
@@ -75,8 +91,10 @@ class Exprestive
     @controllers = @options.controllers ? {}
     return if @options.controllers?
 
-    for file in fs.readdirSync @controllersDirPath
-      Controller = require path.join @controllersDirPath, file
+    for fileName in fs.readdirSync @controllersDirPath
+      filePath = path.join @controllersDirPath, fileName
+      continue unless @fileIsController filePath
+      Controller = require filePath
       controllerName = camelCase Controller.name.replace /Controller$/, ''
       @controllers[controllerName] = new Controller @options.dependencies
 
