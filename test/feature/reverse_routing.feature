@@ -36,27 +36,20 @@ Feature: reverse routing
       resources 'users'
       """
     And an exprestive app using defaults
-    Then I have a routing helper "<HELPER>" that returns "<VALUE>"
+    Then I have a routing helper "<HELPER>" that returns "<VALUE>" and the HTTP verb "<METHOD>"
 
     Examples:
-      | HELPER                                    | VALUE           |
-      | res.locals.routes.users()                 | /users          |
-      | res.locals.routes.user(123)               | /users/123      |
-      | res.locals.routes.newUser()               | /users/new      |
-      | res.locals.routes.editUser(123)           | /users/123/edit |
-      | res.locals.routes.updateUser(123)         | /users/123      |
-      | res.locals.routes.createUser()            | /users          |
-      | res.locals.routes.destroyUser(123)        | /users/123      |
-      | res.locals.routes.users().method          | GET             |
-      | res.locals.routes.user(123).method        | GET             |
-      | res.locals.routes.newUser().method        | GET             |
-      | res.locals.routes.editUser(123).method    | GET             |
-      | res.locals.routes.updateUser(123).method  | PUT             |
-      | res.locals.routes.createUser().method     | POST            |
-      | res.locals.routes.destroyUser(123).method | DELETE          |
+      | HELPER                             | VALUE           | METHOD |
+      | res.locals.routes.users()          | /users          | GET    |
+      | res.locals.routes.user(123)        | /users/123      | GET    |
+      | res.locals.routes.newUser()        | /users/new      | GET    |
+      | res.locals.routes.editUser(123)    | /users/123/edit | GET    |
+      | res.locals.routes.updateUser(123)  | /users/123      | PUT    |
+      | res.locals.routes.createUser()     | /users          | POST   |
+      | res.locals.routes.destroyUser(123) | /users/123      | DELETE |
 
 
-  Scenario: routes object can be passed in to options
+  Scenario: configuring the name of the global routes object
     Given the routing definition
       """
       GET '/some/route', to: 'test#index', as: 'foobar'
