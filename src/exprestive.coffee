@@ -8,6 +8,7 @@ URLFormatter = require './url_formatter'
 
 
 class Exprestive
+
   # Default options
   @defaultOptions =
     appDir: ''
