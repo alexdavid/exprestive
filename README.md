@@ -44,7 +44,7 @@ Now:
 
 
 ## Reverse routing
-Exprestive exports url building functions to a `paths` object. By default it is saved to `res.locals.paths` for easy access from views.
+Exprestive exports url building functions to a `routes` object. By default it is saved to `res.locals.routes` for easy access from views.
 
 ### Saving / accessing reverse routes
 In your routes file you can pass an `as` parameter to non-restful routes to define a reverse route.
@@ -54,18 +54,18 @@ module.exports = ({GET}) ->
   GET '/foo/bar', to: 'foo#bar', as: 'foobar'
 ```
 
-In a controller you can access this path with `res.locals.paths.foobar()`
+In a controller you can access this path with `res.locals.routes.foobar()`
 ```coffeescript
 # controllers/foo.coffee
 class FooController
   bar: (req, res) ->
-    res.locals.paths.foobar() # returns "/foo/bar"
+    res.locals.routes.foobar() # returns "/foo/bar"
 ```
 
-In a view you can access this path with `paths.foobar()`
+In a view you can access this path with `routes.foobar()`
 ```jade
 //- index.jade
-a(href=paths.foobar()) Visit foobar
+a(href=routes.foobar()) Visit foobar
 ```
 
 
@@ -81,20 +81,20 @@ module.exports = ({GET}) ->
 # controllers/posts.coffee
 class PostsController
   show: (req, res) ->
-    res.locals.paths.userPost(1, 2)             # returns "/users/1/posts/2"
-    res.locals.paths.userPost(userId: 1, id: 2) # returns "/users/1/posts/2"
+    res.locals.routes.userPost(1, 2)             # returns "/users/1/posts/2"
+    res.locals.routes.userPost(userId: 1, id: 2) # returns "/users/1/posts/2"
 ```
 
 
-### Custom paths
-Setting `options.paths` will cause reverse routes to be exported to the passed object instead of `res.locals.paths`
-For example you can set `options.paths` to a global variable to access paths the same from everywhere.
+### Custom routes
+Setting `options.routes` will cause reverse routes to be exported to the passed object instead of `res.locals.routes`
+For example you can set `options.routes` to a global variable to access routes the same from everywhere.
 
 ```coffeescript
-global.paths = {}
-app.use exprestive paths: global.paths
+global.routes = {}
+app.use exprestive routes: global.routes
 
-# Now paths.foobar() returns "/foo/bar" from anywhere in your application
+# Now routes.foobar() returns "/foo/bar" from anywhere in your application
 ```
 
 
@@ -129,15 +129,13 @@ app.use exprestive
   appDir: './www'
 ```
 
-| Option                 | Description                                                                                                                                                                     | Default Value                         |
-|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
-| **appDir**             | Directory used as a base directory for routes file and controllers directory                                                                                                    | `__dirname`                           |
-| **routesFilePath**     | File to be required to define routes. This is passed to `require`, so extension is optional                                                                                     | **appDir**&nbsp;+&nbsp;`/routes`      |
-| **controllersDirPath** | Directory in which to look for controllers. All files in this directory will be automatically required                                                                          | **appDir**&nbsp;+&nbsp;`/controllers` |
-| **routes**             | Pass in a routes function instead of requiring **routesFilePath**. Setting this will cause **routesFilePath** to be ignored                                                     | *None*                                |
-| **controllers**        | Pass in an object of instantiated controllers instead of requiring controller classes from **controllersDirPath**. Setting this will cause **controllersDirPath** to be ignored | *None*                                |
-| **paths**              | Pass in an object to export paths to (see [reverse routing](#reverse-routing))                                                                                                  | `res.locals.paths`                    |
-| **dependencies**       | Pass in an object of dependencies to be passed to controller constructors                                                                                                       | `{}`                                  |
+| Option                 | Description                                                                                            | Default Value                         |
+|------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------|
+| **appDir**             | Directory used as a base directory for routes file and controllers directory                           | `__dirname`                           |
+| **routesFilePath**     | File to be required to define routes. This is passed to `require`, so extension is optional            | **appDir**&nbsp;+&nbsp;`/routes`      |
+| **controllersDirPath** | Directory in which to look for controllers. All files in this directory will be automatically required | **appDir**&nbsp;+&nbsp;`/controllers` |
+| **routes**             | Pass in an object to export routes to (see [reverse routing](#reverse-routing))                        | `res.locals.routes`                   |
+| **dependencies**       | Pass in an object of dependencies to be passed to controller constructors                              | `{}`                                  |
 
 
 

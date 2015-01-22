@@ -7,8 +7,8 @@ Feature: reverse routing
       GET '/other/route', to: 'test#other', as: 'foo_bar'
       """
     And an exprestive app using defaults
-    Then I have a routing helper "res.locals.paths.fooBar()" that returns "/some/route"
-    Then I have a routing helper "res.locals.paths.foo_bar()" that returns "/other/route"
+    Then I have a routing helper "res.locals.routes.fooBar()" that returns "/some/route"
+    Then I have a routing helper "res.locals.routes.foo_bar()" that returns "/other/route"
 
 
   Scenario: reverse route parameters can be filled in with multilple arguments
@@ -17,7 +17,8 @@ Feature: reverse routing
       GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
       """
     And an exprestive app using defaults
-    Then I have a routing helper "res.locals.paths.userPost(1, 2)" that returns "/users/1/posts/2"
+    Then I have a routing helper "res.locals.routes.userPost(1, 2)" that returns "/users/1/posts/2"
+    And I have a routing helper "res.locals.routes.userPost(1, 2).method" that returns "GET"
 
 
   Scenario: reverse route parameters can be filled in with an object
@@ -26,7 +27,7 @@ Feature: reverse routing
       GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
       """
     And an exprestive app using defaults
-    Then I have a routing helper "res.locals.paths.userPost({userId: 1, id: 2})" that returns "/users/1/posts/2"
+    Then I have a routing helper "res.locals.routes.userPost({userId: 1, id: 2})" that returns "/users/1/posts/2"
 
 
   Scenario Outline: restful routes define reverse routes automatically
@@ -35,21 +36,24 @@ Feature: reverse routing
       resources 'users'
       """
     And an exprestive app using defaults
-    Then I have a routing helper "<HELPER>" that returns "<VALUE>"
+    Then I have a routing helper "<HELPER>" that returns "<VALUE>" and the HTTP verb "<METHOD>"
 
     Examples:
-      | HELPER                         | VALUE           |
-      | res.locals.paths.users()       | /users          |
-      | res.locals.paths.user(123)     | /users/123      |
-      | res.locals.paths.newUser()     | /users/new      |
-      | res.locals.paths.editUser(123) | /users/123/edit |
+      | HELPER                             | VALUE           | METHOD |
+      | res.locals.routes.users()          | /users          | GET    |
+      | res.locals.routes.user(123)        | /users/123      | GET    |
+      | res.locals.routes.newUser()        | /users/new      | GET    |
+      | res.locals.routes.editUser(123)    | /users/123/edit | GET    |
+      | res.locals.routes.updateUser(123)  | /users/123      | PUT    |
+      | res.locals.routes.createUser()     | /users          | POST   |
+      | res.locals.routes.destroyUser(123) | /users/123      | DELETE |
 
 
-  Scenario: paths object can be passed in to options
+  Scenario: configuring the name of the global routes object
     Given the routing definition
       """
       GET '/some/route', to: 'test#index', as: 'foobar'
       """
-    And an exprestive app with the option "paths" set to `global.custom_paths_object = {}`
-    Then I have a routing helper "custom_paths_object.foobar()" that returns "/some/route"
-    And the routing helper "res.locals.paths" is undefined
+    And an exprestive app with the option "routes" set to `global.custom_routes_object = {}`
+    Then I have a routing helper "custom_routes_object.foobar()" that returns "/some/route"
+    And the routing helper "res.locals.routes" is undefined
