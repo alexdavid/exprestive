@@ -45,19 +45,16 @@ class Exprestive
 
 
   # Registers a route on @middlewareRouter
-  addRoute: ({httpMethod, url, controllerName, controllerAction}) ->
-    @middlewareRouter[httpMethod.toLowerCase()] url, =>
-      @controllers.applyAction
-        controller: controllerName
-        action: controllerAction
-        args: arguments
+  addRoute: ({httpMethod, url, controllerName, actionName}) ->
+    @middlewareRouter[httpMethod.toLowerCase()] url, (args...) =>
+      @controllers.applyAction {controllerName, actionName, args}
 
 
   # Returns a route directive for a specific http method to be called in a routes file
   getHttpDirective: (httpMethod) ->
     (url, {to, as}) =>
-      [controllerName, controllerAction] = to.split '#'
-      @addRoute {httpMethod, url, controllerName, controllerAction}
+      [controllerName, actionName] = to.split '#'
+      @addRoute {httpMethod, url, controllerName, actionName}
       @registerReverseRoute {routeName: as, httpMethod, url} if as?
 
 

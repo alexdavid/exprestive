@@ -11,8 +11,8 @@ class ControllerStore
 
 
   # Calls a controller action with args
-  applyAction: ({controller, action, args}) ->
-    @controllers[camelCase controller][action] args...
+  applyAction: ({controllerName, actionName, args}) ->
+    @controllers[camelCase controllerName][actionName] args...
 
 
   # Populates @controllers by instantiating controllers found in @controllersDir
