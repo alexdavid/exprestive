@@ -4,10 +4,12 @@ fs = require 'fs'
 path = require 'path'
 
 
-class ControllerStore
+# Initializes controllers in @controllersDir and supports calling saved controller actions
+class ControllerInitializer
 
   constructor: (@controllersDir, @dependencies) ->
     @controllers = {}
+    @initialize()
 
 
   # Calls a controller action with args
@@ -25,4 +27,4 @@ class ControllerStore
       @controllers[controllerName] = new Controller @dependencies
 
 
-module.exports = ControllerStore
+module.exports = ControllerInitializer
