@@ -4,6 +4,15 @@ camelCase = require 'camel-case'
 URLFormatter = require './url_formatter'
 
 
+# Constants:
+
+# Http methods to be passed to the route file function
+HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
+
+# Full list of resource action names. It is important that 'new' precede 'show'
+RESOURCE_ACTIONS = ['index', 'new', 'show', 'edit', 'update', 'create', 'destroy']
+
+
 class RoutesInitializer
 
   constructor: (@routesFile, @reverseRoutes, @addRoute) ->
@@ -22,7 +31,7 @@ class RoutesInitializer
   # Returns the object of directives passed to the routes file function
   getRouteDirectives: ->
     directives = resources: @resourcesDirective
-    for httpMethod in ['GET', 'POST', 'PUT', 'DELETE']
+    for httpMethod in HTTP_METHODS
       directives[httpMethod] = @getHttpDirective httpMethod
     directives
 
@@ -32,11 +41,6 @@ class RoutesInitializer
     formatter = new URLFormatter url
     @reverseRoutes[routeName] = ->
       formatter.getRoute httpMethod, arguments
-
-
-  # Full list of resource action names. It is important that 'new' precede 'show'
-  resourceActions:
-    ['index', 'new', 'show', 'edit', 'update', 'create', 'destroy']
 
 
   # Returns an object mapping each resource route name to a function which binds the route
@@ -60,9 +64,9 @@ class RoutesInitializer
   # E.g. resources 'users', only: ['index', 'show']
   resourcesDirective: (controllerName, opts = {}) =>
     includedActions = if opts.only?
-      _.intersection @resourceActions, opts.only
+      _.intersection RESOURCE_ACTIONS, opts.only
     else
-      @resourceActions
+      RESOURCE_ACTIONS
     mappings = @resourceMappings controllerName
 
     mappings[action]() for action in includedActions
