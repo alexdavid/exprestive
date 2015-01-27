@@ -28,7 +28,7 @@ Feature: Finding routes
         GET '/pascal', to: 'ChangeCase#index'
         GET '/param',  to: 'change-case#index'
       """
-    And a file "controllers/change_case.coffee" with the content
+    And a file "controllers/change_case_controller.coffee" with the content
       """
       class ChangeCaseController
         index: (req, res) ->
@@ -53,7 +53,7 @@ Feature: Finding routes
       module.exports = ({ resources }) ->
         resources 'users'
       """
-    And a file "controllers/users.coffee" with the content
+    And a file "controllers/users_controller.coffee" with the content
       """
       class UsersController
         index:   (req, res) -> res.end 'users index'
@@ -86,7 +86,7 @@ Feature: Finding routes
       module.exports = ({ resources }) ->
         resources 'users', only: ['index', 'show', 'new', 'create']
       """
-    And a file "controllers/users.coffee" with the content
+    And a file "controllers/users_controller.coffee" with the content
       """
       class UsersController
         index:   (req, res) -> res.end 'users index'

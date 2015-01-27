@@ -9,7 +9,7 @@ Feature: Dependency Injection into controllers
       """
       GET '/users', to: 'users#index'
       """
-    And a file "controllers/users.coffee" with the content
+    And a file "controllers/users_controller.coffee" with the content
       """
       class UsersController
         constructor: ({@users}) ->

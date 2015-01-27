@@ -30,10 +30,10 @@ Now:
   ```
 
 * create a `controllers/` directory in the same directory as your server and populate it with controllers.
-  File names don't matter controller names are taken from the class name
+  Controller file names must end in `_controller.coffee` or `_controller.js`. This restriction can be changed with the **controllersWhitelist** option. See [options](#options).
 
   ```coffeescript
-  # controllers/hello_world.coffee
+  # controllers/hello_world_controller.coffee
   class HelloWorldController
     index: (req, res) ->
       res.end 'hello world'
@@ -77,7 +77,7 @@ If a route has parameters, the reverse route can take the parameters in order as
 # routes.coffee
 module.exports = ({GET}) ->
   GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
-  
+
 # controllers/posts.coffee
 class PostsController
   show: (req, res) ->
@@ -129,13 +129,14 @@ app.use exprestive
   appDir: './www'
 ```
 
-| Option                 | Description                                                                                            | Default Value                         |
-|------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------|
-| **appDir**             | Directory used as a base directory for routes file and controllers directory                           | `__dirname`                           |
-| **routesFilePath**     | File to be required to define routes. This is passed to `require`, so extension is optional            | **appDir**&nbsp;+&nbsp;`/routes`      |
-| **controllersDirPath** | Directory in which to look for controllers. All files in this directory will be automatically required | **appDir**&nbsp;+&nbsp;`/controllers` |
-| **routes**             | Pass in an object to export routes to (see [reverse routing](#reverse-routing))                        | `res.locals.routes`                   |
-| **dependencies**       | Pass in an object of dependencies to be passed to controller constructors                              | `{}`                                  |
+| Option                   | Description                                                                                            | Default Value                         |
+|--------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------|
+| **appDir**               | Directory used as a base directory for routes file and controllers directory                           | `__dirname`                           |
+| **routesFilePath**       | File to be required to define routes. This is passed to `require`, so extension is optional            | **appDir**&nbsp;+&nbsp;`/routes`      |
+| **controllersDirPath**   | Directory in which to look for controllers. All files in this directory will be automatically required | **appDir**&nbsp;+&nbsp;`/controllers` |
+| **routes**               | Pass in an object to export routes to (see [reverse routing](#reverse-routing))                        | `res.locals.routes`                   |
+| **dependencies**         | Pass in an object of dependencies to be passed to controller constructors                              | `{}`                                  |
+| **controllersWhitelist** | Regex to match filenames in controllers directory                                                      | `/.+_controller\.(?:coffee|js)/`      |
 
 
 
