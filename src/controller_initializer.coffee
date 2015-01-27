@@ -4,10 +4,12 @@ fs = require 'fs'
 path = require 'path'
 
 
-class ControllerStore
+# Initializes controllers in @controllersDir and supports calling saved controller actions
+class ControllerInitializer
 
   constructor: (@controllersDir, @dependencies) ->
     @controllers = {}
+    @initializeControllers()
 
 
   # Calls a controller action with args
@@ -16,7 +18,7 @@ class ControllerStore
 
 
   # Populates @controllers by instantiating controllers found in @controllersDir
-  initialize: ->
+  initializeControllers: ->
     for fileName in fs.readdirSync @controllersDir
       filePath = path.join @controllersDir, fileName
       continue unless new FileIdentifier(filePath).isController()
@@ -25,4 +27,4 @@ class ControllerStore
       @controllers[controllerName] = new Controller @dependencies
 
 
-module.exports = ControllerStore
+module.exports = ControllerInitializer

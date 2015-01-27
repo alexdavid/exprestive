@@ -1,6 +1,7 @@
 path = require 'path'
 
 
+# A collection of methods to help identify what kind of file the passed file path is
 class FileIdentifier
 
   constructor: (@filePath) ->
@@ -11,8 +12,7 @@ class FileIdentifier
 
 
   exportsName: ->
-    {name} = require @filePath
-    typeof name is 'string'
+    typeof require(@filePath).name is 'string'
 
 
   # Returns whether the file is an Exprestive controller

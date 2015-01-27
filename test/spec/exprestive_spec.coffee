@@ -1,48 +1,50 @@
-Exprestive = require '../../src/exprestive'
+rewire = require 'rewire'
+ControllerInitializerMock = require '../mocks/controller_initializer_mock'
+Exprestive = rewire '../../src/exprestive'
+RoutesInitializerMock = require '../mocks/routes_initializer_mock'
 
 
 describe 'Exprestive configuration', ->
+
+  beforeEach ->
+    @ControllerInitializerMock = sinon.spy ControllerInitializerMock
+    @RoutesInitializerMock = sinon.spy RoutesInitializerMock
+    Exprestive.__set__ 'ControllerInitializer', @ControllerInitializerMock
+    Exprestive.__set__ 'RoutesInitializer', @RoutesInitializerMock
+
+
   context 'initialized with no options', ->
 
     beforeEach ->
       @exprestive = new Exprestive '/base/dir'
 
-    it 'uses the default application directory', ->
-      expect(@exprestive.appDir).to.equal '/base/dir'
-
     it 'uses the default routes directory', ->
-      expect(@exprestive.routesFilePath).to.equal '/base/dir/routes'
+      expect(@RoutesInitializerMock).to.have.been.calledWith '/base/dir/routes'
 
     it 'uses the default controller directory', ->
-      expect(@exprestive.controllersDirPath).to.equal '/base/dir/controllers'
+      expect(@ControllerInitializerMock).to.have.been.calledWith '/base/dir/controllers'
 
 
   context 'custom relative application directory', ->
     beforeEach ->
       @exprestive = new Exprestive '/base/dir', appDir: './app/dir'
 
-    it 'uses the given application directory relative to the base directory', ->
-      expect(@exprestive.appDir).to.equal '/base/dir/app/dir'
-
     it 'uses the routes directory inside the given application directory', ->
-      expect(@exprestive.routesFilePath).to.equal '/base/dir/app/dir/routes'
+      expect(@RoutesInitializerMock).to.have.been.calledWith '/base/dir/app/dir/routes'
 
     it 'uses the controllers directory inside the given application directory', ->
-      expect(@exprestive.controllersDirPath).to.equal '/base/dir/app/dir/controllers'
+      expect(@ControllerInitializerMock).to.have.been.calledWith '/base/dir/app/dir/controllers'
 
 
   context 'custom absolute application directory', ->
     beforeEach ->
       @exprestive = new Exprestive '/base/dir', appDir: '/app/dir'
 
-    it 'uses the given application directory directly', ->
-      expect(@exprestive.appDir).to.equal '/app/dir'
-
     it 'uses the routes directory inside the given application directory', ->
-      expect(@exprestive.routesFilePath).to.equal '/app/dir/routes'
+      expect(@RoutesInitializerMock).to.have.been.calledWith '/app/dir/routes'
 
     it 'uses the controllers directory inside the given application directory', ->
-      expect(@exprestive.controllersDirPath).to.equal '/app/dir/controllers'
+      expect(@ControllerInitializerMock).to.have.been.calledWith '/app/dir/controllers'
 
 
   context 'custom relative routes path', ->
@@ -52,7 +54,7 @@ describe 'Exprestive configuration', ->
                                    routesFilePath: './routes/file/path'
 
     it 'uses the routes directory relative to the application directory', ->
-      expect(@exprestive.routesFilePath).to.equal '/app/dir/routes/file/path'
+      expect(@RoutesInitializerMock).to.have.been.calledWith '/app/dir/routes/file/path'
 
 
   context 'custom absolute routes directory', ->
@@ -62,7 +64,7 @@ describe 'Exprestive configuration', ->
                                    routesFilePath: '/routes/file/path'
 
     it 'uses the given routes directory directly', ->
-      expect(@exprestive.routesFilePath).to.equal '/routes/file/path'
+      expect(@RoutesInitializerMock).to.have.been.calledWith '/routes/file/path'
 
 
   context 'custom relative controllers directory', ->
@@ -72,7 +74,7 @@ describe 'Exprestive configuration', ->
                                    controllersDirPath: './controllers/dir/path'
 
     it 'uses the controllers directory relative to the application directory', ->
-      expect(@exprestive.controllersDirPath).to.equal '/app/dir/controllers/dir/path'
+      expect(@ControllerInitializerMock).to.have.been.calledWith '/app/dir/controllers/dir/path'
 
 
   context 'absolute controllers directory', ->
@@ -82,4 +84,4 @@ describe 'Exprestive configuration', ->
                                    controllersDirPath: '/controllers/dir/path'
 
     it 'uses the given controllers directory directly', ->
-      expect(@exprestive.controllersDirPath).to.equal '/controllers/dir/path'
+      expect(@ControllerInitializerMock).to.have.been.calledWith '/controllers/dir/path'

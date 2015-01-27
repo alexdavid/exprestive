@@ -8,5 +8,4 @@ module.exports = (options) ->
   stack = callsite()
   baseDir = path.dirname stack[1].getFileName()
 
-  exprestive = new Exprestive baseDir, options
-  return exprestive.getMiddleware()
+  new Exprestive(baseDir, options).middlewareRouter

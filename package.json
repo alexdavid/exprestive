@@ -23,6 +23,7 @@
     "mycha": "^0.6.2",
     "portfinder": "^0.3.0",
     "request": "^2.51.0",
+    "rewire": "^2.1.4",
     "sinon": "^1.12.2",
     "sinon-chai": "^2.6.0",
     "tmp": "0.0.24"
