@@ -6,7 +6,7 @@ path = require 'path'
 # Initializes controllers in @controllersDir and supports calling saved controller actions
 class ControllerInitializer
 
-  constructor: (@controllersDir, {@dependencies, @controllersMatch}) ->
+  constructor: (@controllersDir, {@dependencies, @controllersWhitelist}) ->
     @controllers = {}
     @initializeControllers()
 
@@ -19,8 +19,8 @@ class ControllerInitializer
   # Populates @controllers by instantiating controllers found in @controllersDir
   initializeControllers: ->
     for fileName in fs.readdirSync @controllersDir
+      continue unless fileName.match @controllersWhitelist
       filePath = path.join @controllersDir, fileName
-      continue unless filePath.match @controllersMatch
       Controller = require filePath
       controllerName = camelCase Controller.name.replace /Controller$/, ''
       @controllers[controllerName] = new Controller @dependencies
