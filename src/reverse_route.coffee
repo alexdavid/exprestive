@@ -1,4 +1,4 @@
-class Route extends String
+class ReverseRoute extends String
 
   constructor: ({@path, @method}) ->
     super @path
@@ -8,4 +8,4 @@ class Route extends String
     @path
 
 
-module.exports = Route
+module.exports = ReverseRoute

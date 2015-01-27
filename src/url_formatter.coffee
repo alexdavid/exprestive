@@ -1,4 +1,4 @@
-Route = require './route'
+ReverseRoute = require './reverse_route'
 
 
 class URLFormatter
@@ -16,7 +16,7 @@ class URLFormatter
 
 
   getRoute: (httpMethod, params) =>
-    new Route
+    new ReverseRoute
       path: @replaceParams(params...)
       method: httpMethod
 
