@@ -39,8 +39,8 @@ class Exprestive
 
     # Initialize controllers and routes
     @controllers = new ControllerInitializer controllersDirPath, @options.dependencies
-    {routes} = new RoutesInitializer routesFilePath, @reverseRoutes
-    @addRoute route for route in routes
+    routes = new RoutesInitializer routesFilePath, @reverseRoutes
+    @addRoute route for route in routes.toArray()
 
     # Set res.locals.routes if the routes option was not set
     @middlewareRouter.use @setReverseRoutesOnReqLocals if @optionIsDefault 'routes'

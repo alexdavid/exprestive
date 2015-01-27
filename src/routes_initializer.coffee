@@ -16,7 +16,7 @@ RESOURCE_ACTIONS = ['index', 'new', 'show', 'edit', 'update', 'create', 'destroy
 class RoutesInitializer
 
   constructor: (@routesFile, @reverseRoutes, @addRoute) ->
-    @routes = []
+    @_routes = []
     require(@routesFile) @getRouteDirectives()
 
 
@@ -24,7 +24,7 @@ class RoutesInitializer
   getHttpDirective: (httpMethod) ->
     (url, {to, as}) =>
       [controllerName, actionName] = to.split '#'
-      @routes.push {httpMethod, url, controllerName, actionName}
+      @_routes.push {httpMethod, url, controllerName, actionName}
       @registerReverseRoute {routeName: as, httpMethod, url} if as?
 
 
@@ -70,6 +70,9 @@ class RoutesInitializer
     mappings = @resourceMappings controllerName
 
     mappings[action]() for action in includedActions
+
+
+  toArray: -> @_routes
 
 
 module.exports = RoutesInitializer
