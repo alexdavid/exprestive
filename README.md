@@ -30,10 +30,10 @@ Now:
   ```
 
 * create a `controllers/` directory in the same directory as your server and populate it with controllers.
-  File names don't matter controller names are taken from the class name
+  Controller file names must end in `_controller.coffee` or `_controller.js`. This restriction can be changed with the **controllersWhitelist** option. See [options](#options).
 
   ```coffeescript
-  # controllers/hello_world.coffee
+  # controllers/hello_world_controller.coffee
   class HelloWorldController
     index: (req, res) ->
       res.end 'hello world'
