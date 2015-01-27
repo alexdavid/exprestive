@@ -1,5 +1,4 @@
 camelCase = require 'camel-case'
-FileIdentifier = require './file_identifier'
 fs = require 'fs'
 path = require 'path'
 
@@ -7,7 +6,7 @@ path = require 'path'
 # Initializes controllers in @controllersDir and supports calling saved controller actions
 class ControllerInitializer
 
-  constructor: (@controllersDir, @dependencies) ->
+  constructor: (@controllersDir, {@dependencies, @controllersMatch}) ->
     @controllers = {}
     @initializeControllers()
 
@@ -21,7 +20,7 @@ class ControllerInitializer
   initializeControllers: ->
     for fileName in fs.readdirSync @controllersDir
       filePath = path.join @controllersDir, fileName
-      continue unless new FileIdentifier(filePath).isController()
+      continue unless filePath.match @controllersMatch
       Controller = require filePath
       controllerName = camelCase Controller.name.replace /Controller$/, ''
       @controllers[controllerName] = new Controller @dependencies

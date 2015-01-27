@@ -12,6 +12,7 @@ class Exprestive
     appDir: ''
     routesFilePath: 'routes'
     controllersDirPath: 'controllers'
+    controllersMatch: /.+\.(?:coffee|js)/
     dependencies: {}
     routes: {}
 
@@ -38,7 +39,7 @@ class Exprestive
     @reverseRoutes = @options.routes
 
     # Initialize controllers and routes
-    @controllers = new ControllerInitializer controllersDirPath, @options.dependencies
+    @controllers = new ControllerInitializer controllersDirPath, @options
     routes = new RoutesInitializer routesFilePath, @reverseRoutes
     @addRoute route for route in routes.toArray()
 

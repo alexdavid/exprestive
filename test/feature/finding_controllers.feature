@@ -36,12 +36,16 @@ Feature: Finding controllers
     And the response body should be "user list"
 
 
-  Scenario: an application with a javascript file in controllers not exporting a controller
-    Given a file "controllers/my_controller_spec.coffee" with the content
+  Scenario: an application with a restrictive controller whitelist
+    Given a file "controllers/foo_controller.coffee" with the content
       """
-      # This file doesn't export a controller
+      module.exports = class FooController
       """
-    And an exprestive app using defaults
+    And a file "controllers/not_a_controller.coffee" with the content
+      """
+      throw 'not a controller'
+      """
+    And an exprestive app with the option "controllersMatch" set to `/^foo_controller.coffee$/`
     Then the app doesn't error
 
 
