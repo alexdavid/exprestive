@@ -60,15 +60,17 @@ class RoutesInitializer
 
   # A helper method for automatically binding restful controllers in a routes file
   # This is passed as "resources" to the routes file function parameter hash
-  # Routes can be filtered with the 'only:' option.
+  # Routes can be filtered with the 'except:' or 'only:' option.
   # E.g. resources 'users', only: ['index', 'show']
-  resourcesDirective: (controllerName, opts = {}) =>
-    includedActions = if opts.only?
-      _.intersection RESOURCE_ACTIONS, opts.only
+  resourcesDirective: (controllerName, {except, only} = {}) =>
+    includedActions = if except?
+      _.difference RESOURCE_ACTIONS, except
+    else if only?
+      _.intersection RESOURCE_ACTIONS, only
     else
       RESOURCE_ACTIONS
-    mappings = @resourceMappings controllerName
 
+    mappings = @resourceMappings controllerName
     mappings[action]() for action in includedActions
 
 
