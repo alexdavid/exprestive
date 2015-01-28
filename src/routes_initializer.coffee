@@ -63,10 +63,10 @@ class RoutesInitializer
   # Routes can be filtered with the 'except:' or 'only:' option.
   # E.g. resources 'users', only: ['index', 'show']
   resourcesDirective: (controllerName, {except, only} = {}) =>
-    includedActions = if except?
-      _.difference RESOURCE_ACTIONS, except
-    else if only?
+    includedActions = if only?
       _.intersection RESOURCE_ACTIONS, only
+    else if except?
+      _.difference RESOURCE_ACTIONS, except
     else
       RESOURCE_ACTIONS
 
