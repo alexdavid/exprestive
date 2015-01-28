@@ -80,11 +80,41 @@ Feature: Finding routes
       | DELETE  | /users/1      | users destroy |
 
 
-  Scenario Outline: restricting generated restful routes
+  Scenario Outline: restricting generated restful routes with only
     Given a file "routes.coffee" with the content
       """
       module.exports = ({ resources }) ->
         resources 'users', only: ['index', 'show', 'new', 'create']
+      """
+    And a file "controllers/users_controller.coffee" with the content
+      """
+      class UsersController
+        index:   (req, res) -> res.end 'users index'
+        new:     (req, res) -> res.end 'users new'
+        create:  (req, res) -> res.end 'users create'
+        show:    (req, res) -> res.end 'users show'
+      module.exports = UsersController
+      """
+    And an exprestive app using defaults
+    When making a <REQUEST> request to "<URL>"
+    Then the response body should be "<RESPONSE BODY>"
+
+    Examples:
+      | REQUEST | URL           | RESPONSE BODY            |
+      | GET     | /users        | users index              |
+      | GET     | /users/new    | users new                |
+      | POST    | /users        | users create             |
+      | GET     | /users/1      | users show               |
+      | GET     | /users/1/edit | Cannot GET /users/1/edit |
+      | PUT     | /users/1      | Cannot PUT /users/1      |
+      | DELETE  | /users/1      | Cannot DELETE /users/1   |
+
+
+  Scenario Outline: restricting generated restful routes with except
+    Given a file "routes.coffee" with the content
+      """
+      module.exports = ({ resources }) ->
+        resources 'users', except: ['edit', 'update', 'destroy']
       """
     And a file "controllers/users_controller.coffee" with the content
       """

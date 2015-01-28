@@ -119,6 +119,14 @@ module.exports = ({DELETE, GET, POST, PUT}) ->
   DELETE '/users/:id',      to: 'user#destroy', as: 'destroyUser'
 ```
 
+You can limit the restful routing with the options `except:` or `only:`
+```coffeescript
+# routes.coffee
+module.exports = ({resources}) ->
+  resources 'users', only: ['index', 'new', 'create', 'destroy']
+  resources 'posts', except: ['index']
+```
+
 
 ## Options
 
