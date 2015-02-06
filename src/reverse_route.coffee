@@ -1,11 +1,22 @@
-class ReverseRoute extends String
+class ReverseRoute
 
   constructor: ({@path, @method}) ->
-    super @path
+    @length = @path.length
+
+    # Enable single character access
+    @[i] = character for character, i in @path
 
 
-  toString: ->
-    @path
+  # Forward String methods
+  indexOf: -> @path.indexOf arguments...
+
+  match: -> @path.match arguments...
+
+  slice: -> @path.slice arguments...
+
+  toString: -> @path
+
+  valueOf: -> @path
 
 
 module.exports = ReverseRoute
