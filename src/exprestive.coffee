@@ -38,13 +38,13 @@ class Exprestive
     # Save reverse routes
     @reverseRoutes = @options.routes
 
+    # Set res.locals.routes if the routes option was not set
+    @middlewareRouter.use @setReverseRoutesOnReqLocals if @optionIsDefault 'routes'
+
     # Initialize controllers and routes
     @controllers = new ControllerInitializer controllersDirPath, @options
     routes = new RoutesInitializer routesFilePath, @reverseRoutes
     @addRoute route for route in routes.toArray()
-
-    # Set res.locals.routes if the routes option was not set
-    @middlewareRouter.use @setReverseRoutesOnReqLocals if @optionIsDefault 'routes'
 
 
   # Registers a route on @middlewareRouter
