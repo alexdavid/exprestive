@@ -23,6 +23,10 @@ class Helpers
       app.get '/eval/:strToEval', (req, res) ->
         res.end Function('req', 'res', req.params.strToEval)(req, res)
 
+      # Error handler
+      app.use (err, req, res, next) ->
+        res.status(500).end err.toString()
+
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
     """

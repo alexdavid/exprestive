@@ -12,8 +12,15 @@ class ControllerInitializer
 
 
   # Calls a controller action with args
-  applyAction: ({controllerName, actionName, args}) ->
-    @controllers[camelCase controllerName][actionName] args...
+  applyAction: ({controllerName, actionName, args: [req, res, next]}) ->
+    controller = @controllers[camelCase controllerName]
+    unless controller
+      return next "Missing '#{controllerName}' controller"
+
+    if typeof controller[actionName] isnt 'function'
+      return next "Missing '#{actionName}' action in '#{controllerName}' controller"
+
+    controller[actionName] req, res, next
 
 
   # Populates @controllers by instantiating controllers found in @controllersDir

@@ -7,6 +7,24 @@ Feature: Finding controllers
         GET '/users', to: 'users#index'
       """
 
+  Scenario: missing controller
+    Given an exprestive app using defaults
+    When making a GET request to "/users"
+    Then the response code should be 500
+    And the response body should be "Missing 'users' controller"
+
+
+  Scenario: missing action
+    Given a file "controllers/users_controller.coffee" with the content
+      """
+      class UsersController
+      module.exports = UsersController
+      """
+    Given an exprestive app using defaults
+    When making a GET request to "/users"
+    Then the response code should be 500
+    And the response body should be "Missing 'index' action in 'users' controller"
+
 
   Scenario: default configuration
     Given a file "controllers/users_controller.coffee" with the content
