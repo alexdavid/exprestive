@@ -25,7 +25,7 @@ class Helpers
 
       # Error handler
       app.use (err, req, res, next) ->
-        res.status(500).end err
+        res.status(500).end err.toString()
 
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
