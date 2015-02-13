@@ -8,14 +8,14 @@ describe 'ReverseRoute', ->
       path: '/some/path'
       method: 'GET'
 
-  it 'exposes path', ->
+  it 'exposes the URL path for this route through "path"', ->
     expect(@route.path).to.equal '/some/path'
 
-  it 'exposes method', ->
+  it 'exposes the URL method for this route through "method"', ->
     expect(@route.method).to.equal 'GET'
 
-  it 'has a toString method', ->
+  it 'exposes the URL path for this route through "toString"', ->
     expect(@route.toString()).to.equal '/some/path'
 
-  it 'has a valueOf method', ->
+  it 'exposes the URL path for this route through "valueOf"', ->
     expect(@route.valueOf()).to.equal '/some/path'
