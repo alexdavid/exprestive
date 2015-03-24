@@ -1,10 +1,13 @@
-class ReverseRoute extends String
+class ReverseRoute
 
   constructor: ({@path, @method}) ->
-    super @path
 
 
   toString: ->
+    @path
+
+
+  valueOf: ->
     @path
 
 
