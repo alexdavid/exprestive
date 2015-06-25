@@ -1,6 +1,7 @@
 _ = require 'lodash'
 camelCase = require 'camel-case'
 {pluralize, singularize} = require 'inflection'
+path = require 'path'
 URLFormatter = require './url_formatter'
 
 
@@ -17,14 +18,14 @@ class RoutesInitializer
 
   constructor: (@routesFile, @reverseRoutes, @addRoute) ->
     @_routes = []
-    @_scope = ''
+    @_scope = []
     require(@routesFile) @getRouteDirectives()
 
 
   # Returns a route directive for a specific http method to be called in a routes file
   getHttpDirective: (httpMethod) ->
     (url, {to, as}) =>
-      url = "#{@_scope}#{url}"
+      url = path.posix.normalize "/#{@_scope.join '/'}/#{url}"
       [controllerName, actionName] = to.split '#'
       @_routes.push {httpMethod, url, controllerName, actionName}
       @registerReverseRoute {routeName: as, httpMethod, url} if as?
@@ -80,10 +81,9 @@ class RoutesInitializer
 
   # Adjust the current scope for scoped routes
   scopeDirective: (scopeName, scopedRoutes) =>
-    originalScope = @_scope
-    @_scope = "#{@_scope}#{scopeName}"
+    @_scope.push scopeName
     scopedRoutes()
-    @_scope = originalScope
+    @_scope.pop scopeName
 
 
   toArray: -> @_routes

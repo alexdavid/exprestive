@@ -65,21 +65,15 @@ Feature: Scoped routes
   Scenario Outline: nested scoped routing
     Given a file "routes.coffee" with the content
       """
-      module.exports = ({ resources, scope }) ->
+      module.exports = ({ GET, scope }) ->
         scope '/api', ->
           scope '/v1', ->
-            resources 'users'
+            GET 'users', to: 'users#index'
       """
     And a file "controllers/users_controller.coffee" with the content
       """
       class UsersController
         index:   (req, res) -> res.end 'users index'
-        new:     (req, res) -> res.end 'users new'
-        create:  (req, res) -> res.end 'users create'
-        show:    (req, res) -> res.end 'users show'
-        edit:    (req, res) -> res.end 'users edit'
-        update:  (req, res) -> res.end 'users update'
-        destroy: (req, res) -> res.end 'users destroy'
       module.exports = UsersController
       """
     And an exprestive app using defaults
@@ -89,9 +83,3 @@ Feature: Scoped routes
     Examples:
       | REQUEST | URL                  | RESPONSE BODY |
       | GET     | /api/v1/users        | users index   |
-      | GET     | /api/v1/users/new    | users new     |
-      | POST    | /api/v1/users        | users create  |
-      | GET     | /api/v1/users/1      | users show    |
-      | GET     | /api/v1/users/1/edit | users edit    |
-      | PUT     | /api/v1/users/1      | users update  |
-      | DELETE  | /api/v1/users/1      | users destroy |
