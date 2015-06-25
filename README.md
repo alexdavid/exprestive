@@ -129,7 +129,7 @@ module.exports = ({resources}) ->
 
 ## Scoped routing
 The `scope` helper can be used to create a prefixed set of routes:
-```
+```coffeescript
 # routes.coffee
 module.exports = ({GET, scope}) ->
   scope '/api', ->
@@ -138,7 +138,7 @@ module.exports = ({GET, scope}) ->
 ```
 
 This is equivalent to:
-```
+```coffeescript
 # routes.coffee
 module.exports = ({GET}) ->
   GET '/api/users', to: 'users#index'
@@ -146,7 +146,7 @@ module.exports = ({GET}) ->
 ```
 
 Scopes can also be nested:
-```
+```coffeescript
 # routes.coffee
 module.exports = ({GET, resources, scope}) ->
   scope '/api', ->
