@@ -127,6 +127,33 @@ module.exports = ({resources}) ->
   resources 'posts', except: ['index']
 ```
 
+## Scoped routing
+The `scope` helper can be used to create a prefexed set of routes:
+```
+# routes.coffee
+module.exports = ({GET, scope}) ->
+  scope '/api', ->
+    GET '/users', to: 'users#index'
+    GET '/widgets', to: 'widgets#index'
+```
+
+This is equivalent to:
+```
+# routes.coffee
+module.exports = ({GET}) ->
+  GET '/api/users', to: 'users#index'
+  GET '/api/widgets', to: 'widgets#index'
+```
+
+Resources are also supported as well as nested scopes:
+```
+# routes.coffee
+module.exports = ({GET, resources, scope}) ->
+  scope '/api', ->
+    scope '/v1', ->
+      resources 'users'
+      GET '/widgets', to: 'widgets#index'
+```
 
 ## Options
 

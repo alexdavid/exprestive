@@ -17,12 +17,14 @@ class RoutesInitializer
 
   constructor: (@routesFile, @reverseRoutes, @addRoute) ->
     @_routes = []
+    @_scope = ''
     require(@routesFile) @getRouteDirectives()
 
 
   # Returns a route directive for a specific http method to be called in a routes file
   getHttpDirective: (httpMethod) ->
     (url, {to, as}) =>
+      url = "#{@_scope}#{url}"
       [controllerName, actionName] = to.split '#'
       @_routes.push {httpMethod, url, controllerName, actionName}
       @registerReverseRoute {routeName: as, httpMethod, url} if as?
@@ -30,7 +32,9 @@ class RoutesInitializer
 
   # Returns the object of directives passed to the routes file function
   getRouteDirectives: ->
-    directives = resources: @resourcesDirective
+    directives =
+      resources: @resourcesDirective
+      scope:     @scopeDirective
     for httpMethod in HTTP_METHODS
       directives[httpMethod] = @getHttpDirective httpMethod
     directives
@@ -72,6 +76,14 @@ class RoutesInitializer
 
     mappings = @resourceMappings controllerName
     mappings[action]() for action in includedActions
+
+
+  # Adjust the current scope for scoped routes
+  scopeDirective: (scopeName, scopedRoutes) =>
+    originalScope = @_scope
+    @_scope = "#{@_scope}#{scopeName}"
+    scopedRoutes()
+    @_scope = originalScope
 
 
   toArray: -> @_routes
