@@ -53,7 +53,7 @@ class Exprestive
       @controllers.applyAction {controllerName, actionName, args}
 
 
-  # Reterns true if the passed option is its default value
+  # Returns true if the passed option is its default value
   optionIsDefault: (optionName) ->
     @options[optionName] is Exprestive.defaultOptions[optionName]
 
