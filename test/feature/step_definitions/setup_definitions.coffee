@@ -6,7 +6,7 @@ module.exports = ->
   @Given /^an exprestive app using defaults$/, (done) ->
     @createExprestiveApp '', (err) =>
       return done.fail err if err
-      @startApp (err) =>
+      @startApp (err) ->
         return done.fail err if err
         done()
 
@@ -15,13 +15,13 @@ module.exports = ->
     optionsStr = "#{optionName}: #{optionValue}"
     @createExprestiveApp optionsStr, (err) =>
       return done.fail err if err
-      @startApp (err) =>
+      @startApp (err) ->
         return done.fail err if err
         done()
 
 
   @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents, done) ->
-    @createFile fileName, fileContents, (err) =>
+    @createFile fileName, fileContents, (err) ->
       return done.fail err if err
       done()
 
@@ -31,7 +31,7 @@ module.exports = ->
     module.exports = ({GET, POST, PUT, DELETE, resources}) ->
       #{routingDefinitons.replace("\n", "\n  ")}
     """
-    @createFile "routes.coffee", routesFileContents, (err) =>
+    @createFile 'routes.coffee', routesFileContents, (err) ->
       return done.fail err if err
       done()
 
