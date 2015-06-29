@@ -73,7 +73,7 @@ class Helpers
 
     # Throw an error if we didn't exit from the cleanUpAction
     child.on 'close', (err, signal) ->
-      throw 'Child exited unsuccessfully' if unexpectedExit
+      throw new Error('Child exited unsuccessfully') if unexpectedExit
 
 
 module.exports = ->
