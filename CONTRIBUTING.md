@@ -7,8 +7,8 @@
 
 #### Run tests
 * run all tests: `npm test`
-* Run unit tests: `npm run unit-tests`
-* Run feature tests: `npm run feature-tests`
+* run unit tests: `npm run unit-tests`
+* run feature tests: `npm run feature-tests`
 
 
 #### Update dependencies
