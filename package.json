@@ -40,6 +40,8 @@
     "prefeature-tests": "gulp",
     "prepublish": "gulp",
     "test": "npm run unit-tests && npm run feature-tests",
-    "unit-tests": "./node_modules/.bin/mycha run --reporter spec test/spec"
+    "unit-tests": "./node_modules/.bin/mycha run --reporter spec test/spec",
+    "update": "npm-check-updates -u && rm -rf node_modules && npm install && npm test",
+    "update-check": "npm-check-updates"
   }
 }

@@ -175,7 +175,6 @@ app.use exprestive
 
 
 
-## Tests
+## Development
 
-* Run unit tests: `npm run unit-tests`
-* Run feature tests: `npm run feature-tests`
+See the [developer documentation](CONTRIBUTING.md)
