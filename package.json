@@ -36,9 +36,11 @@
     "url": "git://github.com/alexdavid/exprestive.git"
   },
   "scripts": {
+    "compress": "gulp",
     "feature-tests": "./node_modules/.bin/cucumber-js test/feature",
     "prefeature-tests": "gulp",
-    "prepublish": "gulp",
+    "postpublish": "git push && git push --tags",
+    "preversion": "npm test && npm run compress",
     "test": "npm run unit-tests && npm run feature-tests",
     "unit-tests": "./node_modules/.bin/mycha run --reporter spec test/spec"
   }

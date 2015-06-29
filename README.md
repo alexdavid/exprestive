@@ -175,7 +175,12 @@ app.use exprestive
 
 
 
-## Tests
+## Development
 
-* Run unit tests: `npm run unit-tests`
-* Run feature tests: `npm run feature-tests`
+* set up development environment: `rm -rf node_modules ; npm install`
+* run all tests: `npm test`
+  * run unit tests: `npm run unit-tests`
+  * run feature tests: `npm run feature-tests`
+* release a new version:
+  * `npm version <patch|minor|major>`
+  * `npm publish`
