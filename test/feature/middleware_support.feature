@@ -68,7 +68,7 @@ Feature: Middleware support
       """
     And a file "controllers/users_controller.coffee" with the content
       """
-      BaseController = require '{{BASE_CONTROLLER}}'
+      {BaseController} = require '{{EXPRESTIVE_PATH}}'
 
       middle = (req, res, next) ->
         req.custom = 'foo'
@@ -99,7 +99,7 @@ Feature: Middleware support
       """
     And a file "controllers/users_controller.coffee" with the content
       """
-      BaseController = require '{{BASE_CONTROLLER}}'
+      {BaseController} = require '{{EXPRESTIVE_PATH}}'
 
       middle = (req, res, next) ->
         req.custom = 'foo'
@@ -133,7 +133,7 @@ Feature: Middleware support
       """
     And a file "controllers/users_controller.coffee" with the content
       """
-      BaseController = require '{{BASE_CONTROLLER}}'
+      {BaseController} = require '{{EXPRESTIVE_PATH}}'
 
       middle = (req, res, next) ->
         req.custom = 'foo'
