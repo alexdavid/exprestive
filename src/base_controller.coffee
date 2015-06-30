@@ -19,4 +19,5 @@ class BaseController
   _actions: ->
     (action for action, _ of @ when action isnt 'useMiddleware' and action.indexOf('_') isnt 0)
 
+
 module.exports = BaseController

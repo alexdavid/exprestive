@@ -56,12 +56,9 @@ Feature: Middleware support
     Then the response body should be "<RESPONSE BODY>"
 
     Examples:
-<<<<<<< HEAD
       | REQUEST | URL    | RESPONSE BODY |
       | GET     | /users | foo bar       |
-=======
-      | REQUEST | URL                  | RESPONSE BODY |
-      | GET     | /users               | foo bar       |
+
 
   Scenario Outline: useMiddleware helper
     Given a file "routes.coffee" with the content
@@ -89,8 +86,9 @@ Feature: Middleware support
     Then the response body should be "<RESPONSE BODY>"
 
     Examples:
-      | REQUEST | URL                  | RESPONSE BODY |
-      | GET     | /users               | foo           |
+      | REQUEST | URL    | RESPONSE BODY |
+      | GET     | /users | foo           |
+
 
   Scenario Outline: useMiddleware helper with only
     Given a file "routes.coffee" with the content
@@ -121,9 +119,10 @@ Feature: Middleware support
     Then the response body should be "<RESPONSE BODY>"
 
     Examples:
-      | REQUEST | URL                  | RESPONSE BODY |
-      | GET     | /users               | foo           |
-      | GET     | /users/1             | No Custom     |
+      | REQUEST | URL      | RESPONSE BODY |
+      | GET     | /users   | foo           |
+      | GET     | /users/1 | No Custom     |
+
 
   Scenario Outline: useMiddleware helper with except
     Given a file "routes.coffee" with the content
@@ -154,7 +153,6 @@ Feature: Middleware support
     Then the response body should be "<RESPONSE BODY>"
 
     Examples:
-      | REQUEST | URL                  | RESPONSE BODY |
-      | GET     | /users               | foo           |
-      | GET     | /users/1             | No Custom     |
->>>>>>> Add advanced middleware support
+      | REQUEST | URL      | RESPONSE BODY |
+      | GET     | /users   | foo           |
+      | GET     | /users/1 | No Custom     |
