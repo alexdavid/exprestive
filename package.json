@@ -38,9 +38,9 @@
   "scripts": {
     "build": "gulp",
     "feature-tests": "./node_modules/.bin/cucumber-js test/feature",
+    "postpublish": "git push && git push --tags",
     "prefeature-tests": "npm run build",
     "prepublish": "npm run build",
-    "postpublish": "git push && git push --tags",
     "preversion": "npm test",
     "test": "npm run unit-tests && npm run feature-tests",
     "unit-tests": "./node_modules/.bin/mycha run --reporter spec test/spec"
