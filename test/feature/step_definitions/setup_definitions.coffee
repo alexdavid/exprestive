@@ -21,6 +21,7 @@ module.exports = ->
 
 
   @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents, done) ->
+    fileContents = fileContents.replace '{{BASE_CONTROLLER}}', @baseControllerPath
     @createFile fileName, fileContents, (err) ->
       return done.fail err if err
       done()

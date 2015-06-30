@@ -8,6 +8,9 @@ url = require 'url'
 
 class Helpers
 
+  constructor: ->
+    @baseControllerPath = require.resolve "#{__dirname}/../../../lib/base_controller"
+
   # Creates a new exprestive app in @appPath
   createExprestiveApp: (optionsStr, done) ->
     exprestivePath = require.resolve "#{__dirname}/../../.."
