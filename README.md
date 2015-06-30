@@ -155,6 +155,29 @@ module.exports = ({GET, resources, scope}) ->
       GET '/widgets', to: 'widgets#index'
 ```
 
+## Middleware Support
+
+Adding per-route middleware can be done in the controller
+by using the `middleware` property.
+
+```coffeescript
+# controllers/hello_world_controller.coffee
+  someMiddleware = require 'some-middleware'
+
+  class HelloWorldController
+    middleware:
+      index: someMiddleware
+
+    index: (req, res) ->
+      res.end 'hello world'
+
+  module.exports = HelloWorldController
+```
+
+The specified middleware will be inserted in the chain before the controller
+action. An array of middleware can also be specified and they will be
+inserted in the chain in the specified order.
+
 ## Options
 
 Options are provided to the _exprestive_ function.
