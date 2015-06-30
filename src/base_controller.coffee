@@ -3,7 +3,7 @@
 class BaseController
 
   #helper for use in subclass constructors
-  useMiddleware: (middleware, options={}) ->
+  useMiddleware: (middleware, options = {}) ->
     {only, except} = options
     actions = [].concat only if only?
     actions ?= @_actions()
