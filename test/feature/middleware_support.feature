@@ -24,8 +24,8 @@ Feature: Middleware support
     Then the response body should be "<RESPONSE BODY>"
 
     Examples:
-      | REQUEST | URL     | RESPONSE BODY |
-      | GET     | /users  | foo           |
+      | REQUEST | URL    | RESPONSE BODY |
+      | GET     | /users | foo           |
 
 
   Scenario Outline: multiple middleware support
@@ -56,5 +56,5 @@ Feature: Middleware support
     Then the response body should be "<RESPONSE BODY>"
 
     Examples:
-      | REQUEST | URL     | RESPONSE BODY |
-      | GET     | /users  | foo bar       |
+      | REQUEST | URL    | RESPONSE BODY |
+      | GET     | /users | foo bar       |
