@@ -8,11 +8,14 @@ Feature: Middleware support
       """
     And a file "controllers/users_controller.coffee" with the content
       """
+      middle = (req, res, next) ->
+        req.custom = 'foo'
+        next()
+
       class UsersController
         middleware:
-          index: (req, res, next) ->
-            req.custom = 'foo'
-            next()
+          index: middle
+
         index:   (req, res) -> res.end req.custom
       module.exports = UsersController
       """
