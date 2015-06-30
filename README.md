@@ -162,21 +162,52 @@ by using the `middleware` property.
 
 ```coffeescript
 # controllers/hello_world_controller.coffee
-  someMiddleware = require 'some-middleware'
+someMiddleware = require 'some-middleware'
 
-  class HelloWorldController
-    middleware:
-      index: someMiddleware
+class HelloWorldController
+  middleware:
+    index: someMiddleware
 
-    index: (req, res) ->
-      res.end 'hello world'
+  index: (req, res) ->
+    res.end 'hello world'
 
-  module.exports = HelloWorldController
+module.exports = HelloWorldController
 ```
 
 The specified middleware will be inserted in the chain before the controller
 action. An array of middleware can also be specified and they will be
 inserted in the chain in the specified order.
+
+## BaseController
+
+A base controller has been exposed that application controllers can optionally extend.
+The base controller exposes several helper methods.
+
+The `useMiddleware` helper adds middleware declartions for all controller actions.
+Often this would be used in the constructor of a controller.
+The function also accepts options of `only` or `except` which modify the list of actions.
+
+```coffeescript
+# controllers/hello_world_controller.coffee
+someMiddleware = require 'some-middleware'
+someOtherMiddleware = require 'some-other-middleware'
+
+class HelloWorldController
+  constructor: ->
+    @useMiddleware someMiddleware
+    @useMiddleware someOtherMiddleware, only: 'index'
+
+  index: (req, res) ->
+    res.end 'hello world index'
+
+  show: (req, res) ->
+    res.end 'hello world show'
+
+module.exports = HelloWorldController
+```
+
+The `getActions` helper returns an array of all the actions on the controller.
+It also takes options of `only` or `except` to modify the list.
 
 ## Options
 
