@@ -9,7 +9,7 @@ Feature: Middleware support
       """
 
 
-  Scenario Outline: simple middleware support
+  Scenario: simple middleware support
     Given a file "controllers/users_controller.coffee" with the content
       """
       middle = (req, res, next) ->
@@ -24,15 +24,11 @@ Feature: Middleware support
       module.exports = UsersController
       """
     And an exprestive app using defaults
-    When making a <REQUEST> request to "<URL>"
-    Then the response body should be "<RESPONSE BODY>"
-
-    Examples:
-      | REQUEST | URL    | RESPONSE BODY |
-      | GET     | /users | foo           |
+    When making a GET request to "/users"
+    Then the response body should be "foo"
 
 
-  Scenario Outline: multiple middleware support
+  Scenario: multiple middleware support
     Given a file "controllers/users_controller.coffee" with the content
       """
       middle1 = (req, res, next) ->
@@ -51,10 +47,5 @@ Feature: Middleware support
       module.exports = UsersController
       """
     And an exprestive app using defaults
-    When making a <REQUEST> request to "<URL>"
-    Then the response body should be "<RESPONSE BODY>"
-
-    Examples:
-      | REQUEST | URL    | RESPONSE BODY |
-      | GET     | /users | foo bar       |
-
+    When making a GET request to "/users"
+    Then the response body should be "foo bar"
