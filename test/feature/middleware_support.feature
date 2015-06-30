@@ -16,7 +16,7 @@ Feature: Middleware support
         middleware:
           index: middle
 
-        index:   (req, res) -> res.end req.custom
+        index: (req, res) -> res.end req.custom
       module.exports = UsersController
       """
     And an exprestive app using defaults
@@ -24,8 +24,9 @@ Feature: Middleware support
     Then the response body should be "<RESPONSE BODY>"
 
     Examples:
-      | REQUEST | URL                  | RESPONSE BODY |
-      | GET     | /users               | foo           |
+      | REQUEST | URL     | RESPONSE BODY |
+      | GET     | /users  | foo           |
+
 
   Scenario Outline: multiple middleware support
     Given a file "routes.coffee" with the content
@@ -46,7 +47,8 @@ Feature: Middleware support
       class UsersController
         middleware:
           index: [middle1, middle2]
-        index:   (req, res) -> res.end "#{req.custom1} #{req.custom2}"
+
+        index: (req, res) -> res.end "#{req.custom1} #{req.custom2}"
       module.exports = UsersController
       """
     And an exprestive app using defaults
@@ -54,5 +56,5 @@ Feature: Middleware support
     Then the response body should be "<RESPONSE BODY>"
 
     Examples:
-      | REQUEST | URL                  | RESPONSE BODY |
-      | GET     | /users               | foo bar       |
+      | REQUEST | URL     | RESPONSE BODY |
+      | GET     | /users  | foo bar       |

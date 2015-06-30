@@ -32,6 +32,7 @@ class ControllerInitializer
       controllerName = camelCase Controller.name.replace /Controller$/, ''
       @controllers[controllerName] = new Controller @dependencies
 
+
   # Finds any middleware defined for the controller action
   middlewareFor: ({controllerName, actionName}) ->
     controller = @controllers[camelCase controllerName]
