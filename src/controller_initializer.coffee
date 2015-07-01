@@ -33,4 +33,13 @@ class ControllerInitializer
       @controllers[controllerName] = new Controller @dependencies
 
 
+  # Finds any middleware defined for the controller action
+  middlewareFor: ({controllerName, actionName}) ->
+    controller = @controllers[camelCase controllerName]
+    return [] unless controller?
+    return [] unless typeof controller[actionName] is 'function'
+    return [] unless controller.middleware?[actionName]?
+    [].concat controller.middleware[actionName]
+
+
 module.exports = ControllerInitializer

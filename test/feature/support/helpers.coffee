@@ -8,13 +8,16 @@ url = require 'url'
 
 class Helpers
 
+  constructor: ->
+    @exprestivePath = require.resolve "#{__dirname}/../../.."
+
+
   # Creates a new exprestive app in @appPath
   createExprestiveApp: (optionsStr, done) ->
-    exprestivePath = require.resolve "#{__dirname}/../../.."
     fileContents = """
       # Initialize exprestive application
       express = require '#{require.resolve 'express'}'
-      exprestive = require '#{exprestivePath}'
+      exprestive = require '#{@exprestivePath}'
       app = express()
       app.use exprestive(#{optionsStr})
       app.listen #{@port}
@@ -73,7 +76,7 @@ class Helpers
 
     # Throw an error if we didn't exit from the cleanUpAction
     child.on 'close', (err, signal) ->
-      throw 'Child exited unsuccessfully' if unexpectedExit
+      throw new Error('Child exited unsuccessfully') if unexpectedExit
 
 
 module.exports = ->

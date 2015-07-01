@@ -1,0 +1,58 @@
+{
+
+  "arrow_spacing": {
+    "level": "error"
+  },
+
+  "cyclomatic_complexity": {
+    "level": "error"
+  },
+
+  "indentation": {
+    "level": "ignore"     // Disabling because this doesn't handle indented call chains
+  },
+
+  "max_line_length": {
+    "value": 100,
+    "level": "ignore",
+    "limitComments": true
+  },
+
+  "missing_fat_arrows": {
+    "level": "ignore"
+  },
+
+  "newlines_after_classes": {
+    "value": 2,
+    "level": "warn"
+  },
+
+  "no_empty_param_list": {
+    "level": "error"
+  },
+
+  "no_interpolation_in_single_quotes": {
+    "level": "error"
+  },
+
+  "no_unnecessary_double_quotes": {
+    "level": "error"
+  },
+
+  "no_unnecessary_fat_arrows": {
+    "level": "error"
+  },
+
+  "prefer_english_operator": {
+    "level": "error"
+  },
+
+  "space_operators": {
+    "level": "error"
+  },
+
+  "spacing_after_comma": {
+    "level": "error"
+  }
+
+}
