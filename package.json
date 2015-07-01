@@ -16,6 +16,7 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "coffee-script": "^1.8.0",
+    "coffeelint": "^1.10.1",
     "cucumber": "^0.4.7",
     "gulp": "^3.8.10",
     "gulp-coffee": "^2.2.0",
@@ -37,10 +38,14 @@
     "url": "git://github.com/alexdavid/exprestive.git"
   },
   "scripts": {
-    "feature-tests": "./node_modules/.bin/cucumber-js test/feature",
-    "prefeature-tests": "gulp",
-    "prepublish": "gulp",
-    "test": "npm run unit-tests && npm run feature-tests",
+    "build": "gulp",
+    "feature-tests": "./node_modules/.bin/cucumber-js test/feature --format=progress",
+    "lint": "find . -name '*.coffee' -not -path './node_modules/*' | xargs coffeelint -f coffeelint.json5",
+    "postpublish": "git push && git push --tags",
+    "prefeature-tests": "npm run build",
+    "prepublish": "npm run build",
+    "preversion": "npm test",
+    "test": "npm run lint && npm run unit-tests && npm run feature-tests",
     "unit-tests": "./node_modules/.bin/mycha run --reporter spec test/spec",
     "update": "npm-check-updates -u && rm -rf node_modules && npm install && npm test",
     "update-check": "npm-check-updates"
