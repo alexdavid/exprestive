@@ -1,5 +1,8 @@
-expRESTive [![Build Status](https://img.shields.io/circleci/project/alexdavid/exprestive/master.svg)](https://circleci.com/gh/alexdavid/exprestive) [![Dependency Status](https://img.shields.io/david/alexdavid/exprestive.svg)](https://david-dm.org/alexdavid/exprestive)
-==========
+# expRESTive
+
+[![Build Status](https://img.shields.io/circleci/project/alexdavid/exprestive/master.svg)](https://circleci.com/gh/alexdavid/exprestive)
+[![Dependency Status](https://david-dm.org/alexdavid/exprestive.svg)](https://david-dm.org/alexdavid/exprestive)
+[![devDependency Status](https://david-dm.org/alexdavid/exprestive/dev-status.svg)](https://david-dm.org/alexdavid/exprestive#info=devDependencies)
 
 A RESTful routing middleware for [Express.js](http://expressjs.com).
 
@@ -231,10 +234,4 @@ app.use exprestive
 
 ## Development
 
-* set up development environment: `rm -rf node_modules ; npm install`
-* run all tests: `npm test`
-  * run unit tests: `npm run unit-tests`
-  * run feature tests: `npm run feature-tests`
-* release a new version:
-  * `npm version <patch|minor|major>`
-  * `npm publish`
+See the [developer documentation](CONTRIBUTING.md)
