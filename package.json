@@ -38,7 +38,7 @@
   },
   "scripts": {
     "build": "gulp",
-    "feature-tests": "./node_modules/.bin/cucumber-js test/feature",
+    "feature-tests": "./node_modules/.bin/cucumber-js test/feature --format=progress",
     "lint": "find . -name '*.coffee' -not -path './node_modules/*' | xargs coffeelint -f coffeelint.json5",
     "postpublish": "git push && git push --tags",
     "prefeature-tests": "npm run build",
