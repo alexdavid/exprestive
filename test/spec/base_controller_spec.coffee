@@ -63,4 +63,3 @@ describe 'BaseController', ->
       it 'adds all controller actions to the controller middleware', ->
         expect(@controller.middleware.index).to.be.undefined
         expect(@controller.middleware.show).to.eql [@middleware]
-
