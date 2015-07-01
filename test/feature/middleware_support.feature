@@ -1,12 +1,16 @@
 Feature: Middleware support
 
-  Scenario Outline: simple middleware support
+
+  Background:
     Given a file "routes.coffee" with the content
       """
       module.exports = ({ GET }) ->
         GET '/users', to: 'users#index'
       """
-    And a file "controllers/users_controller.coffee" with the content
+
+
+  Scenario: simple middleware support
+    Given a file "controllers/users_controller.coffee" with the content
       """
       middle = (req, res, next) ->
         req.custom = 'foo'
@@ -20,21 +24,12 @@ Feature: Middleware support
       module.exports = UsersController
       """
     And an exprestive app using defaults
-    When making a <REQUEST> request to "<URL>"
-    Then the response body should be "<RESPONSE BODY>"
-
-    Examples:
-      | REQUEST | URL    | RESPONSE BODY |
-      | GET     | /users | foo           |
+    When making a GET request to "/users"
+    Then the response body should be "foo"
 
 
-  Scenario Outline: multiple middleware support
-    Given a file "routes.coffee" with the content
-      """
-      module.exports = ({ GET }) ->
-        GET '/users', to: 'users#index'
-      """
-    And a file "controllers/users_controller.coffee" with the content
+  Scenario: multiple middleware support
+    Given a file "controllers/users_controller.coffee" with the content
       """
       middle1 = (req, res, next) ->
         req.custom1 = 'foo'
@@ -52,9 +47,5 @@ Feature: Middleware support
       module.exports = UsersController
       """
     And an exprestive app using defaults
-    When making a <REQUEST> request to "<URL>"
-    Then the response body should be "<RESPONSE BODY>"
-
-    Examples:
-      | REQUEST | URL    | RESPONSE BODY |
-      | GET     | /users | foo bar       |
+    When making a GET request to "/users"
+    Then the response body should be "foo bar"
