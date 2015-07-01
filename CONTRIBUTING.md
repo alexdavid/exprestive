@@ -19,7 +19,7 @@
   * check that the new dependencies work
 
     ```
-    rm -rf node_modules ; npm i
+    npm install
     npm test
     ```
 
