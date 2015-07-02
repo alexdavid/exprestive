@@ -2,7 +2,6 @@
 
 [![Build Status](https://img.shields.io/circleci/project/alexdavid/exprestive/master.svg)](https://circleci.com/gh/alexdavid/exprestive)
 [![Dependency Status](https://david-dm.org/alexdavid/exprestive.svg)](https://david-dm.org/alexdavid/exprestive)
-[![devDependency Status](https://david-dm.org/alexdavid/exprestive/dev-status.svg)](https://david-dm.org/alexdavid/exprestive#info=devDependencies)
 
 A RESTful routing middleware for [Express.js](http://expressjs.com).
 
