@@ -14,21 +14,21 @@
     "lodash": "^3.0.0"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
+    "chai": "^3.0.0",
     "coffee-script": "^1.8.0",
     "coffeelint": "^1.10.1",
-    "cucumber": "^0.4.7",
+    "cucumber": "^0.5.2",
     "david": "^6.1.6",
     "gulp": "^3.8.10",
     "gulp-coffee": "^2.2.0",
     "mkdirp": "^0.5.0",
-    "mycha": "^0.6.2",
-    "portfinder": "^0.3.0",
+    "mycha": "^0.9.1",
+    "portfinder": "^0.4.0",
     "request": "^2.51.0",
     "rewire": "^2.1.4",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.6.0",
-    "tmp": "0.0.24"
+    "sinon": "^1.15.4",
+    "sinon-chai": "^2.8.0",
+    "tmp": "0.0.26"
   },
   "homepage": "https://github.com/alexdavid/exprestive",
   "license": "MIT",
@@ -39,14 +39,14 @@
   },
   "scripts": {
     "build": "gulp",
-    "feature-tests": "./node_modules/.bin/cucumber-js test/feature --format=progress",
+    "feature-tests": "cucumber-js test/feature --format=progress",
     "lint": "find . -name '*.coffee' -not -path './node_modules/*' | xargs coffeelint -f coffeelint.json5",
     "postpublish": "git push && git push --tags",
     "prefeature-tests": "npm run build",
     "prepublish": "npm run build",
     "preversion": "npm test",
     "test": "npm run lint && npm run unit-tests && npm run feature-tests",
-    "unit-tests": "./node_modules/.bin/mycha run --reporter spec test/spec",
+    "unit-tests": "mycha",
     "update": "david update && npm test",
     "update-check": "david ; echo"
   }
