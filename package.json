@@ -1,6 +1,6 @@
 {
   "name": "exprestive",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Expressive RESTful express router",
   "author": "Alex David",
   "bugs": {
