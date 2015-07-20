@@ -86,6 +86,15 @@ Feature: Finding controllers
     Then the app doesn't error
 
 
+  Scenario: an application with a javascript sourcemap in controllers
+    Given a file "controllers/user_controller.js.map" with the content
+      """
+      # sourcemap
+      """
+    And an exprestive app using defaults
+    Then the app doesn't error
+
+
   Scenario: an application with a javascript file not ending in _controller
     Given a file "controllers/users.coffee" with the content
       """

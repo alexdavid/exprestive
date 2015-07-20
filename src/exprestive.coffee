@@ -12,7 +12,7 @@ class Exprestive
     appDir: ''
     routesFilePath: 'routes'
     controllersDirPath: 'controllers'
-    controllersWhitelist: /.+_controller\.(?:coffee|js)/
+    controllersWhitelist: /^.+_controller\.(?:coffee|js)$/
     dependencies: {}
     routes: {}
 
