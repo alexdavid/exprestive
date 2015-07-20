@@ -227,7 +227,7 @@ app.use exprestive
 | **controllersDirPath**   | Directory in which to look for controllers. All files in this directory will be automatically required | **appDir**&nbsp;+&nbsp;`/controllers` |
 | **routes**               | Pass in an object to export routes to (see [reverse routing](#reverse-routing))                        | `res.locals.routes`                   |
 | **dependencies**         | Pass in an object of dependencies to be passed to controller constructors                              | `{}`                                  |
-| **controllersWhitelist** | Regex to match filenames in controllers directory                                                      | `/.+_controller\.(?:coffee|js)/`      |
+| **controllersWhitelist** | Regex to match filenames in controllers directory                                                      | `/^.+_controller\.(?:coffee|js)$/`    |
 
 
 
