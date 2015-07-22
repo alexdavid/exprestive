@@ -56,4 +56,4 @@ Feature: reverse routing
       """
     And an exprestive app with the option "routes" set to `global.custom_routes_object = {}`
     Then I have a routing helper "custom_routes_object.foobar()" that returns "/some/route"
-    And the routing helper "res.locals.routes" is undefined
+    And I have a routing helper "res.locals.routes.foobar()" that returns "/some/route"

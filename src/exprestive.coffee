@@ -38,8 +38,8 @@ class Exprestive
     # Save reverse routes
     @reverseRoutes = @options.routes
 
-    # Set res.locals.routes if the routes option was not set
-    @middlewareRouter.use @setReverseRoutesOnReqLocals if @optionIsDefault 'routes'
+    # Set res.locals.routes
+    @middlewareRouter.use @setReverseRoutesOnReqLocals
 
     # Initialize controllers and routes
     @controllers = new ControllerInitializer controllersDirPath, @options
@@ -52,11 +52,6 @@ class Exprestive
     middleware = @controllers.middlewareFor {controllerName, actionName}
     @middlewareRouter[httpMethod.toLowerCase()] url, middleware..., (args...) =>
       @controllers.applyAction {controllerName, actionName, args}
-
-
-  # Returns true if the passed option is its default value
-  optionIsDefault: (optionName) ->
-    @options[optionName] is Exprestive.defaultOptions[optionName]
 
 
   # Middleware to set reverse routes on req.locals
