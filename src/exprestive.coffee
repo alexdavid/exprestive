@@ -54,11 +54,6 @@ class Exprestive
       @controllers.applyAction {controllerName, actionName, args}
 
 
-  # Returns true if the passed option is its default value
-  optionIsDefault: (optionName) ->
-    @options[optionName] is Exprestive.defaultOptions[optionName]
-
-
   # Middleware to set reverse routes on req.locals
   setReverseRoutesOnReqLocals: (req, res, next) =>
     res.locals.routes = @reverseRoutes
