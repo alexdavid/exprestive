@@ -22,11 +22,10 @@ describe 'Exprestive configuration', ->
       expect(@RoutesInitializerMock).to.have.been.calledWith '/base/dir/routes'
 
     it 'uses the default controller directory', ->
-      expectedArg = sinon.match
+      expect(@ControllerInitializerMock).to.have.been.calledWith sinon.match
         appDir: '/base/dir'
         controllersPattern: 'controllers/*_controller.{coffee,js}'
         dependencies: {}
-      expect(@ControllerInitializerMock).to.have.been.calledWith expectedArg
 
 
   context 'custom relative application directory', ->
@@ -37,11 +36,10 @@ describe 'Exprestive configuration', ->
       expect(@RoutesInitializerMock).to.have.been.calledWith '/base/dir/app/dir/routes'
 
     it 'uses the controllers directory inside the given application directory', ->
-      expectedArg = sinon.match
+      expect(@ControllerInitializerMock).to.have.been.calledWith = sinon.match
         appDir: '/base/dir/app/dir'
         controllersPattern: 'controllers/*_controller.{coffee,js}'
         dependencies: {}
-      expect(@ControllerInitializerMock).to.have.been.calledWith expectedArg
 
 
   context 'custom absolute application directory', ->
@@ -52,11 +50,10 @@ describe 'Exprestive configuration', ->
       expect(@RoutesInitializerMock).to.have.been.calledWith '/app/dir/routes'
 
     it 'uses the controllers directory inside the given application directory', ->
-      expectedArg = sinon.match
+      expect(@ControllerInitializerMock).to.have.been.calledWith sinon.match
         appDir: '/app/dir'
         controllersPattern: 'controllers/*_controller.{coffee,js}'
         dependencies: {}
-      expect(@ControllerInitializerMock).to.have.been.calledWith expectedArg
 
 
   context 'custom relative routes path', ->
@@ -84,8 +81,7 @@ describe 'Exprestive configuration', ->
       @exprestive = new Exprestive '/base/dir', controllersPattern: 'my_controllers/*_controller.coffee'
 
     it 'uses the controllers directory relative to the application directory', ->
-      expectedArg = sinon.match
+      expect(@ControllerInitializerMock).to.have.been.calledWith sinon.match
         appDir: '/base/dir'
         controllersPattern: 'my_controllers/*_controller.coffee'
         dependencies: {}
-      expect(@ControllerInitializerMock).to.have.been.calledWith expectedArg
