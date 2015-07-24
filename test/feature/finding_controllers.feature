@@ -40,7 +40,7 @@ Feature: Finding controllers
     And the response body should be "user list"
 
 
-  Scenario: custom controllers directory
+  Scenario: custom controllers pattern
     Given a file "my_controllers/users_controller.coffee" with the content
       """
       class UsersController
