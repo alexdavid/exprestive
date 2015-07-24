@@ -220,14 +220,13 @@ app.use exprestive
   appDir: './www'
 ```
 
-| Option                   | Description                                                                                            | Default Value                         |
-|--------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------|
-| **appDir**               | Directory used as a base directory for routes file and controllers directory                           | `__dirname`                           |
-| **routesFilePath**       | File to be required to define routes. This is passed to `require`, so extension is optional            | **appDir**&nbsp;+&nbsp;`/routes`      |
-| **controllersDirPath**   | Directory in which to look for controllers. All files in this directory will be automatically required | **appDir**&nbsp;+&nbsp;`/controllers` |
-| **routes**               | Pass in an object to export routes to (see [reverse routing](#reverse-routing))                        | `res.locals.routes`                   |
-| **dependencies**         | Pass in an object of dependencies to be passed to controller constructors                              | `{}`                                  |
-| **controllersWhitelist** | Regex to match filenames in controllers directory                                                      | `/^.+_controller\.(?:coffee|js)$/`    |
+| Option                   | Description                                                                                                | Default Value                          |
+|--------------------------|------------------------------------------------------------------------------------------------------------|----------------------------------------|
+| **appDir**               | Directory used as a base directory for routes file and controllers directory                               | `__dirname`                            |
+| **routesFilePath**       | File to be required to define routes. This is passed to `require`, so extension is optional                | **appDir**&nbsp;+&nbsp;`/routes`       |
+| **controllersPattern**   | [Glob](https://github.com/isaacs/node-glob) pattern used to find controllers. Resolved relative to appDir. | `controllers/*_controller.{coffee|js}` |
+| **routes**               | Pass in an object to export routes to (see [reverse routing](#reverse-routing))                            | `res.locals.routes`                    |
+| **dependencies**         | Pass in an object of dependencies to be passed to controller constructors                                  | `{}`                                   |
 
 
 

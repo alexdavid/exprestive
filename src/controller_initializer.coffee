@@ -1,12 +1,12 @@
 camelCase = require 'camel-case'
-fs = require 'fs'
+glob = require 'glob'
 path = require 'path'
 
 
 # Initializes controllers in @controllersDir and supports calling saved controller actions
 class ControllerInitializer
 
-  constructor: (@controllersDir, {@dependencies, @controllersWhitelist}) ->
+  constructor: ({@appDir, @controllersPattern, @dependencies}) ->
     @controllers = {}
     @initializeControllers()
 
@@ -25,9 +25,8 @@ class ControllerInitializer
 
   # Populates @controllers by instantiating controllers found in @controllersDir
   initializeControllers: ->
-    for fileName in fs.readdirSync @controllersDir
-      continue unless fileName.match @controllersWhitelist
-      filePath = path.join @controllersDir, fileName
+    for fileName in glob.sync(@controllersPattern, cwd: @appDir)
+      filePath = path.join @appDir, fileName
       Controller = require filePath
       controllerName = camelCase Controller.name.replace /Controller$/, ''
       @controllers[controllerName] = new Controller @dependencies

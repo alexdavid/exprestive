@@ -11,8 +11,7 @@ class Exprestive
   @defaultOptions =
     appDir: ''
     routesFilePath: 'routes'
-    controllersDirPath: 'controllers'
-    controllersWhitelist: /^.+_controller\.(?:coffee|js)$/
+    controllersPattern: 'controllers/*_controller.{coffee,js}'
     dependencies: {}
     routes: {}
 
@@ -23,14 +22,11 @@ class Exprestive
     _.defaults @options, Exprestive.defaultOptions
 
     # The directory where routes and controllers can be found
-    # Used only as a relative directory for @routesFilePath and @controllersDirPath
-    appDir = path.resolve baseDir, @options.appDir
+    # Used only as a relative directory for routesFilePath and controllersPattern
+    @options.appDir = path.resolve baseDir, @options.appDir
 
     # Path to the routes file
-    routesFilePath = path.resolve appDir, @options.routesFilePath
-
-    # Path to the directory to look for controllers
-    controllersDirPath = path.resolve appDir, @options.controllersDirPath
+    @options.routesFilePath = path.resolve @options.appDir, @options.routesFilePath
 
     # Router to register routes and pass to express as middleware
     @middlewareRouter = express.Router()
@@ -42,8 +38,8 @@ class Exprestive
     @middlewareRouter.use @setReverseRoutesOnReqLocals
 
     # Initialize controllers and routes
-    @controllers = new ControllerInitializer controllersDirPath, @options
-    routes = new RoutesInitializer routesFilePath, @reverseRoutes
+    @controllers = new ControllerInitializer @options
+    routes = new RoutesInitializer @options.routesFilePath, @reverseRoutes
     @addRoute route for route in routes.toArray()
 
 
