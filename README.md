@@ -191,10 +191,11 @@ The function also accepts options of `only` or `except` which modify the list of
 
 ```coffeescript
 # controllers/hello_world_controller.coffee
+{BaseController} = require 'exprestive'
 someMiddleware = require 'some-middleware'
 someOtherMiddleware = require 'some-other-middleware'
 
-class HelloWorldController
+class HelloWorldController extends BaseController
   constructor: ->
     @useMiddleware someMiddleware
     @useMiddleware someOtherMiddleware, only: 'index'
