@@ -14,17 +14,24 @@ class Helpers
 
   # Creates a new exprestive app in @appPath
   createExprestiveApp: (optionsStr, done) ->
-    fileContents = """
+    routesContent = '''
+      module.exports = ({GET}) ->
+        GET '/eval/:strToEval', to: 'root#eval'
+      '''
+
+    controllerContent = '''
+      module.exports = class RootController
+        eval: (req, res) ->
+          res.end Function('req', 'res', req.params.strToEval).apply(@, req, res)
+      '''
+
+    serverContents = """
       # Initialize exprestive application
       express = require '#{require.resolve 'express'}'
       exprestive = require '#{@exprestivePath}'
       app = express()
       app.use exprestive(#{optionsStr})
       app.listen #{@port}
-
-      # Route to evaluate functions from tests
-      app.get '/eval/:strToEval', (req, res) ->
-        res.end Function('req', 'res', req.params.strToEval)(req, res)
 
       # Error handler
       app.use (err, req, res, next) ->
@@ -33,7 +40,12 @@ class Helpers
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
     """
-    @createFile 'server.coffee', fileContents, done
+
+    async.parallel [
+      (next) -> @createFile 'routes.coffee', routesContent, done
+      (next) -> @createFile 'controllers/root_controller.coffee', controllerContent, done
+      (next) -> @createFile 'server.coffee', fileContents, done
+    ]
 
 
   createDirectory: (directoryName, done) ->

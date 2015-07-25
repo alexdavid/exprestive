@@ -14,7 +14,6 @@ class Exprestive
     controllersDirPath: 'controllers'
     controllersWhitelist: /^.+_controller\.(?:coffee|js)$/
     dependencies: {}
-    routes: {}
 
 
   constructor: (baseDir, @options = {}) ->
@@ -36,14 +35,18 @@ class Exprestive
     @middlewareRouter = express.Router()
 
     # Save reverse routes
-    @reverseRoutes = @options.routes
+    @reverseRoutes = {}
 
     # Set res.locals.routes
     @middlewareRouter.use @setReverseRoutesOnReqLocals
 
     # Initialize controllers and routes
-    @controllers = new ControllerInitializer controllersDirPath, @options
     routes = new RoutesInitializer routesFilePath, @reverseRoutes
+    @controllers = new ControllerInitializer controllersDirPath, {
+      dependencies: @options.dependencies
+      @reverseRoutes
+      whitelist: @options.controllersWhitelist
+    }
     @addRoute route for route in routes.toArray()
 
 

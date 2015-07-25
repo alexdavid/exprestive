@@ -3,10 +3,10 @@ fs = require 'fs'
 path = require 'path'
 
 
-# Initializes controllers in @controllersDir and supports calling saved controller actions
+# Initializes controllers in @dirPath and supports calling saved controller actions
 class ControllerInitializer
 
-  constructor: (@controllersDir, {@dependencies, @controllersWhitelist}) ->
+  constructor: (@dirPath, {@dependencies, @reverseRoutes, @whitelist}) ->
     @controllers = {}
     @initializeControllers()
 
@@ -23,12 +23,13 @@ class ControllerInitializer
     controller[actionName] req, res, next
 
 
-  # Populates @controllers by instantiating controllers found in @controllersDir
+  # Populates @controllers by instantiating controllers found in @dirPath
   initializeControllers: ->
-    for fileName in fs.readdirSync @controllersDir
-      continue unless fileName.match @controllersWhitelist
-      filePath = path.join @controllersDir, fileName
+    for fileName in fs.readdirSync @dirPath
+      continue unless fileName.match @whitelist
+      filePath = path.join @dirPath, fileName
       Controller = require filePath
+      Controller::routes = @reverseRoutes
       controllerName = camelCase Controller.name.replace /Controller$/, ''
       @controllers[controllerName] = new Controller @dependencies
 
