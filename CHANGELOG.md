@@ -59,11 +59,6 @@
 * rename `resource` to `resources`
 
 ---
-### 0.2.0 (2014-12-31)
-
-* rename `resource` to `resources`
-
----
 ### 0.1.1 (2014-12-31)
 
 * update documentation
