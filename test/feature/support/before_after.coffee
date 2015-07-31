@@ -14,7 +14,9 @@ module.exports = ->
       return done err if err
       portfinder.getPort (err, @port) =>
         return done err if err
-        @createDirectory 'controllers', done
+        @createDirectory 'controllers', (err) =>
+          return done err if err
+          @linkModules done
 
 
   @After (done) ->

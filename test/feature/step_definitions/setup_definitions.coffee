@@ -21,10 +21,13 @@ module.exports = ->
 
 
   @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents, done) ->
-    fileContents = fileContents.replace '{{EXPRESTIVE_PATH}}', @exprestivePath
     @createFile fileName, fileContents, (err) ->
       return done.fail err if err
       done()
+
+
+  @Given /^I start my app$/, (done) ->
+    @startApp done
 
 
   @Given /^the routing definitions?$/, (routingDefinitons, done) ->
