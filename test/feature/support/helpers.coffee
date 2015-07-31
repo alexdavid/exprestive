@@ -1,3 +1,4 @@
+async = require 'async'
 fs = require 'fs'
 mkdirp = require 'mkdirp'
 path = require 'path'
@@ -14,13 +15,14 @@ class Helpers
 
   # Creates a new exprestive app in @appPath
   createExprestiveApp: (optionsStr, done) ->
-    fileContents = """
+    fileContents = '''
       # Initialize exprestive application
-      express = require '#{require.resolve 'express'}'
-      exprestive = require '#{@exprestivePath}'
+      express = require 'express'
+      exprestive = require 'exprestive'
+
       app = express()
       app.use exprestive(#{optionsStr})
-      app.listen #{@port}
+      app.listen process.env.PORT
 
       # Route to evaluate functions from tests
       app.get '/eval/:strToEval', (req, res) ->
@@ -32,7 +34,7 @@ class Helpers
 
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
-    """
+      '''
     @createFile 'server.coffee', fileContents, done
 
 
@@ -49,6 +51,19 @@ class Helpers
       fs.writeFile filePath, fileContents, done
 
 
+  # Links express and exprestive as node modules in @appPath
+  linkModules: (done) ->
+    @createDirectory 'node_modules', (err) =>
+      return done err if err
+      items = [
+        {name: 'express', filePath: require.resolve 'express'}
+        {name: 'exprestive', filePath: @exprestivePath}
+      ]
+      iterator = ({name, filePath}, next) =>
+        fs.symlink filePath, path.join(@appPath, 'node_modules', name), next
+      async.each items, iterator, done
+
+
   # Make an HTTP request to the running server
   makeRequest: (method, urlPath, done) ->
     uri = url.format
@@ -62,7 +77,7 @@ class Helpers
 
   # Starts up server.coffee in @appPath
   startApp: (done) ->
-    child = fork "#{@appPath}/server.coffee"
+    child = fork "#{@appPath}/server.coffee", env: PORT: @port
 
     # Message emitted by process.send() in server.coffee after the server starts
     child.on 'message', (message) ->

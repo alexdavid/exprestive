@@ -38,16 +38,17 @@ class Exprestive
     @middlewareRouter.use @setReverseRoutesOnReqLocals
 
     # Initialize controllers and routes
-    @controllers = new ControllerInitializer @options
+    @controllerInitializer = new ControllerInitializer @options
+    @controllers = @controllerInitializer.controllers
     routes = new RoutesInitializer @options.routesFilePath, @reverseRoutes
     @addRoute route for route in routes.toArray()
 
 
   # Registers a route on @middlewareRouter
   addRoute: ({httpMethod, url, controllerName, actionName}) =>
-    middleware = @controllers.middlewareFor {controllerName, actionName}
+    middleware = @controllerInitializer.middlewareFor {controllerName, actionName}
     @middlewareRouter[httpMethod.toLowerCase()] url, middleware..., (args...) =>
-      @controllers.applyAction {controllerName, actionName, args}
+      @controllerInitializer.applyAction {controllerName, actionName, args}
 
 
   # Middleware to set reverse routes on req.locals

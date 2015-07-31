@@ -13,6 +13,7 @@ middleware = (options) ->
 
 
 middleware.BaseController = BaseController
+middleware.Exprestive = Exprestive
 
 
 module.exports = middleware

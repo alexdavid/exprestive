@@ -27,6 +27,10 @@ module.exports = ->
       done()
 
 
+  @Given /^I start my app$/, (done) ->
+    @startApp done
+
+
   @Given /^the routing definitions?$/, (routingDefinitons, done) ->
     routesFileContents = """
     module.exports = ({GET, POST, PUT, DELETE, resources}) ->
