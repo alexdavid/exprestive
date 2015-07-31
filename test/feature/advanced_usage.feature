@@ -6,7 +6,7 @@ Feature: Advanced usage
       module.exports = ({GET}) ->
         GET '/status', to: 'status#index'
       """
-    And a file "controllers/count_controller.coffee" with the content
+    And a file "controllers/status_controller.coffee" with the content
       """
       class StatusController
         constructor: ->

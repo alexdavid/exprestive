@@ -56,11 +56,12 @@ class Helpers
     @createDirectory 'node_modules', (err) =>
       return done err if err
       items = [
-        {name: 'express', filePath: require.resolve 'express'}
-        {name: 'exprestive', filePath: @exprestivePath}
+        {name: 'express', srcPath: require.resolve 'express'}
+        {name: 'exprestive', srcPath: @exprestivePath}
       ]
-      iterator = ({name, filePath}, next) =>
-        fs.symlink filePath, path.join(@appPath, 'node_modules', name), next
+      iterator = ({name, srcPath}, next) =>
+        destPath = path.join @appPath, 'node_modules', name
+        fs.symlink srcPath, destPath, next
       async.each items, iterator, done
 
 
