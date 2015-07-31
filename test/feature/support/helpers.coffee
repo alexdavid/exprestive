@@ -15,7 +15,7 @@ class Helpers
 
   # Creates a new exprestive app in @appPath
   createExprestiveApp: (optionsStr, done) ->
-    fileContents = '''
+    fileContents = """
       # Initialize exprestive application
       express = require 'express'
       exprestive = require 'exprestive'
@@ -34,7 +34,7 @@ class Helpers
 
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
-      '''
+      """
     @createFile 'server.coffee', fileContents, done
 
 
