@@ -16,7 +16,7 @@ module.exports = ->
         return done err if err
         @createDirectory 'controllers', (err) =>
           return done err if err
-          @linkModules done
+          @symlinkModules done
 
 
   @After (done) ->

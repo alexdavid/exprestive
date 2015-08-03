@@ -50,8 +50,8 @@ class Helpers
       fs.writeFile filePath, fileContents, done
 
 
-  # Links express and exprestive as node modules in @appPath
-  linkModules: (done) ->
+  # Symlinks express and exprestive as node modules in @appPath
+  symlinkModules: (done) ->
     @createDirectory 'node_modules', (err) =>
       return done err if err
       items = [
