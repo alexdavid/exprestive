@@ -13,7 +13,7 @@ Feature: BaseController useMiddleware helper
   Scenario Outline: basic usage
     Given a file "controllers/users_controller.coffee" with the content
       """
-      {BaseController} = require '{{EXPRESTIVE_PATH}}'
+      {BaseController} = require 'exprestive'
 
       middle = (req, res, next) ->
         req.custom = 'foo'
@@ -41,7 +41,7 @@ Feature: BaseController useMiddleware helper
   Scenario Outline: with only option specified
     Given a file "controllers/users_controller.coffee" with the content
       """
-      {BaseController} = require '{{EXPRESTIVE_PATH}}'
+      {BaseController} = require 'exprestive'
 
       middle = (req, res, next) ->
         req.custom = 'foo'
@@ -69,7 +69,7 @@ Feature: BaseController useMiddleware helper
   Scenario Outline: with except option specified
     Given a file "controllers/users_controller.coffee" with the content
       """
-      {BaseController} = require '{{EXPRESTIVE_PATH}}'
+      {BaseController} = require 'exprestive'
 
       middle = (req, res, next) ->
         req.custom = 'foo'

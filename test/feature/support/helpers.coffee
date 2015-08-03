@@ -1,3 +1,4 @@
+async = require 'async'
 fs = require 'fs'
 mkdirp = require 'mkdirp'
 path = require 'path'
@@ -16,8 +17,8 @@ class Helpers
   createExprestiveApp: (optionsStr, done) ->
     fileContents = """
       # Initialize exprestive application
-      express = require '#{require.resolve 'express'}'
-      exprestive = require '#{@exprestivePath}'
+      express = require 'express'
+      exprestive = require 'exprestive'
       app = express()
       app.use exprestive(#{optionsStr})
       app.listen #{@port}
@@ -47,6 +48,20 @@ class Helpers
     mkdirp dirName, (err) ->
       done err if err
       fs.writeFile filePath, fileContents, done
+
+
+  # Links express and exprestive as node modules in @appPath
+  linkModules: (done) ->
+    @createDirectory 'node_modules', (err) =>
+      return done err if err
+      items = [
+        {name: 'express', srcPath: require.resolve 'express'}
+        {name: 'exprestive', srcPath: @exprestivePath}
+      ]
+      iterator = ({name, srcPath}, next) =>
+        destPath = path.join @appPath, 'node_modules', name
+        fs.symlink srcPath, destPath, next
+      async.each items, iterator, done
 
 
   # Make an HTTP request to the running server

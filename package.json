@@ -15,6 +15,7 @@
     "lodash": "^3.0.0"
   },
   "devDependencies": {
+    "async": "^1.4.0",
     "chai": "^3.0.0",
     "coffee-script": "^1.8.0",
     "coffeelint": "^1.10.1",
