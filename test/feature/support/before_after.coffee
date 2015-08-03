@@ -1,3 +1,4 @@
+async = require 'async'
 portfinder = require 'portfinder'
 tmp = require 'tmp'
 
@@ -8,13 +9,18 @@ module.exports = ->
     # An array of functions added by steps to be executed in the after block
     @cleanUpActions = []
 
-    # Create a temp directory to run the feature tests in
-    # unsafeCleanup tells tmp to delete the directory on process.exit even when its non-empty
-    tmp.dir {unsafeCleanup: yes}, (err, @appPath) =>
-      return done err if err
-      portfinder.getPort (err, @port) =>
-        return done err if err
-        @createDirectory 'controllers', done
+    async.auto {
+      # unsafeCleanup tells tmp to delete the directory on process.exit even when its non-empty
+      appPath: (next) =>
+        tmp.dir {unsafeCleanup: yes}, (err, @appPath) => next err
+
+      port: (next) =>
+        portfinder.getPort (err, @port) => next err
+
+      controllersDirectory: ['appPath', (next) =>
+        @createDirectory 'controllers', next
+      ]
+    }, done
 
 
   @After (done) ->

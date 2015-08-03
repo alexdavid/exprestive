@@ -5,16 +5,14 @@ module.exports = ->
 
   @When /^making a (GET|POST|PUT|DELETE) request to "(.+)"$/, (httpMethod, urlPath, done) ->
     @makeRequest httpMethod, urlPath, (err, response, @responseBody) =>
-      return done.fail err if err
+      return done err if err
       @statusCode = response.statusCode
       done()
 
 
-  @Then /^the response code should be (\d+)$/, (statusCode, done) ->
+  @Then /^the response code should be (\d+)$/, (statusCode) ->
     expect(@statusCode).to.equal parseInt statusCode
-    done()
 
 
-  @Then /^the response body should be "([^"]+)"$/, (responseBody, done) ->
+  @Then /^the response body should be "([^"]+)"$/, (responseBody) ->
     expect(@responseBody.trim()).to.equal responseBody
-    done()

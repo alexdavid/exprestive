@@ -1,30 +1,27 @@
+async = require 'async'
 { expect } = require 'chai'
 
 
 module.exports = ->
 
   @Given /^an exprestive app using defaults$/, (done) ->
-    @createExprestiveApp '', (err) =>
-      return done.fail err if err
-      @startApp (err) ->
-        return done.fail err if err
-        done()
+    async.series [
+      (next) => @createExprestiveApp '', next
+      (next) => @startApp next
+    ], done
 
 
   @Given /^an exprestive app with the option "([^"]+)" set to `([^`]+)`$/, (optionName, optionValue, done) ->
     optionsStr = "#{optionName}: #{optionValue}"
-    @createExprestiveApp optionsStr, (err) =>
-      return done.fail err if err
-      @startApp (err) ->
-        return done.fail err if err
-        done()
+    async.series [
+      (next) => @createExprestiveApp optionsStr, next
+      (next) => @startApp next
+    ], done
 
 
   @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents, done) ->
     fileContents = fileContents.replace '{{EXPRESTIVE_PATH}}', @exprestivePath
-    @createFile fileName, fileContents, (err) ->
-      return done.fail err if err
-      done()
+    @createFile fileName, fileContents, done
 
 
   @Given /^the routing definitions?$/, (routingDefinitons, done) ->
@@ -32,10 +29,7 @@ module.exports = ->
     module.exports = ({GET, POST, PUT, DELETE, resources}) ->
       #{routingDefinitons.replace("\n", "\n  ")}
     """
-    @createFile 'routes.coffee', routesFileContents, (err) ->
-      return done.fail err if err
-      done()
+    @createFile 'routes.coffee', routesFileContents, done
 
 
-  @Then /^the app doesn't error$/, (done) ->
-    done()
+  @Then /^the app doesn't error$/, ->
