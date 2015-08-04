@@ -20,6 +20,10 @@ module.exports = ->
       controllersDirectory: ['appPath', (next) =>
         @createDirectory 'controllers', next
       ]
+
+      symlinkModules: ['appPath', (next) =>
+        @symlinkModules next
+      ]
     }, done
 
 

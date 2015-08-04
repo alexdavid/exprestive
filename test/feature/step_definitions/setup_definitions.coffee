@@ -20,7 +20,6 @@ module.exports = ->
 
 
   @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents, done) ->
-    fileContents = fileContents.replace '{{EXPRESTIVE_PATH}}', @exprestivePath
     @createFile fileName, fileContents, done
 
 
