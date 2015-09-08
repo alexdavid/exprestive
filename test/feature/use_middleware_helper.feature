@@ -38,7 +38,7 @@ Feature: BaseController useMiddleware helper
       | GET     | /users/1 | foo           |
 
 
-  Scenario Outline: specify multiple middleware
+  Scenario Outline: with multiple middleware functions
     Given a file "controllers/users_controller.coffee" with the content
       """
       {BaseController} = require 'exprestive'
