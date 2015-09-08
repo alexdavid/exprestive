@@ -64,7 +64,6 @@ class Helpers
     ], done
 
 
-
   # Symlinks express and exprestive as node modules in @appPath
   symlinkModules: (done) ->
     @createDirectory 'node_modules', (err) =>
