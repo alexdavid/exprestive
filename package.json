@@ -30,7 +30,7 @@
     "rewire": "^2.1.4",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0",
-    "tmp": "0.0.26"
+    "tmp": "0.0.27"
   },
   "homepage": "https://github.com/alexdavid/exprestive",
   "license": "MIT",
