@@ -1,8 +1,17 @@
 # Changelog
 
+### 0.10.0 (2015-09-08)
+
+* update `BaseController::useMiddleware` to support array of middleware functions
+* expose reverse routing object as `this.routes` in controllers
+* remove option to export reverse routing object
+* always set `res.locals.routes`
+* change `controllersWhitelist` regex to `controllersPattern` glob pattern
+
+---
 ### 0.9.1 (2015-07-20)
 
-* make default `controllerWhitelist` more specific
+* make default `controllersWhitelist` more specific
 
 ---
 ### 0.9.0 (2015-07-09)
