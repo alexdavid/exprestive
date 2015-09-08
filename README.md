@@ -173,6 +173,7 @@ A base controller has been exposed that application controllers can optionally e
 The base controller exposes several helper methods.
 
 The `useMiddleware` helper adds middleware declartions for all controller actions.
+An array of middleware can also be specified and they will be inserted in the chain in the specified order.
 Often this would be used in the constructor of a controller.
 The function also accepts options of `only` or `except` which modify the list of actions.
 
