@@ -70,7 +70,6 @@ Feature: BaseController useMiddleware helper
       | GET     | /users/1 | foobar        |
 
 
-
   Scenario Outline: with only option specified
     Given a file "controllers/users_controller.coffee" with the content
       """
