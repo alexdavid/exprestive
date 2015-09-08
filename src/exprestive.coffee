@@ -37,7 +37,7 @@ class Exprestive
     @middlewareRouter.use @setReverseRoutesOnReqLocals
 
     # Initialize controllers and routes
-    routes = new RoutesInitializer routesFilePath, @reverseRoutes
+    routes = new RoutesInitializer @options.routesFilePath, @reverseRoutes
     @controllers = new ControllerInitializer _.extend {}, @options, {@reverseRoutes}
     @addRoute route for route in routes.toArray()
 

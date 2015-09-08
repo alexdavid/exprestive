@@ -43,10 +43,10 @@ class Helpers
     """
 
     async.parallel [
-      (next) -> @createFile 'routes.coffee', routesContent, done
-      (next) -> @createFile 'controllers/root_controller.coffee', controllerContent, done
-      (next) -> @createFile 'server.coffee', fileContents, done
-    ]
+      (next) => @createFile 'routes.coffee', routesContent, next
+      (next) => @createFile 'controllers/root_controller.coffee', controllerContent, next
+      (next) => @createFile 'server.coffee', serverContents, next
+    ], done
 
 
   createDirectory: (directoryName, done) ->
