@@ -15,7 +15,7 @@ RESOURCE_ACTIONS = ['index', 'new', 'show', 'edit', 'update', 'create', 'destroy
 
 class RoutesInitializer
 
-  constructor: (@routesFile, @reverseRoutes, @addRoute) ->
+  constructor: (@routesFile, @reverseRoutes) ->
     @_routes = []
     @_scope = []
     require(@routesFile) @getRouteDirectives()

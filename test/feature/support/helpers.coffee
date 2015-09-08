@@ -15,7 +15,7 @@ class Helpers
 
   # Creates a new exprestive app in @appPath
   createExprestiveApp: (optionsStr, done) ->
-    fileContents = """
+    serverContents = """
       # Initialize exprestive application
       express = require 'express'
       exprestive = require 'exprestive'
@@ -23,18 +23,14 @@ class Helpers
       app.use exprestive(#{optionsStr})
       app.listen #{@port}
 
-      # Route to evaluate functions from tests
-      app.get '/eval/:strToEval', (req, res) ->
-        res.end Function('req', 'res', req.params.strToEval)(req, res)
-
       # Error handler
       app.use (err, req, res, next) ->
         res.status(500).end err.toString()
 
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
-    """
-    @createFile 'server.coffee', fileContents, done
+      """
+    @createFile 'server.coffee', serverContents, done
 
 
   createDirectory: (directoryName, done) ->
@@ -48,6 +44,24 @@ class Helpers
     mkdirp dirName, (err) ->
       done err if err
       fs.writeFile filePath, fileContents, done
+
+
+  initializeRoutesAndControllerFiles: (done) ->
+    routesContent = '''
+      module.exports = ({GET}) ->
+        GET '/eval/:strToEval', to: 'eval#index'
+      '''
+
+    controllerContent = '''
+      module.exports = class EvalController
+        index: (req, res) ->
+          res.end Function('res', req.params.strToEval).call(@, res)
+      '''
+
+    async.parallel [
+      (next) => @createFile 'routes.coffee', routesContent, next
+      (next) => @createFile 'controllers/eval_controller.coffee', controllerContent, next
+    ], done
 
 
   # Symlinks express and exprestive as node modules in @appPath
