@@ -10,10 +10,12 @@
     "callsite": "^1.0.0",
     "camel-case": "^1.1.1",
     "express": "^4.11.1",
+    "glob": "^5.0.14",
     "inflection": "^1.5.3",
     "lodash": "^3.0.0"
   },
   "devDependencies": {
+    "async": "^1.4.0",
     "chai": "^3.0.0",
     "coffee-script": "^1.8.0",
     "coffeelint": "^1.10.1",

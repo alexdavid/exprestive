@@ -22,7 +22,10 @@ describe 'Exprestive configuration', ->
       expect(@RoutesInitializerMock).to.have.been.calledWith '/base/dir/routes'
 
     it 'uses the default controller directory', ->
-      expect(@ControllerInitializerMock).to.have.been.calledWith '/base/dir/controllers'
+      expect(@ControllerInitializerMock).to.have.been.calledWith sinon.match
+        appDir: '/base/dir'
+        controllersPattern: 'controllers/*_controller.{coffee,js}'
+        dependencies: {}
 
 
   context 'custom relative application directory', ->
@@ -33,7 +36,10 @@ describe 'Exprestive configuration', ->
       expect(@RoutesInitializerMock).to.have.been.calledWith '/base/dir/app/dir/routes'
 
     it 'uses the controllers directory inside the given application directory', ->
-      expect(@ControllerInitializerMock).to.have.been.calledWith '/base/dir/app/dir/controllers'
+      expect(@ControllerInitializerMock).to.have.been.calledWith = sinon.match
+        appDir: '/base/dir/app/dir'
+        controllersPattern: 'controllers/*_controller.{coffee,js}'
+        dependencies: {}
 
 
   context 'custom absolute application directory', ->
@@ -44,7 +50,10 @@ describe 'Exprestive configuration', ->
       expect(@RoutesInitializerMock).to.have.been.calledWith '/app/dir/routes'
 
     it 'uses the controllers directory inside the given application directory', ->
-      expect(@ControllerInitializerMock).to.have.been.calledWith '/app/dir/controllers'
+      expect(@ControllerInitializerMock).to.have.been.calledWith sinon.match
+        appDir: '/app/dir'
+        controllersPattern: 'controllers/*_controller.{coffee,js}'
+        dependencies: {}
 
 
   context 'custom relative routes path', ->
@@ -67,21 +76,12 @@ describe 'Exprestive configuration', ->
       expect(@RoutesInitializerMock).to.have.been.calledWith '/routes/file/path'
 
 
-  context 'custom relative controllers directory', ->
+  context 'custom controllers pattern', ->
     beforeEach ->
-      @exprestive = new Exprestive '/base/dir',
-                                   appDir: '/app/dir'
-                                   controllersDirPath: './controllers/dir/path'
+      @exprestive = new Exprestive '/base/dir', controllersPattern: 'my_controllers/*_controller.coffee'
 
     it 'uses the controllers directory relative to the application directory', ->
-      expect(@ControllerInitializerMock).to.have.been.calledWith '/app/dir/controllers/dir/path'
-
-
-  context 'absolute controllers directory', ->
-    beforeEach ->
-      @exprestive = new Exprestive '/base/dir',
-                                   appDir: '/app/dir'
-                                   controllersDirPath: '/controllers/dir/path'
-
-    it 'uses the given controllers directory directly', ->
-      expect(@ControllerInitializerMock).to.have.been.calledWith '/controllers/dir/path'
+      expect(@ControllerInitializerMock).to.have.been.calledWith sinon.match
+        appDir: '/base/dir'
+        controllersPattern: 'my_controllers/*_controller.coffee'
+        dependencies: {}
