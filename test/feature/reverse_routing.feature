@@ -1,8 +1,5 @@
 Feature: reverse routing
 
-  Background:
-
-
   Scenario: routes can define reverse routes with 'as'
     Given the routing definition
       """
