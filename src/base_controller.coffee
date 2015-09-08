@@ -7,8 +7,7 @@ class BaseController
     for action in @getActions options
       @middleware ?= {}
       @middleware[action] ?= []
-      @middleware[action] = [].concat @middleware[action]
-      @middleware[action].push middleware
+      @middleware[action] = [].concat @middleware[action], middleware
 
 
   # helper to get a list of all actions on the controller
