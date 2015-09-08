@@ -30,6 +30,7 @@ module.exports = ->
     routesFileContents = """
     module.exports = ({GET, POST, PUT, DELETE, resources}) ->
       #{routingDefinitons.replace("\n", "\n  ")}
+      GET '/eval/:strToEval', to: 'eval#index'
     """
     @createFile 'routes.coffee', routesFileContents, (err) ->
       return done.fail err if err

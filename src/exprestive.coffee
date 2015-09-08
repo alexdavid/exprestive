@@ -13,7 +13,6 @@ class Exprestive
     routesFilePath: 'routes'
     controllersPattern: 'controllers/*_controller.{coffee,js}'
     dependencies: {}
-    routes: {}
 
 
   constructor: (baseDir, @options = {}) ->
@@ -32,14 +31,14 @@ class Exprestive
     @middlewareRouter = express.Router()
 
     # Save reverse routes
-    @reverseRoutes = @options.routes
+    @reverseRoutes = {}
 
     # Set res.locals.routes
     @middlewareRouter.use @setReverseRoutesOnReqLocals
 
     # Initialize controllers and routes
-    @controllers = new ControllerInitializer @options
     routes = new RoutesInitializer @options.routesFilePath, @reverseRoutes
+    @controllers = new ControllerInitializer _.extend {}, @options, {@reverseRoutes}
     @addRoute route for route in routes.toArray()
 
 
