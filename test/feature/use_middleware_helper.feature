@@ -55,9 +55,9 @@ Feature: BaseController useMiddleware helper
         constructor: ->
           @useMiddleware [middle1, middle2]
 
-        index: (req, res) -> res.end req.custom1 + req.custom2
+        index: (req, res) -> res.end "#{req.custom1} #{req.custom2}"
 
-        show: (req, res) -> res.end req.custom1 + req.custom2
+        show: (req, res) -> res.end "#{req.custom1} #{req.custom2}"
       module.exports = UsersController
       """
     And an exprestive app using defaults
@@ -66,8 +66,8 @@ Feature: BaseController useMiddleware helper
 
     Examples:
       | REQUEST | URL      | RESPONSE BODY |
-      | GET     | /users   | foobar        |
-      | GET     | /users/1 | foobar        |
+      | GET     | /users   | foo bar       |
+      | GET     | /users/1 | foo bar       |
 
 
   Scenario Outline: with only option specified
