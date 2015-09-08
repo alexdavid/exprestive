@@ -23,7 +23,7 @@ class Helpers
     controllerContent = '''
       module.exports = class RootController
         eval: (req, res) ->
-          res.end Function('req', 'res', req.params.strToEval).apply(@, req, res)
+          res.end Function(req.params.strToEval).apply(@)
       '''
 
     serverContents = """

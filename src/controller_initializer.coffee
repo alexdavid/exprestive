@@ -3,7 +3,7 @@ glob = require 'glob'
 path = require 'path'
 
 
-# Initializes controllers in @dirPath and supports calling saved controller actions
+# Initializes controllers in @appDir and supports calling saved controller actions
 class ControllerInitializer
 
   constructor: ({@appDir, @controllersPattern, @dependencies, @reverseRoutes}) ->
@@ -23,7 +23,7 @@ class ControllerInitializer
     controller[actionName] req, res, next
 
 
-  # Populates @controllers by instantiating controllers found in @dirPath
+  # Populates @controllers by instantiating controllers found in @appDir
   initializeControllers: ->
     for fileName in glob.sync(@controllersPattern, cwd: @appDir)
       filePath = path.join @appDir, fileName
