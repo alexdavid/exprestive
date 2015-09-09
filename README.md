@@ -209,12 +209,18 @@ app.use exprestive
   appDir: './www'
 ```
 
-| Option                   | Description                                                                                                | Default Value                          |
-|--------------------------|------------------------------------------------------------------------------------------------------------|----------------------------------------|
-| **appDir**               | Directory used as a base directory for routes file and controllers directory                               | `__dirname`                            |
-| **routesFilePath**       | File to be required to define routes. This is passed to `require`, so extension is optional                | **appDir**&nbsp;+&nbsp;`/routes`       |
-| **controllersPattern**   | [Glob](https://github.com/isaacs/node-glob) pattern used to find controllers. Resolved relative to appDir. | `controllers/*_controller.{coffee|js}` |
-| **dependencies**         | Pass in an object of dependencies to be passed to controller constructors                                  | `{}`                                   |
+* `appDir`
+  * Directory used as a base directory for routes file and controllers directory     
+  * default: `__dirname`
+* `controllersPattern`
+  * [Glob](https://github.com/isaacs/node-glob) pattern used to find controllers. Resolved relative to `appDir`
+  * default: `'controllers/*_controller.{coffee,js}'`
+* `dependencies`
+  * Object passed to controller constructors
+  * default: `{}`
+* `routesFilePath`
+  * Path to routes file. Resolved relative to `appDir`. This is passed to `require`, so extension is optional
+  * default: `'routes'`
 
 
 
