@@ -1,5 +1,6 @@
 # expRESTive
 
+[![NPM Version](https://img.shields.io/npm/v/exprestive.svg)](https://www.npmjs.com/package/exprestive)
 [![Build Status](https://img.shields.io/circleci/project/alexdavid/exprestive/master.svg)](https://circleci.com/gh/alexdavid/exprestive)
 [![Dependency Status](https://david-dm.org/alexdavid/exprestive.svg)](https://david-dm.org/alexdavid/exprestive)
 
