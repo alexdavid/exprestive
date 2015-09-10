@@ -51,5 +51,6 @@
     "unit-tests": "mycha",
     "update": "david update && npm test",
     "update-check": "david ; echo"
-  }
+  },
+  "files": ["lib"]
 }
