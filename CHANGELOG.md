@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.10.1 (2015-09-10)
+
+* update documentation
+
+---
 ### 0.10.0 (2015-09-08)
 
 * update `BaseController::useMiddleware` to support array of middleware functions
