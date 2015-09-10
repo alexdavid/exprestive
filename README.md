@@ -74,7 +74,7 @@ a(href=routes.foobar()) Visit foobar
 
 If a route has parameters, the reverse route can take the parameters in order as arguments or as an object
 
-````coffeescript
+```coffeescript
 # routes.coffee
 module.exports = ({GET}) ->
   GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
@@ -210,7 +210,7 @@ app.use exprestive
 ```
 
 * `appDir`
-  * Directory used as a base directory for routes file and controllers directory     
+  * Directory used as a base directory for routes file and controllers directory
   * default: `__dirname`
 * `controllersPattern`
   * [Glob](https://github.com/isaacs/node-glob) pattern used to find controllers. Resolved relative to `appDir`
