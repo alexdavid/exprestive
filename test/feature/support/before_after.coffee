@@ -14,11 +14,9 @@ module.exports = ->
       return done err if err
       portfinder.getPort (err, @port) =>
         return done err if err
-        @createDirectory 'controllers', (err) =>
+        @initializeFiles (err) =>
           return done err if err
-          @initializeRoutesAndControllerFiles (err) =>
-            return done err if err
-            @symlinkModules done
+          @symlinkModules done
 
 
   @After (done) ->
