@@ -5,25 +5,19 @@ module.exports = ->
 
   @Given /^an exprestive app using defaults$/, (done) ->
     @createExprestiveApp '', (err) =>
-      return done.fail err if err
-      @startApp (err) ->
-        return done.fail err if err
-        done()
+      return done err if err
+      @startApp done
 
 
   @Given /^an exprestive app with the option "([^"]+)" set to `([^`]+)`$/, (optionName, optionValue, done) ->
     optionsStr = "#{optionName}: #{optionValue}"
     @createExprestiveApp optionsStr, (err) =>
       return done.fail err if err
-      @startApp (err) ->
-        return done.fail err if err
-        done()
+      @startApp done
 
 
   @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents, done) ->
-    @createFile fileName, fileContents, (err) ->
-      return done.fail err if err
-      done()
+    @createFile fileName, fileContents, done
 
 
   @Given /^the routing definitions?$/, (routingDefinitons, done) ->
@@ -32,10 +26,7 @@ module.exports = ->
       #{routingDefinitons.replace("\n", "\n  ")}
       GET '/eval/:strToEval', to: 'eval#index'
     """
-    @createFile 'routes.coffee', routesFileContents, (err) ->
-      return done.fail err if err
-      done()
+    @createFile 'routes.coffee', routesFileContents, done
 
 
-  @Then /^the app doesn't error$/, (done) ->
-    done()
+  @Then /^the app doesn't error$/, ->
