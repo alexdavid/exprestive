@@ -1,6 +1,6 @@
 {
   "name": "exprestive",
-  "version": "0.9.1",
+  "version": "0.10.1",
   "description": "Expressive RESTful express router",
   "author": "Alex David",
   "bugs": {
@@ -30,7 +30,7 @@
     "rewire": "^2.1.4",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0",
-    "tmp": "0.0.26"
+    "tmp": "0.0.27"
   },
   "homepage": "https://github.com/alexdavid/exprestive",
   "license": "MIT",
@@ -51,5 +51,6 @@
     "unit-tests": "mycha",
     "update": "david update && npm test",
     "update-check": "david ; echo"
-  }
+  },
+  "files": ["lib"]
 }
