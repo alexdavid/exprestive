@@ -1,4 +1,3 @@
-async = require 'async'
 { expect } = require 'chai'
 
 

@@ -1,4 +1,3 @@
-async = require 'async'
 portfinder = require 'portfinder'
 tmp = require 'tmp'
 
