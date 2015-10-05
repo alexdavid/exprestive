@@ -1,6 +1,6 @@
 async = require 'async'
 fs = require 'fs'
-mkdirp = require 'mkdirp'
+fsExtra = require 'fs-extra'
 path = require 'path'
 request = require 'request'
 url = require 'url'
@@ -33,20 +33,13 @@ class Helpers
     @createFile 'server.coffee', serverContents, done
 
 
-  createDirectory: (directoryName, done) ->
-    mkdirp path.join(@appPath, directoryName), done
-
-
   # Writes a file in @appDir creating any missing directories along the way
   createFile: (fileName, fileContents, done) ->
     filePath = path.join @appPath, fileName
-    dirName = path.dirname filePath
-    mkdirp dirName, (err) ->
-      done err if err
-      fs.writeFile filePath, fileContents, done
+    fsExtra.outputFile filePath, fileContents, done
 
 
-  initializeRoutesAndControllerFiles: (done) ->
+  initializeFiles: (done) ->
     routesContent = '''
       module.exports = ({GET}) ->
         GET '/eval/:strToEval', to: 'eval#index'
@@ -66,16 +59,14 @@ class Helpers
 
   # Symlinks express and exprestive as node modules in @appPath
   symlinkModules: (done) ->
-    @createDirectory 'node_modules', (err) =>
-      return done err if err
-      items = [
-        {name: 'express', srcPath: require.resolve 'express'}
-        {name: 'exprestive', srcPath: @exprestivePath}
-      ]
-      iterator = ({name, srcPath}, next) =>
-        destPath = path.join @appPath, 'node_modules', name
-        fs.symlink srcPath, destPath, next
-      async.each items, iterator, done
+    items = [
+      {name: 'express', srcPath: require.resolve 'express'}
+      {name: 'exprestive', srcPath: @exprestivePath}
+    ]
+    iterator = ({name, srcPath}, next) =>
+      destPath = path.join @appPath, 'node_modules', name
+      fsExtra.ensureSymlink srcPath, destPath, next
+    async.each items, iterator, done
 
 
   # Make an HTTP request to the running server
