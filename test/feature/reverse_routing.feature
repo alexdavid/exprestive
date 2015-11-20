@@ -9,7 +9,16 @@ Feature: reverse routing
     And an exprestive app using defaults
     Then I have a routing helper "this.routes.fooBar()" that returns "/some/route"
     And I have a routing helper "this.routes.foo_bar()" that returns "/other/route"
-    And I have a routing helper "res.locals.routes.fooBar()" that returns "/some/route"
+
+
+  Scenario: routes can be accessed from res.locals.routes when using express
+    Given the routing definition
+      """
+      GET '/some/route', to: 'test#index', as: 'fooBar'
+      GET '/other/route', to: 'test#other', as: 'foo_bar'
+      """
+    And an exprestive app powered by express
+    Then I have a routing helper "res.locals.routes.fooBar()" that returns "/some/route"
     And I have a routing helper "res.locals.routes.foo_bar()" that returns "/other/route"
 
 
