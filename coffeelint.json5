@@ -24,7 +24,7 @@
 
   "newlines_after_classes": {
     "value": 2,
-    "level": "warn"
+    "level": "error"
   },
 
   "no_empty_param_list": {

@@ -1,8 +1,10 @@
 BaseController = require '../../src/base_controller'
 
+
 class CustomController extends BaseController
   index: ->
   show: ->
+
 
 describe 'BaseController', ->
   beforeEach ->
