@@ -1,17 +1,26 @@
 { expect } = require 'chai'
+coffee = require 'coffee-script'
 
 
 module.exports = ->
 
   @Given /^an exprestive app using defaults$/, (done) ->
-    @createExprestiveApp '', (err) =>
+    @createExprestiveApp library: 'connect', (err) =>
+      return done err if err
+      @startApp done
+
+
+  @Given /^an exprestive app powered by express$/, (done) ->
+    @createExprestiveApp library: 'express', (err) =>
       return done err if err
       @startApp done
 
 
   @Given /^an exprestive app with the option "([^"]+)" set to `([^`]+)`$/, (optionName, optionValue, done) ->
-    optionsStr = "#{optionName}: #{optionValue}"
-    @createExprestiveApp optionsStr, (err) =>
+    @createExprestiveApp {
+      library: 'connect'
+      exprestiveOptions: "#{optionName}": coffee.eval optionValue
+    }, (err) =>
       return done.fail err if err
       @startApp done
 

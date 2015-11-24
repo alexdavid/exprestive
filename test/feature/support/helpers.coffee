@@ -14,18 +14,19 @@ class Helpers
 
 
   # Creates a new exprestive app in @appPath
-  createExprestiveApp: (optionsStr, done) ->
+  createExprestiveApp: ({library, exprestiveOptions}, done) ->
     serverContents = """
       # Initialize exprestive application
-      express = require 'express'
+      #{library} = require '#{library}'
       exprestive = require 'exprestive'
-      app = express()
-      app.use exprestive(#{optionsStr})
+      app = #{library}()
+      app.use exprestive(#{JSON.stringify exprestiveOptions})
       app.listen #{@port}
 
       # Error handler
       app.use (err, req, res, next) ->
-        res.status(500).end err.toString()
+        res.statusCode = 500
+        res.end err.toString()
 
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
@@ -57,9 +58,10 @@ class Helpers
     ], done
 
 
-  # Symlinks express and exprestive as node modules in @appPath
+  # Symlinks connect and exprestive as node modules in @appPath
   symlinkModules: (done) ->
     items = [
+      {name: 'connect', srcPath: require.resolve 'connect'}
       {name: 'express', srcPath: require.resolve 'express'}
       {name: 'exprestive', srcPath: @exprestivePath}
     ]

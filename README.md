@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/circleci/project/alexdavid/exprestive/master.svg)](https://circleci.com/gh/alexdavid/exprestive)
 [![Dependency Status](https://david-dm.org/alexdavid/exprestive.svg)](https://david-dm.org/alexdavid/exprestive)
 
-A RESTful routing middleware for [Express.js](http://expressjs.com).
+Add rails-style routes and controllers to [Express.js](http://expressjs.com) (and other [connect](https://github.com/senchalabs/connect)-based web frameworks).
 
 
 ## Basic usage

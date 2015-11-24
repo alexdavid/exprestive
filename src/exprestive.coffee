@@ -51,7 +51,7 @@ class Exprestive
 
   # Middleware to set reverse routes on req.locals
   setReverseRoutesOnReqLocals: (req, res, next) =>
-    res.locals.routes = @reverseRoutes
+    res.locals.routes = @reverseRoutes if res.locals?
     next()
 
 
