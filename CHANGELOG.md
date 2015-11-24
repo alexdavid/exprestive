@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.0.0 (2015-11-23)
+
+* Add support for any connect-based web framework
+
+---
 ### 0.10.1 (2015-09-10)
 
 * update documentation
