@@ -3,7 +3,7 @@ tmp = require 'tmp'
 
 module.exports = ->
 
-  @Before (done) ->
+  @Before (scenario, done) ->
 
     # An array of functions added by steps to be executed in the after block
     @cleanUpActions = []
@@ -19,6 +19,5 @@ module.exports = ->
           @symlinkModules done
 
 
-  @After (done) ->
+  @After ->
     action() for action in @cleanUpActions
-    done()

@@ -103,5 +103,4 @@ class Helpers
 
 module.exports = ->
   # Export the helper methods to the World
-  @World = (done) ->
-    done new Helpers
+  @World = Helpers
