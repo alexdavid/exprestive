@@ -1,0 +1,5 @@
+test:
+  override:
+    - npm run lint
+    - npm run unit-tests
+    - npm run feature-tests
