@@ -215,7 +215,7 @@ app.use exprestive
   * default: `__dirname`
 * `controllersPattern`
   * [Glob](https://github.com/isaacs/node-glob) pattern used to find controllers. Resolved relative to `appDir`
-  * default: `'controllers/*_controller.{coffee,js,ls}'`
+  * default: `'controllers/*controller.+([^.])'`
 * `dependencies`
   * Object passed to controller constructors
   * default: `{}`

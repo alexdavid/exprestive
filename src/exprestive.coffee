@@ -11,7 +11,7 @@ class Exprestive
   @defaultOptions =
     appDir: ''
     routesFilePath: 'routes'
-    controllersPattern: 'controllers/*_controller.{coffee,js,ls}'
+    controllersPattern: 'controllers/*controller.+([^.])'
     dependencies: {}
 
 
