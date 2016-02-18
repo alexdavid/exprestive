@@ -54,6 +54,6 @@
     "update-check": "david ; echo"
   },
   "files": [
-    "lib"
+    "dist"
   ]
 }
