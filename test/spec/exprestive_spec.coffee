@@ -24,7 +24,7 @@ describe 'Exprestive configuration', ->
     it 'uses the default controller directory', ->
       expect(@ControllerInitializerMock).to.have.been.calledWith sinon.match
         appDir: '/base/dir'
-        controllersPattern: 'controllers/*_controller.{coffee,js}'
+        controllersPattern: 'controllers/*controller.+([^.])'
         dependencies: {}
 
 
@@ -38,7 +38,7 @@ describe 'Exprestive configuration', ->
     it 'uses the controllers directory inside the given application directory', ->
       expect(@ControllerInitializerMock).to.have.been.calledWith = sinon.match
         appDir: '/base/dir/app/dir'
-        controllersPattern: 'controllers/*_controller.{coffee,js}'
+        controllersPattern: 'controllers/*controller.+([^.])'
         dependencies: {}
 
 
@@ -52,7 +52,7 @@ describe 'Exprestive configuration', ->
     it 'uses the controllers directory inside the given application directory', ->
       expect(@ControllerInitializerMock).to.have.been.calledWith sinon.match
         appDir: '/app/dir'
-        controllersPattern: 'controllers/*_controller.{coffee,js}'
+        controllersPattern: 'controllers/*controller.+([^.])'
         dependencies: {}
 
 
