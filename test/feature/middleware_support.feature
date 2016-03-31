@@ -69,7 +69,6 @@ Feature: Middleware support
           index: redirectToDashboard
 
         index: (req, res) ->
-          res.end()
 
         dashboard: (req, res) ->
           res.end()
