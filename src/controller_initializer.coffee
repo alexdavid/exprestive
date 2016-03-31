@@ -9,6 +9,7 @@ class ControllerInitializer
   constructor: ({@appDir, @controllersPattern, @dependencies, @reverseRoutes}) ->
     @controllers = {}
     @initializeControllers()
+    @middlewareContext = routes: @reverseRoutes
 
 
   # Calls a controller action with args
@@ -36,6 +37,11 @@ class ControllerInitializer
   # Finds any middleware defined for the controller action
   middlewareFor: ({controllerName, actionName}) ->
     controller = @controllers[camelCase controllerName]
+    @getMiddlewareFunctions({controller, actionName}).map (middleware) =>
+      middleware.bind @middlewareContext
+
+
+  getMiddlewareFunctions: ({controller, actionName}) ->
     return [] unless controller?
     return [] unless typeof controller[actionName] is 'function'
     return [] unless controller.middleware?[actionName]?
