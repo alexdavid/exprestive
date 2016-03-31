@@ -49,3 +49,33 @@ Feature: Middleware support
     And an exprestive app using defaults
     When making a GET request to "/users"
     Then the response body should be "foo bar"
+
+
+  Scenario: referencing routes in middleware
+    Given a file "routes.coffee" with the content
+      """
+      module.exports = ({ GET }) ->
+        GET '/', to: 'home#index'
+        GET '/dashboard', to: 'home#dashboard', as: 'dashboard'
+      """
+    And a file "controllers/home_controller.coffee" with the content
+      """
+      redirectToDashboard = (req, res, next) ->
+        res.writeHead 301, Location: @routes.dashboard()
+        res.end()
+
+      class HomeController
+        middleware:
+          index: redirectToDashboard
+
+        index: (req, res) ->
+          res.end()
+
+        dashboard: (req, res) ->
+          res.end()
+
+      module.exports = HomeController
+      """
+    And an exprestive app using defaults
+    When making a GET request to "/"
+    Then I am redirected to "/dashboard"
