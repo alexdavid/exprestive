@@ -1,26 +1,33 @@
-# See https://github.com/charlierudolph/dependency-lint/blob/v3.1.2/docs/configuration.md
+# See https://github.com/charlierudolph/dependency-lint/blob/v4.0.1/docs/configuration.md
 # for a detailed explanation of the options
 
-allowUnused: []
+executedModules:
+  npmScripts:
+    dev:
+      - build
+      - lint
+      - publish
+      - test
+      - update
+  shellScripts:
+    dev: []
+    ignore: []
+    root: ''
 
-devFilePatterns:
-  - 'test/**/*'
+ignoreErrors:
+  missing: []
+  shouldBeDependency: []
+  shouldBeDevDependency: []
+  unused: []
 
-devScripts:
-  - build
-  - lint
-  - publish
-  - test
-  - update
-  - update-check
-
-filePattern: '**/*.coffee'
-
-ignoreFilePatterns:
-  - 'node_modules/**/*'
-
-stripLoaders: false
-
-transpilers:
-  - module: coffee-script
-    extension: coffee
+requiredModules:
+  files:
+    dev:
+      - 'test/**/*'
+    ignore:
+      - 'node_modules/**/*'
+    root: '**/*.coffee'
+  stripLoaders: false
+  transpilers:
+    - module: coffee-script
+      extension: coffee
