@@ -132,7 +132,7 @@ module.exports = ({resources}) => {
 The `scope` helper can be used to create a prefixed set of routes:
 ```javascript
 // routes.js
-module.exports = function({ GET, scope }) {
+module.exports = ({ GET, scope }) => {
   scope('/api', () => {
     GET('/users', {to: 'users#index'})
     GET('/widgets', {to: 'widgets#index'})
@@ -197,7 +197,7 @@ Often this would be used in the constructor of a controller.
 The function also accepts options of `only` or `except` which modify the list of actions.
 
 ```javascript
-// controllers/hello_world_controller.coffee
+// controllers/hello_world_controller.js
 BaseController = require('exprestive').BaseController
 someMiddleware = require('some-middleware')
 someOtherMiddleware = require('some-other-middleware')
