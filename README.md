@@ -33,7 +33,7 @@ Now:
   ```
 
 * create a `controllers/` directory in the same directory as your server and populate it with controllers.
-  Controller file names must end in `_controller.coffee` or `_controller.js`. This restriction can be changed with the **controllersPattern** option. See [options](#options).
+  Controller file names must end in `controller` (with a js or compile-to-js extension). This restriction can be changed with the **controllersPattern** option. See [options](#options).
 
   ```coffeescript
   # controllers/hello_world_controller.coffee
