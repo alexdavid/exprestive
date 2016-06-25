@@ -2,26 +2,29 @@ Feature: Middleware support
 
 
   Background:
-    Given a file "routes.coffee" with the content
+    Given a file "routes.js" with the content
       """
-      module.exports = ({ GET }) ->
-        GET '/users', to: 'users#index'
+      module.exports = ({ GET }) => {
+        GET('/users', { to: 'users#index' });
+      }
       """
 
 
   Scenario: simple middleware support
-    Given a file "controllers/users_controller.coffee" with the content
+    Given a file "controllers/users_controller.js" with the content
       """
-      middle = (req, res, next) ->
-        req.custom = 'foo'
-        next()
+      function fooInjector(req, res, next) {
+        req.custom = 'foo';
+        next();
+      }
 
-      class UsersController
-        middleware:
-          index: middle
+      module.exports = class UsersController {
+        constructor() {
+          this.middleware = { index: fooInjector };
+        }
 
-        index: (req, res) -> res.end req.custom
-      module.exports = UsersController
+        index(req, res) { res.end(req.custom); }
+      }
       """
     And an exprestive app using defaults
     When making a GET request to "/users"
@@ -29,22 +32,25 @@ Feature: Middleware support
 
 
   Scenario: multiple middleware support
-    Given a file "controllers/users_controller.coffee" with the content
+    Given a file "controllers/users_controller.js" with the content
       """
-      middle1 = (req, res, next) ->
-        req.custom1 = 'foo'
-        next()
+      function fooInjector(req, res, next) {
+        req.custom1 = 'foo';
+        next();
+      }
 
-      middle2 = (req, res, next) ->
-        req.custom2 = 'bar'
-        next()
+      function barInjector(req, res, next) {
+        req.custom2 = 'bar';
+        next();
+      }
 
-      class UsersController
-        middleware:
-          index: [middle1, middle2]
+      module.exports = class UsersController {
+        constructor() {
+          this.middleware = { index: [fooInjector, barInjector] };
+        }
 
-        index: (req, res) -> res.end "#{req.custom1} #{req.custom2}"
-      module.exports = UsersController
+        index(req, res) { res.end(req.custom1 + ' ' + req.custom2) }
+      }
       """
     And an exprestive app using defaults
     When making a GET request to "/users"
@@ -52,28 +58,28 @@ Feature: Middleware support
 
 
   Scenario: referencing routes in middleware
-    Given a file "routes.coffee" with the content
+    Given a file "routes.js" with the content
       """
-      module.exports = ({ GET }) ->
-        GET '/', to: 'home#index'
-        GET '/dashboard', to: 'home#dashboard', as: 'dashboard'
+      module.exports = ({ GET }) => {
+        GET('/', { to: 'home#index' });
+        GET('/dashboard', { to: 'home#dashboard', as: 'dashboard' });
+      }
       """
-    And a file "controllers/home_controller.coffee" with the content
+    And a file "controllers/home_controller.js" with the content
       """
-      redirectToDashboard = (req, res, next) ->
-        res.writeHead 301, Location: @routes.dashboard()
-        res.end()
+      function redirectToDashboard(req, res, next) {
+        res.writeHead(301, { Location: this.routes.dashboard() });
+        res.end();
+      }
 
-      class HomeController
-        middleware:
-          index: redirectToDashboard
+      module.exports = class HomeController {
+        constructor() {
+          this.middleware = { index: redirectToDashboard };
+        }
 
-        index: (req, res) ->
-
-        dashboard: (req, res) ->
-          res.end()
-
-      module.exports = HomeController
+        index(req, res) {}
+        dashboard(req, res) { res.end(); }
+      }
       """
     And an exprestive app using defaults
     When making a GET request to "/"

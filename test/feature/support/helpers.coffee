@@ -42,19 +42,22 @@ class Helpers
 
   initializeFiles: async ->
     routesContent = '''
-      module.exports = ({GET}) ->
-        GET '/eval/:strToEval', to: 'eval#index'
+      module.exports = ({GET}) => {
+        GET('/eval/:strToEval', {to: 'eval#index'})
+      }
       '''
 
     controllerContent = '''
-      module.exports = class EvalController
-        index: (req, res) ->
-          res.end Function('res', req.params.strToEval).call(@, res)
+      module.exports = class EvalController {
+        index(req, res) {
+          res.end(Function('res', req.params.strToEval).call(this, res))
+        }
+      }
       '''
 
     yield Promise.all [
-      @createFile 'routes.coffee', routesContent
-      @createFile 'controllers/eval_controller.coffee', controllerContent
+      @createFile 'routes.js', routesContent
+      @createFile 'controllers/eval_controller.js', controllerContent
     ]
 
 

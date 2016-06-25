@@ -7,17 +7,19 @@ Feature: Dependency Injection into controllers
   Scenario: initializeWith object is passed to controller constructors
     Given the routing definition
       """
-      GET '/users', to: 'users#index'
+      GET('/users', { to: 'users#index' });
       """
-    And a file "controllers/users_controller.coffee" with the content
+    And a file "controllers/users_controller.js" with the content
       """
-      class UsersController
-        constructor: ({@users}) ->
+      module.exports = class UsersController {
+        constructor({users}) {
+          this.users = users;
+        }
 
-        index: (req, res) ->
-          res.end @users.join ', '
-
-      module.exports = UsersController
+        index(req, res) {
+          res.end(this.users.join(', '));
+        }
+      }
       """
     And an exprestive app with the option "dependencies" set to `users: ['Alice', 'Bob', 'Carol']`
     When making a GET request to "/users"

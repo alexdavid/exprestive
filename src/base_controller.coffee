@@ -14,8 +14,9 @@ class BaseController
   getActions: ({only, except} = {}) ->
     only = [].concat only ? []
     except = [].concat except ? []
-    for action of this
-      continue if BaseController::[action]?
+    for action in Object.getOwnPropertyNames @constructor.prototype
+      continue unless typeof @constructor::[action] is 'function'
+      continue if action is 'constructor'
       continue if action.indexOf('_') is 0
       continue unless action in only or only.length is 0
       continue if action in except

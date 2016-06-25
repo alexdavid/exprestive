@@ -28,11 +28,12 @@ module.exports = ->
 
   @Given /^the routing definitions?$/, (routingDefinitons) ->
     routesFileContents = """
-    module.exports = ({GET, POST, PUT, DELETE, resources}) ->
-      #{routingDefinitons.replace("\n", "\n  ")}
-      GET '/eval/:strToEval', to: 'eval#index'
+    module.exports = ({GET, POST, PUT, DELETE, resources}) => {
+      GET('/eval/:strToEval', {to: 'eval#index'});
+      #{routingDefinitons}
+    }
     """
-    yield @createFile 'routes.coffee', routesFileContents
+    yield @createFile 'routes.js', routesFileContents
 
 
   @Then /^the app doesn't error$/, ->
