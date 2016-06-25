@@ -204,6 +204,7 @@ someOtherMiddleware = require('some-other-middleware')
 
 module.exports = class HelloWorldController extends BaseController {
   constructor() {
+    super()
     this.useMiddleware(someMiddleware)
     this.useMiddleware(someOtherMiddleware, {only: 'index'})
   }
