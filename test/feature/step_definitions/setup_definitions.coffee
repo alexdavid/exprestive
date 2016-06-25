@@ -4,38 +4,35 @@ coffee = require 'coffee-script'
 
 module.exports = ->
 
-  @Given /^an exprestive app using defaults$/, (done) ->
-    @createExprestiveApp library: 'connect', (err) =>
-      return done err if err
-      @startApp done
+  @Given /^an exprestive app using defaults$/, ->
+    yield @createExprestiveApp library: 'connect'
+    yield @startApp()
 
 
-  @Given /^an exprestive app powered by express$/, (done) ->
-    @createExprestiveApp library: 'express', (err) =>
-      return done err if err
-      @startApp done
+  @Given /^an exprestive app powered by express$/, ->
+    yield @createExprestiveApp library: 'express'
+    yield @startApp()
 
 
-  @Given /^an exprestive app with the option "([^"]+)" set to `([^`]+)`$/, (optionName, optionValue, done) ->
-    @createExprestiveApp {
+  @Given /^an exprestive app with the option "([^"]+)" set to `([^`]+)`$/, (optionName, optionValue) ->
+    yield @createExprestiveApp {
       library: 'connect'
       exprestiveOptions: "#{optionName}": coffee.eval optionValue
-    }, (err) =>
-      return done.fail err if err
-      @startApp done
+    }
+    yield @startApp()
 
 
-  @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents, done) ->
-    @createFile fileName, fileContents, done
+  @Given /^a file "([^"]+)" with the content$/, (fileName, fileContents) ->
+    yield @createFile fileName, fileContents
 
 
-  @Given /^the routing definitions?$/, (routingDefinitons, done) ->
+  @Given /^the routing definitions?$/, (routingDefinitons) ->
     routesFileContents = """
     module.exports = ({GET, POST, PUT, DELETE, resources}) ->
       #{routingDefinitons.replace("\n", "\n  ")}
       GET '/eval/:strToEval', to: 'eval#index'
     """
-    @createFile 'routes.coffee', routesFileContents, done
+    yield @createFile 'routes.coffee', routesFileContents
 
 
   @Then /^the app doesn't error$/, ->
