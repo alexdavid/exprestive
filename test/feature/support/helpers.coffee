@@ -1,11 +1,10 @@
 Promise = require 'bluebird'
-async = require 'async'
+async = Promise.coroutine
 fsExtra = Promise.promisifyAll require 'fs-extra'
 path = require 'path'
 request = require 'request-promise'
 url = require 'url'
 { fork } = require 'child_process'
-async = Promise.coroutine
 
 
 class Helpers
