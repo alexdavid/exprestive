@@ -173,7 +173,6 @@ const someMiddleware = require('some-middleware');
 
 module.exports = class HelloWorldController {
   constructor() {
-    super();
     this.middleware = { index: someMiddleware };
   }
 
