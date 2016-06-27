@@ -82,22 +82,25 @@ class Helpers
 
 
   # Starts up server.coffee in @appPath
-  startApp: -> new Promise (resolve) =>
-    child = fork "#{@appPath}/server.coffee"
+  startApp: ->
+    new Promise (resolve) =>
+      child = fork "#{@appPath}/server.coffee"
 
-    # Message emitted by process.send() in server.coffee after the server starts
-    child.on 'message', (message) ->
-      resolve() if message is 'server started'
+      # Message emitted by process.send() in server.coffee after the server starts
+      child.on 'message', (message) ->
+        resolve() if message is 'server started'
 
-    unexpectedExit = yes
-    # After test are done kill the child
-    @cleanUpActions.push ->
-      unexpectedExit = no
-      child.kill()
+      unexpectedExit = yes
+      # After test are done kill the child
+      @cleanUpActions.push ->
+        unexpectedExit = no
+        child.kill()
 
-    # Throw an error if we didn't exit from the cleanUpAction
-    child.on 'close', (err, signal) ->
-      throw new Error('Child exited unsuccessfully') if unexpectedExit
+      # Throw an error if we didn't exit from the cleanUpAction
+      child.on 'close', (err, signal) ->
+        throw new Error('Child exited unsuccessfully') if unexpectedExit
+
+    .timeout 2000, Error('Timed out waiting for fork to start')
 
 
 module.exports = ->
