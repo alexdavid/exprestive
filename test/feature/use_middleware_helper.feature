@@ -11,17 +11,17 @@ Feature: BaseController useMiddleware helper
       """
     And a file "middleware.js" with the content
       """
-        exports.fooInjector = function(req, res, next) {
-          if(!req.custom) req.custom = [];
-          req.custom.push('foo');
-          next();
-        }
+      exports.fooInjector = function(req, res, next) {
+        if(!req.custom) req.custom = [];
+        req.custom.push('foo');
+        next();
+      }
 
-        exports.barInjector = function(req, res, next) {
-          if(!req.custom) req.custom = [];
-          req.custom.push('bar');
-          next();
-        }
+      exports.barInjector = function(req, res, next) {
+        if(!req.custom) req.custom = [];
+        req.custom.push('bar');
+        next();
+      }
       """
 
 
