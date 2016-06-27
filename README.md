@@ -16,13 +16,13 @@ Now:
 * add the expRESTive middleware to your application
 
     ```javascript
-    express = require('express')
-    exprestive = require('exprestive')
+    const express = require('express');
+    const exprestive = require('exprestive');
 
-    app = express()
-    app.use(exprestive())
+    app = express();
+    app.use(exprestive());
 
-    app.listen(3000)
+    app.listen(3000);
     ```
 
 * create a `routes.js` file in the same directory as your server
@@ -30,8 +30,8 @@ Now:
   ```javascript
   // routes.js
   module.exports = ({ GET, POST, PUT, DELETE }) => {
-    GET('/hello', { to: 'helloWorld#index' })
-  }
+    GET('/hello', { to: 'helloWorld#index' });
+  };
   ```
 
 * create a `controllers/` directory in the same directory as your server and populate it with controllers.
@@ -41,9 +41,9 @@ Now:
   // controllers/hello_world_controller.js
   module.exports = class HelloWorldController {
     index(req, res) {
-      res.end('hello world')
+      res.end('hello world');
     }
-  }
+  };
   ```
 * visit `localhost:3000/hello` in your browser
 
@@ -56,8 +56,8 @@ In your routes file you can pass an `as` parameter to non-restful routes to defi
 ```javascript
 // routes.js
 module.exports = ({ GET }) => {
-  GET('/foo/bar', { to: 'foo#bar', as: 'foobar' })
-}
+  GET('/foo/bar', { to: 'foo#bar', as: 'foobar' });
+};
 ```
 
 In a controller you can access this path with `this.routes.foobar()`
@@ -65,9 +65,9 @@ In a controller you can access this path with `this.routes.foobar()`
 // controllers/foo_controller.js
 module.exports = class FooController {
   bar(req, res) {
-    this.routes.foobar() // returns {path: "/foo/bar", method: "GET"}
+    this.routes.foobar(); // returns {path: "/foo/bar", method: "GET"}
   }
-}
+};
 ```
 
 In a view you can access this path with `routes.foobar()`
@@ -83,16 +83,16 @@ If a route has parameters, the reverse route can take the parameters in order as
 ```javascript
 // routes.js
 module.exports = ({ GET }) => {
-  GET('/users/:userId/posts/:id', { to: 'posts#show', as: 'userPost' })
-}
+  GET('/users/:userId/posts/:id', { to: 'posts#show', as: 'userPost' });
+};
 
 // controllers/posts_controller.js
 class PostsController {
   show(req, res) {
-    this.routes.userPost(1, 2).path               // returns "/users/1/posts/2"
-    this.routes.userPost({userId: 1, id: 2}).path // returns "/users/1/posts/2"
+    this.routes.userPost(1, 2).path;               // returns "/users/1/posts/2"
+    this.routes.userPost({userId: 1, id: 2}).path; // returns "/users/1/posts/2"
   }
-}
+};
 ```
 
 
@@ -101,31 +101,31 @@ The `resources` helper can be used to build all the standard RESTFUL routes
 ```javascript
 // routes.js
 module.exports = ({resources}) => {
-  resources('users')
-}
+  resources('users');
+};
 ```
 
 is equivalent to
 ```javascript
 // routes.js
 module.exports = ({ DELETE, GET, POST, PUT }) => {
-  GET(    '/users',          { to: 'user#index',   as: 'users'       })
-  GET(    '/users/new',      { to: 'user#new',     as: 'newUser'     })
-  GET(    '/users/:id',      { to: 'user#show',    as: 'user'        })
-  GET(    '/users/:id/edit', { to: 'user#edit',    as: 'editUser'    })
-  PUT(    '/users/:id',      { to: 'user#update',  as: 'updateUser'  })
-  POST(   '/users',          { to: 'user#create',  as: 'createUser'  })
-  DELETE( '/users/:id',      { to: 'user#destroy', as: 'destroyUser' })
-}
+  GET(    '/users',          { to: 'user#index',   as: 'users'       });
+  GET(    '/users/new',      { to: 'user#new',     as: 'newUser'     });
+  GET(    '/users/:id',      { to: 'user#show',    as: 'user'        });
+  GET(    '/users/:id/edit', { to: 'user#edit',    as: 'editUser'    });
+  PUT(    '/users/:id',      { to: 'user#update',  as: 'updateUser'  });
+  POST(   '/users',          { to: 'user#create',  as: 'createUser'  });
+  DELETE( '/users/:id',      { to: 'user#destroy', as: 'destroyUser' });
+};
 ```
 
 You can limit the restful routing with the options `except:` or `only:`
 ```javascript
 // routes.js
 module.exports = ({resources}) => {
-  resources('users', {only: ['index', 'new', 'create', 'destroy']})
-  resources('posts', {except: ['index']})
-}
+  resources('users', {only: ['index', 'new', 'create', 'destroy']});
+  resources('posts', {except: ['index']});
+};
 ```
 
 ## Scoped routing
@@ -134,19 +134,19 @@ The `scope` helper can be used to create a prefixed set of routes:
 // routes.js
 module.exports = ({ GET, scope }) => {
   scope('/api', () => {
-    GET('/users', {to: 'users#index'})
-    GET('/widgets', {to: 'widgets#index'})
-  })
-}
+    GET('/users', {to: 'users#index'});
+    GET('/widgets', {to: 'widgets#index'});
+  });
+};
 ```
 
 This is equivalent to:
 ```javascript
 // routes.js
 module.exports = ({ GET }) => {
-  GET('/api/users', { to: 'users#index' })
-  GET('/api/widgets', { to: 'widgets#index' })
-}
+  GET('/api/users', { to: 'users#index' });
+  GET('/api/widgets', { to: 'widgets#index' });
+};
 ```
 
 Scopes can also be nested:
@@ -155,11 +155,11 @@ Scopes can also be nested:
 module.exports = ({ GET, resources, scope }) => {
   scope('/api', () => {
     scope('/v1', () => {
-      resources('users')
-      GET('/widgets', { to: 'widgets#index' })
-    })
-  })
-}
+      resources('users');
+      GET('/widgets', { to: 'widgets#index' });
+    });
+  });
+};
 ```
 
 ## Middleware Support
@@ -169,17 +169,18 @@ by setting `middleware`.
 
 ```javascript
 // controllers/hello_world_controller.js
-someMiddleware = require('some-middleware')
+const someMiddleware = require('some-middleware');
 
 module.exports = class HelloWorldController {
   constructor() {
-    this.middleware = { index: someMiddleware }
+    super();
+    this.middleware = { index: someMiddleware };
   }
 
   index(req, res) {
-    res.end('hello world')
+    res.end('hello world');
   }
-}
+};
 ```
 
 The specified middleware will be inserted in the chain before the controller
@@ -198,25 +199,25 @@ The function also accepts options of `only` or `except` which modify the list of
 
 ```javascript
 // controllers/hello_world_controller.js
-BaseController = require('exprestive').BaseController
-someMiddleware = require('some-middleware')
-someOtherMiddleware = require('some-other-middleware')
+const BaseController = require('exprestive').BaseController;
+const someMiddleware = require('some-middleware');
+const someOtherMiddleware = require('some-other-middleware');
 
 module.exports = class HelloWorldController extends BaseController {
   constructor() {
-    super()
-    this.useMiddleware(someMiddleware)
-    this.useMiddleware(someOtherMiddleware, {only: 'index'})
+    super();
+    this.useMiddleware(someMiddleware);
+    this.useMiddleware(someOtherMiddleware, {only: 'index'});
   }
 
   index(req, res) {
-    res.end('hello world index')
+    res.end('hello world index');
   }
 
   show(req, res) {
-    res.end('hello world show')
+    res.end('hello world show');
   }
-}
+};
 ```
 
 The `getActions` helper returns an array of all the actions on the controller.
@@ -226,8 +227,8 @@ It also takes options of `only` or `except` to modify the list.
 
 Options are provided to the _exprestive_ function.
 ```javascript
-app = express()
-app.use(exprestive({ appDir: './www' }))
+app = express();
+app.use(exprestive({ appDir: './www' }));
 ```
 
 * `appDir`
