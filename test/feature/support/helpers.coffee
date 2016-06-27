@@ -1,8 +1,8 @@
-async = require 'async'
-fs = require 'fs'
-fsExtra = require 'fs-extra'
+Promise = require 'bluebird'
+async = Promise.coroutine
+fsExtra = Promise.promisifyAll require 'fs-extra'
 path = require 'path'
-request = require 'request'
+request = require 'request-promise'
 url = require 'url'
 { fork } = require 'child_process'
 
@@ -14,7 +14,7 @@ class Helpers
 
 
   # Creates a new exprestive app in @appPath
-  createExprestiveApp: ({library, exprestiveOptions}, done) ->
+  createExprestiveApp: async ({library, exprestiveOptions}) ->
     serverContents = """
       # Initialize exprestive application
       #{library} = require '#{library}'
@@ -31,16 +31,16 @@ class Helpers
       # Send a message to parent to let it know the server started successfully
       process.send('server started')
       """
-    @createFile 'server.coffee', serverContents, done
+    yield @createFile 'server.coffee', serverContents
 
 
   # Writes a file in @appDir creating any missing directories along the way
-  createFile: (fileName, fileContents, done) ->
+  createFile: async (fileName, fileContents) ->
     filePath = path.join @appPath, fileName
-    fsExtra.outputFile filePath, fileContents, done
+    yield fsExtra.outputFileAsync filePath, fileContents
 
 
-  initializeFiles: (done) ->
+  initializeFiles: async ->
     routesContent = '''
       module.exports = ({GET}) ->
         GET '/eval/:strToEval', to: 'eval#index'
@@ -52,53 +52,55 @@ class Helpers
           res.end Function('res', req.params.strToEval).call(@, res)
       '''
 
-    async.parallel [
-      (next) => @createFile 'routes.coffee', routesContent, next
-      (next) => @createFile 'controllers/eval_controller.coffee', controllerContent, next
-    ], done
+    yield Promise.all [
+      @createFile 'routes.coffee', routesContent
+      @createFile 'controllers/eval_controller.coffee', controllerContent
+    ]
 
 
   # Symlinks connect and exprestive as node modules in @appPath
-  symlinkModules: (done) ->
+  symlinkModules: async ->
     items = [
       {name: 'connect', srcPath: require.resolve 'connect'}
       {name: 'express', srcPath: require.resolve 'express'}
       {name: 'exprestive', srcPath: @exprestivePath}
     ]
-    iterator = ({name, srcPath}, next) =>
+    yield Promise.map items, async ({name, srcPath}) =>
       destPath = path.join @appPath, 'node_modules', name
-      fsExtra.ensureSymlink srcPath, destPath, next
-    async.each items, iterator, done
+      yield fsExtra.ensureSymlinkAsync srcPath, destPath
 
 
   # Make an HTTP request to the running server
-  makeRequest: (method, urlPath, done) ->
+  makeRequest: async (method, urlPath) ->
     uri = url.format
       protocol: 'http:'
       hostname: 'localhost'
       port: @port
       pathname: urlPath
 
-    request {method, uri}, done
+    yield request {method, uri, resolveWithFullResponse: yes, simple: false}
 
 
   # Starts up server.coffee in @appPath
-  startApp: (done) ->
-    child = fork "#{@appPath}/server.coffee"
+  startApp: ->
+    new Promise (resolve) =>
+      child = fork "#{@appPath}/server.coffee"
 
-    # Message emitted by process.send() in server.coffee after the server starts
-    child.on 'message', (message) ->
-      done() if message is 'server started'
+      # Message emitted by process.send() in server.coffee after the server starts
+      child.on 'message', (message) ->
+        resolve() if message is 'server started'
 
-    unexpectedExit = yes
-    # After test are done kill the child
-    @cleanUpActions.push ->
-      unexpectedExit = no
-      child.kill()
+      unexpectedExit = yes
+      # After test are done kill the child
+      @cleanUpActions.push ->
+        unexpectedExit = no
+        child.kill()
 
-    # Throw an error if we didn't exit from the cleanUpAction
-    child.on 'close', (err, signal) ->
-      throw new Error('Child exited unsuccessfully') if unexpectedExit
+      # Throw an error if we didn't exit from the cleanUpAction
+      child.on 'close', (err, signal) ->
+        throw new Error('Child exited unsuccessfully') if unexpectedExit
+
+    .timeout 2000, Error('Timed out waiting for fork to start')
 
 
 module.exports = ->
