@@ -1,10 +1,11 @@
 Feature: Finding controllers
 
   Background:
-    Given a file "routes.coffee" with the content
+    Given a file "routes.js" with the content
       """
-      module.exports = ({GET}) ->
-        GET '/users', to: 'users#index'
+      module.exports = ({ GET }) => {
+        GET('/users', { to: 'users#index' });
+      }
       """
 
   Scenario: missing controller
@@ -15,10 +16,9 @@ Feature: Finding controllers
 
 
   Scenario: missing action
-    Given a file "controllers/users_controller.coffee" with the content
+    Given a file "controllers/users_controller.js" with the content
       """
-      class UsersController
-      module.exports = UsersController
+      module.exports = class UsersController {}
       """
     Given an exprestive app using defaults
     When making a GET request to "/users"
@@ -27,12 +27,13 @@ Feature: Finding controllers
 
 
   Scenario: default configuration
-    Given a file "controllers/users_controller.coffee" with the content
+    Given a file "controllers/users_controller.js" with the content
       """
-      class UsersController
-        index: (req, res) ->
-          res.end 'user list'
-      module.exports = UsersController
+      module.exports = class UsersController {
+        index(req, res) {
+          res.end('user list');
+        }
+      }
       """
     And an exprestive app using defaults
     When making a GET request to "/users"
@@ -41,14 +42,15 @@ Feature: Finding controllers
 
 
   Scenario: custom controllers pattern
-    Given a file "my_controllers/users_controller.coffee" with the content
+    Given a file "my_controllers/users_controller.js" with the content
       """
-      class UsersController
-        index: (req, res) ->
-          res.end 'user list'
-      module.exports = UsersController
+      module.exports = class UsersController {
+        index(req, res) {
+          res.end('user list');
+        }
+      }
       """
-    And an exprestive app with the option "controllersPattern" set to `"my_controllers/*_controller.coffee"`
+    And an exprestive app with the option "controllersPattern" set to `"my_controllers/*_controller.js"`
     When making a GET request to "/users"
     Then the response code should be 200
     And the response body should be "user list"
@@ -73,7 +75,7 @@ Feature: Finding controllers
 
 
   Scenario: an application with a javascript file not ending in _controller
-    Given a file "controllers/users.coffee" with the content
+    Given a file "controllers/users.js" with the content
       """
       throw 'not a controller'
       """

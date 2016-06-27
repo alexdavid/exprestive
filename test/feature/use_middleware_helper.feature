@@ -2,31 +2,44 @@ Feature: BaseController useMiddleware helper
 
 
   Background:
-    Given a file "routes.coffee" with the content
+    Given a file "routes.js" with the content
       """
-      module.exports = ({ GET }) ->
-        GET '/users', to: 'users#index'
-        GET '/users/:id', to: 'users#show'
+      module.exports = ({ GET }) => {
+        GET('/users', { to: 'users#index' });
+        GET('/users/:id', { to: 'users#show' });
+      }
+      """
+    And a file "middleware.js" with the content
+      """
+      exports.fooInjector = function(req, res, next) {
+        if(!req.custom) req.custom = [];
+        req.custom.push('foo');
+        next();
+      }
+
+      exports.barInjector = function(req, res, next) {
+        if(!req.custom) req.custom = [];
+        req.custom.push('bar');
+        next();
+      }
       """
 
 
   Scenario Outline: basic usage
-    Given a file "controllers/users_controller.coffee" with the content
+    Given a file "controllers/users_controller.js" with the content
       """
-      {BaseController} = require 'exprestive'
+      BaseController = require('exprestive').BaseController;
+      middleware = require('../middleware');
 
-      middle = (req, res, next) ->
-        req.custom = 'foo'
-        next()
+      module.exports = class UsersController extends BaseController {
+        constructor() {
+          super();
+          this.useMiddleware(middleware.fooInjector);
+        }
 
-      class UsersController extends BaseController
-        constructor: ->
-          @useMiddleware middle
-
-        index: (req, res) -> res.end req.custom
-
-        show: (req, res) -> res.end req.custom
-      module.exports = UsersController
+        index (req, res) { res.end(req.custom.join()); }
+        show  (req, res) { res.end(req.custom.join()); }
+      }
       """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
@@ -39,26 +52,20 @@ Feature: BaseController useMiddleware helper
 
 
   Scenario Outline: with multiple middleware functions
-    Given a file "controllers/users_controller.coffee" with the content
+    Given a file "controllers/users_controller.js" with the content
       """
-      {BaseController} = require 'exprestive'
+      BaseController = require('exprestive').BaseController;
+      middleware = require('../middleware');
 
-      middle1 = (req, res, next) ->
-        req.custom1 = 'foo'
-        next()
+      module.exports = class UsersController extends BaseController {
+        constructor() {
+          super();
+          this.useMiddleware([middleware.fooInjector, middleware.barInjector]);
+        }
 
-      middle2 = (req, res, next) ->
-        req.custom2 = 'bar'
-        next()
-
-      class UsersController extends BaseController
-        constructor: ->
-          @useMiddleware [middle1, middle2]
-
-        index: (req, res) -> res.end "#{req.custom1} #{req.custom2}"
-
-        show: (req, res) -> res.end "#{req.custom1} #{req.custom2}"
-      module.exports = UsersController
+        index (req, res) { res.end(req.custom.join()); }
+        show (req, res) { res.end(req.custom.join()); }
+      }
       """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
@@ -66,27 +73,25 @@ Feature: BaseController useMiddleware helper
 
     Examples:
       | REQUEST | URL      | RESPONSE BODY |
-      | GET     | /users   | foo bar       |
-      | GET     | /users/1 | foo bar       |
+      | GET     | /users   | foo,bar       |
+      | GET     | /users/1 | foo,bar       |
 
 
   Scenario Outline: with only option specified
-    Given a file "controllers/users_controller.coffee" with the content
+    Given a file "controllers/users_controller.js" with the content
       """
-      {BaseController} = require 'exprestive'
+      BaseController = require('exprestive').BaseController;
+      middleware = require('../middleware');
 
-      middle = (req, res, next) ->
-        req.custom = 'foo'
-        next()
+      module.exports = class UsersController extends BaseController {
+        constructor() {
+          super();
+          this.useMiddleware(middleware.fooInjector, { only: 'index' });
+        }
 
-      class UsersController extends BaseController
-        constructor: ->
-          @useMiddleware middle, only: 'index'
-
-        index:   (req, res) -> res.end req.custom
-
-        show:    (req, res) -> res.end "#{'No Custom' unless req.custom?}"
-      module.exports = UsersController
+        index (req, res) { res.end(String(req.custom)); }
+        show  (req, res) { res.end(String(req.custom)); }
+      }
       """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
@@ -95,26 +100,24 @@ Feature: BaseController useMiddleware helper
     Examples:
       | REQUEST | URL      | RESPONSE BODY |
       | GET     | /users   | foo           |
-      | GET     | /users/1 | No Custom     |
+      | GET     | /users/1 | undefined     |
 
 
   Scenario Outline: with except option specified
-    Given a file "controllers/users_controller.coffee" with the content
+    Given a file "controllers/users_controller.js" with the content
       """
-      {BaseController} = require 'exprestive'
+      BaseController = require('exprestive').BaseController;
+      middleware = require('../middleware');
 
-      middle = (req, res, next) ->
-        req.custom = 'foo'
-        next()
+      module.exports = class UsersController extends BaseController {
+        constructor() {
+          super();
+          this.useMiddleware(middleware.fooInjector, { except: 'show' });
+        }
 
-      class UsersController extends BaseController
-        constructor: ->
-          @useMiddleware middle, except: 'show'
-
-        index:   (req, res) -> res.end req.custom
-
-        show:    (req, res) -> res.end "#{'No Custom' unless req.custom?}"
-      module.exports = UsersController
+        index (req, res) { res.end(String(req.custom)); }
+        show  (req, res) { res.end(String(req.custom)); }
+      }
       """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
@@ -123,4 +126,4 @@ Feature: BaseController useMiddleware helper
     Examples:
       | REQUEST | URL      | RESPONSE BODY |
       | GET     | /users   | foo           |
-      | GET     | /users/1 | No Custom     |
+      | GET     | /users/1 | undefined     |
