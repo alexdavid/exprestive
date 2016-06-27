@@ -89,8 +89,8 @@ Feature: BaseController useMiddleware helper
           this.useMiddleware(middleware.fooInjector, { only: 'index' });
         }
 
-        index (req, res) { res.end(typeof req.custom); }
-        show  (req, res) { res.end(typeof req.custom); }
+        index (req, res) { res.end(String(req.custom)); }
+        show  (req, res) { res.end(String(req.custom)); }
       }
       """
     And an exprestive app using defaults
@@ -99,7 +99,7 @@ Feature: BaseController useMiddleware helper
 
     Examples:
       | REQUEST | URL      | RESPONSE BODY |
-      | GET     | /users   | object        |
+      | GET     | /users   | foo           |
       | GET     | /users/1 | undefined     |
 
 
@@ -115,8 +115,8 @@ Feature: BaseController useMiddleware helper
           this.useMiddleware(middleware.fooInjector, { except: 'show' });
         }
 
-        index (req, res) { res.end(typeof req.custom); }
-        show  (req, res) { res.end(typeof req.custom); }
+        index (req, res) { res.end(String(req.custom)); }
+        show  (req, res) { res.end(String(req.custom)); }
       }
       """
     And an exprestive app using defaults
@@ -125,5 +125,5 @@ Feature: BaseController useMiddleware helper
 
     Examples:
       | REQUEST | URL      | RESPONSE BODY |
-      | GET     | /users   | object        |
+      | GET     | /users   | foo           |
       | GET     | /users/1 | undefined     |
