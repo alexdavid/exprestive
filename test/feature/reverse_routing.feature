@@ -1,10 +1,10 @@
 Feature: reverse routing
 
   Scenario: routes can define reverse routes with 'as'
-    Given the routing definition
+    Given the routing definitions
       """
-      GET '/some/route', to: 'test#index', as: 'fooBar'
-      GET '/other/route', to: 'test#other', as: 'foo_bar'
+      GET('/some/route', { to: 'test#index', as: 'fooBar' });
+      GET('/other/route', { to: 'test#other', as: 'foo_bar' });
       """
     And an exprestive app using defaults
     Then I have a routing helper "this.routes.fooBar()" that returns "/some/route"
@@ -14,8 +14,8 @@ Feature: reverse routing
   Scenario: routes can be accessed from res.locals.routes when using express
     Given the routing definition
       """
-      GET '/some/route', to: 'test#index', as: 'fooBar'
-      GET '/other/route', to: 'test#other', as: 'foo_bar'
+      GET('/some/route',  { to: 'test#index', as: 'fooBar'  });
+      GET('/other/route', { to: 'test#other', as: 'foo_bar' });
       """
     And an exprestive app powered by express
     Then I have a routing helper "res.locals.routes.fooBar()" that returns "/some/route"
@@ -25,7 +25,7 @@ Feature: reverse routing
   Scenario: reverse route parameters can be filled in with multilple arguments
     Given the routing definition
       """
-      GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
+      GET('/users/:userId/posts/:id', { to: 'posts#show', as: 'userPost' });
       """
     And an exprestive app using defaults
     Then I have a routing helper "this.routes.userPost(1, 2)" that returns "/users/1/posts/2"
@@ -35,7 +35,7 @@ Feature: reverse routing
   Scenario: reverse route parameters can be filled in with an object
     Given the routing definition
       """
-      GET '/users/:userId/posts/:id', to: 'posts#show', as: 'userPost'
+      GET('/users/:userId/posts/:id', { to: 'posts#show', as: 'userPost' });
       """
     And an exprestive app using defaults
     Then I have a routing helper "this.routes.userPost({userId: 1, id: 2})" that returns "/users/1/posts/2"
@@ -44,7 +44,7 @@ Feature: reverse routing
   Scenario Outline: restful routes define reverse routes automatically
     Given the routing definition
       """
-      resources 'users'
+      resources('users');
       """
     And an exprestive app using defaults
     Then I have a routing helper "<HELPER>" that returns "<VALUE>" and the HTTP verb "<METHOD>"

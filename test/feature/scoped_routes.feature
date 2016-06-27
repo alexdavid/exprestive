@@ -1,24 +1,26 @@
 Feature: Scoped routes
 
   Scenario Outline: basic scoped routing
-    Given a file "routes.coffee" with the content
+    Given a file "routes.js" with the content
       """
-      module.exports = ({ scope, GET }) ->
-        scope '/api', ->
-          GET '/users', to: 'users#index'
-        GET '/widgets', to: 'widgets#index'
+      module.exports = ({ scope, GET }) => {
+        scope('/api', () => {
+          GET('/users', { to: 'users#index' });
+        });
+        GET('/widgets', { to: 'widgets#index' });
+      }
       """
-    And a file "controllers/users_controller.coffee" with the content
+    And a file "controllers/users_controller.js" with the content
       """
-      class UsersController
-        index:   (req, res) -> res.end 'users index'
-      module.exports = UsersController
+      module.exports = class UsersController {
+        index(req, res) { res.end('users index'); }
+      }
       """
-    And a file "controllers/widgets_controller.coffee" with the content
+    And a file "controllers/widgets_controller.js" with the content
       """
-      class WidgetsController
-        index:   (req, res) -> res.end 'widgets index'
-      module.exports = WidgetsController
+      module.exports = class WidgetsController {
+        index(req, res) { res.end('widgets index'); }
+      }
       """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
@@ -30,23 +32,25 @@ Feature: Scoped routes
       | GET     | /widgets          | widgets index   |
 
   Scenario Outline: resource scoped routing
-    Given a file "routes.coffee" with the content
+    Given a file "routes.js" with the content
       """
-      module.exports = ({ resources, scope }) ->
-        scope '/api', ->
-          resources 'users'
+      module.exports = ({ resources, scope }) => {
+        scope('/api', () => {
+          resources('users');
+        });
+      }
       """
-    And a file "controllers/users_controller.coffee" with the content
+    And a file "controllers/users_controller.js" with the content
       """
-      class UsersController
-        index:   (req, res) -> res.end 'users index'
-        new:     (req, res) -> res.end 'users new'
-        create:  (req, res) -> res.end 'users create'
-        show:    (req, res) -> res.end 'users show'
-        edit:    (req, res) -> res.end 'users edit'
-        update:  (req, res) -> res.end 'users update'
-        destroy: (req, res) -> res.end 'users destroy'
-      module.exports = UsersController
+      module.exports = class UsersController {
+        index   (req, res) { res.end('users index');   }
+        new     (req, res) { res.end('users new');     }
+        create  (req, res) { res.end('users create');  }
+        show    (req, res) { res.end('users show');    }
+        edit    (req, res) { res.end('users edit');    }
+        update  (req, res) { res.end('users update');  }
+        destroy (req, res) { res.end('users destroy'); }
+      }
       """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
@@ -63,18 +67,21 @@ Feature: Scoped routes
       | DELETE  | /api/users/1      | users destroy |
 
   Scenario Outline: nested scoped routing
-    Given a file "routes.coffee" with the content
+    Given a file "routes.js" with the content
       """
-      module.exports = ({ GET, scope }) ->
-        scope '/api', ->
-          scope '/v1', ->
-            GET 'users', to: 'users#index'
+      module.exports = ({ GET, scope }) => {
+        scope('/api', () => {
+          scope('/v1', () => {
+            GET('users', { to: 'users#index' });
+          });
+        });
+      }
       """
-    And a file "controllers/users_controller.coffee" with the content
+    And a file "controllers/users_controller.js" with the content
       """
-      class UsersController
-        index:   (req, res) -> res.end 'users index'
-      module.exports = UsersController
+      module.exports = class UsersController {
+        index(req, res) { res.end('users index'); }
+      }
       """
     And an exprestive app using defaults
     When making a <REQUEST> request to "<URL>"
