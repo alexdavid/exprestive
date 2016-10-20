@@ -1,10 +1,12 @@
 { expect } = require 'chai'
-
+Promise = require 'bluebird'
 
 module.exports = ->
 
-  @When /^making a (GET|POST|PUT|DELETE) request to "(.+)"$/, (httpMethod, urlPath) ->
+  @When /^making a (GET|POST|PUT|DELETE) request to "(.+)"$/, (httpMethod, urlPath) -> do Promise.coroutine =>
+    console.log 'before request'
     response = yield @makeRequest httpMethod, urlPath
+    console.log 'request', responseas
     @responseBody = response.body
     @requestPath = response.request.path
     @statusCode = response.statusCode
@@ -15,6 +17,7 @@ module.exports = ->
 
 
   @Then /^the response body should be "([^"]+)"$/, (responseBody) ->
+    console.log 'response', @responseBody
     expect(@responseBody.trim()).to.equal responseBody
 
 

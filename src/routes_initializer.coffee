@@ -23,10 +23,14 @@ class RoutesInitializer
 
   # Returns a route directive for a specific http method to be called in a routes file
   getHttpDirective: (httpMethod) ->
-    (url, {to, as}) =>
+    (url, {to, as, use}) =>
       url = @_normalizeUrl "#{@_scope.join '/'}/#{url}"
       [controllerName, actionName] = to.split '#'
-      @_routes.push {httpMethod, url, controllerName, actionName}
+      middleware = switch
+        when not use? then []
+        when _.isArray use then use
+        else [use]
+      @_routes.push {httpMethod, url, controllerName, actionName, middleware}
       @registerReverseRoute {routeName: as, httpMethod, url} if as?
 
 
