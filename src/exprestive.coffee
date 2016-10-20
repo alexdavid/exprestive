@@ -46,7 +46,6 @@ class Exprestive
   addRoute: ({httpMethod, url, controllerName, actionName, middleware}) =>
     ctrlMiddleware = @controllers.middlewareFor {controllerName, actionName}
     allMiddleware = middleware.concat ctrlMiddleware
-    console.log JSON.stringify allMiddleware
     @middlewareRouter[httpMethod.toLowerCase()] url, allMiddleware..., (args...) =>
       @controllers.applyAction {controllerName, actionName, args}
 
