@@ -88,11 +88,10 @@ class RoutesInitializer
       scopedMiddleware = null
 
     @_scope.push scopeName
-    if scopedMiddleware?
-      @_scopedMiddleWare.push(scopedMiddleware)
+    @_scopedMiddleWare.push(scopedMiddleware) if scopedMiddleware?
     scopedRoutes()
     @_scope.pop scopeName
-    @_scopedMiddleWare.pop()
+    @_scopedMiddleWare.pop() if scopedMiddleware?
 
 
   toArray: -> @_routes
